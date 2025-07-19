@@ -101,6 +101,163 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="cards">
+                    <div class="card-bodys">
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer table-striped">
+                            <thead class="bg-light">
+                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
+                                <th class="ps-4 min-w-300px rounded-start">Campaign Name</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th class="min-w-400px">Performance</th>
+                                <th>Goals & Engagement</th>
+                                <th class="min-w-200px text-end rounded-end">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <template v-for="(item,itemKey) in [1,2,3]" :key="itemKey">
+                                <tr class="border-bottom border-gray-300">
+                                    <td class="ps-3 text-gray-700">
+                                        <a href="" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">
+                                            <b>Lorem Ipsum</b>
+                                        </a>
+                                        <div class="text-muted fs-7 fw-bold">Lorem Ipsum is simply dummy text.
+                                        </div>
+                                    </td>
+                                    <td class="text-gray-700">
+                                        <div class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">
+                                            <b>Push</b>
+                                        </div>
+                                        <div class="text-muted fs-7 fw-bold">
+                                            (One Time)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <!--<div>-->
+                                        <!--<label class="badge bg-success-subtle p-3">-->
+                                        <!--<KTIcon icon-name="check-circle" icon-class="text-success" icon-type="outline"/>-->
+                                        <!--&nbsp;-->
+                                        <!--Active-->
+                                        <!--</label>-->
+                                        <!--&nbsp;-->
+                                        <!--<label class="badge bg-warning-subtle p-3">-->
+                                        <!--<KTIcon icon-name="arrows-circle" icon-class="text-warning" icon-type="outline"/>-->
+                                        <!--&nbsp;-->
+                                        <!--Paused-->
+                                        <!--</label>-->
+                                        <!--</div>-->
+                                        <div class="mt-3">
+                                            <label class="badge bg-primary-subtle p-3">
+                                                <KTIcon icon-name="check-circle" icon-class="text-primary"
+                                                        icon-type="outline"/>
+                                                &nbsp;
+                                                Sent
+                                            </label>
+                                            <!--&nbsp;-->
+                                            <!--<label class="badge bg-light p-3">-->
+                                            <!--<KTIcon icon-name="arrows-circle" icon-class="text-dark" icon-type="outline"/>-->
+                                            <!--&nbsp;-->
+                                            <!--Expired-->
+                                            <!--</label>-->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span>17 Jul 2025, 5:05 am</span>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="progress-wrapper row align-items-center">
+                                                <div class="col-3">
+                                                    <small class="m-0 text-muted">
+                                                        Impressions </small>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="progressbar-sm progress-rounded progress" max="max"
+                                                         value="dynamic" type="warning" style="height: 5px;">
+                                                        <div class="progress-bar progress-bar-warning" role="progressbar"
+                                                             aria-valuenow="1061" aria-valuemin="0" aria-valuemax="100"
+                                                             aria-valuetext="%" style="width: 100% "></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div>
+                                                        <span>1,061</span><span class="text-muted"> (100%)</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="progress-wrapper row align-items-center">
+                                                <div class="col-3">
+                                                    <small class="m-0 text-muted">
+                                                        Clicks </small>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="progressbar-sm progress-rounded progress" max="max"
+                                                         value="dynamic" type="warning" style="height: 5px;">
+                                                        <div class="progress-bar progress-bar-warning" role="progressbar"
+                                                             aria-valuenow="1061" aria-valuemin="0" aria-valuemax="100"
+                                                             aria-valuetext="%" style="width: 40% "></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div>
+                                                        <span>16</span><span class="text-muted"> (4%)</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4>31.5%</h4>
+                                        <p class="text-muted">Click Through Rate</p>
+                                    </td>
+                                    <td class="text-end">
+
+                                        <div class="text-end">
+                                            <a href="#" class="btn btn-sm "
+                                               data-kt-menu-trigger="click"
+                                               data-kt-menu-placement="bottom-end"
+                                               data-kt-menu-flip="top-end">
+                                                <KTIcon icon-type="outline" icon-name="dots-circle"
+                                                        icon-class="fs-1 m-0"/>
+                                            </a>
+                                            <!--begin::Menu-->
+                                            <div
+                                                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-225px py-4"
+                                                    data-kt-menu="true">
+                                                <div class="menu-item px-3">
+                                                    <a class="menu-link px-3">
+                                                        <KTIcon icon-name="notepad-edit" icon-class="fs-5 m-0"/> &nbsp;
+                                                        Edit
+                                                    </a>
+                                                </div>
+                                                <div class="menu-item px-3">
+                                                    <a class="menu-link px-3">
+                                                        <KTIcon icon-name="trash" icon-class="fs-5 m-0 text-danger"/>
+                                                        &nbsp;
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <!--end::Menu-->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -109,14 +266,24 @@
     import {getAssetPath} from "@/core/helpers/assets";
     import {defineComponent} from "vue";
     import KTToolbar from "@/layouts/default-layout/components/toolbar/Toolbar.vue";
+    import {MenuComponent} from "@/assets/ts/components";
 
 
     export default defineComponent({
         name: "campaigns",
         components: {
-            KTToolbar
+            KTToolbar,
+            MenuComponent
         },
         setup() {
+            const updateMenu = () => {
+                setTimeout(() => {
+                    MenuComponent.reinitialization();
+                }, 200);
+            };
+
+            updateMenu();
+
             return {
                 getAssetPath,
             };
