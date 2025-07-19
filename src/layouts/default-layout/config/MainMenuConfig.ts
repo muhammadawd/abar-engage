@@ -93,13 +93,13 @@ const MainMenuConfig: Array<MenuItem> = [
             },
             {
                 sectionTitle: "Engage",
-                route: "/analyze/404",
+                route: "/engage",
                 keenthemesIcon: "crown",
                 bootstrapIcon: "bi-printer",
                 sub: [
                     {
                         heading: "Campaigns",
-                        route: "/404",
+                        route: "/engage/campaigns",
                     },
                     {
                         heading: "Flows",

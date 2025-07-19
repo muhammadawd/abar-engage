@@ -4,7 +4,7 @@
     <!--begin::Toolbar container-->
     <div
       id="kt_app_toolbar_container"
-      class="app-container d-flex flex-stack"
+      class="app-containers d-flex flex-stack"
       :class="{
         'container-fluid': toolbarWidthFluid,
         'container-xxl': !toolbarWidthFluid,
