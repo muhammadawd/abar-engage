@@ -16,12 +16,12 @@
         v-if="themeMode === 'light' && layout === 'light-sidebar'"
         alt="Logo"
         :src="getAssetPath('media/logos/default.svg')"
-        class="h-25px app-sidebar-logo-default"
+        class="h-35px app-sidebar-logo-default"
       />
       <img
         alt="Logo"
         :src="getAssetPath('media/logos/default-small.svg')"
-        class="h-20px app-sidebar-logo-minimize"
+        class="h-30px app-sidebar-logo-minimize"
       />
     </router-link>
     <!--end::Logo image-->
