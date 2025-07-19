@@ -127,7 +127,8 @@ router.beforeEach((to, from, next) => {
     if (authStore.isAuthenticated) {
       next();
     } else {
-      next({ name: "sign-in" });
+      next();
+      // next({ name: "sign-in" });
     }
   } else {
     next();
