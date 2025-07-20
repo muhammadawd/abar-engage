@@ -34,6 +34,15 @@ const routes: Array<RouteRecordRaw> = [
                     breadcrumbs: ["Campaigns"],
                 },
             },
+            {
+                path: "/engage/campaigns/create/:type/:period",
+                name: "create_campaigns",
+                component: () => import("@/views/crafted/pages/campaigns/Add.vue"),
+                meta: {
+                    pageTitle: "Campaigns",
+                    breadcrumbs: ["Campaigns","Create Campaign"],
+                },
+            },
         ],
     },
     {
