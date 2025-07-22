@@ -34,9 +34,7 @@
     <!--begin::Aside-->
     <div
       class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2"
-      :style="`background-image: url('${getAssetPath(
-        '/media/misc/auth-bg.png'
-      )}')`"
+      :style="`background: #244188`"
     >
       <!--begin::Content-->
       <div
@@ -46,7 +44,7 @@
         <router-link to="/" class="mb-0 mb-lg-12">
           <img
             alt="Logo"
-            :src="getAssetPath('media/logos/custom-1.png')"
+            :src="getAssetPath('media/logos/default-dark.svg')"
             class="h-60px h-lg-75px"
           />
         </router-link>
@@ -61,28 +59,17 @@
         <!--end::Image-->
 
         <!--begin::Title-->
-        <h1
-          class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7"
+        <h4
+          class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7" style="max-width: 500px"
         >
-          Fast, Efficient and Productive
-        </h1>
+          What 10,900,000,000 Emails Tell Us About Personalization
+        </h4>
         <!--end::Title-->
 
         <!--begin::Text-->
-        <div class="d-none d-lg-block text-white fs-base text-center">
-          In this kind of post,
-          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-            >the blogger</a
-          >
+        <div class="d-none d-lg-block text-white fs-base text-center" style="max-width: 500px">
+          Our latest Email Benchmarks Report analyzes 10.9 Billion emails to understand the impact of personalization on crucial email metrics. Don't miss it! 👇
 
-          introduces a person they’ve interviewed <br />
-          and provides some background information about
-
-          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-            >the interviewee</a
-          >
-          and their <br />
-          work following this is a transcript of the interview.
         </div>
         <!--end::Text-->
       </div>

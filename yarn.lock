@@ -2786,7 +2786,7 @@ vue-tsc@^2.0.29:
     "@vue/language-core" "2.0.29"
     semver "^7.5.4"
 
-"vue@^2.6.14 || ^3.3.0", "vue@^2.7 || ^3.0.0", vue@^3, vue@^3.0.0, "vue@^3.0.0 || ^2.0.0", "vue@^3.0.0-0 || ^2.6.0", vue@^3.0.11, vue@^3.2.0, vue@^3.2.25, vue@^3.4.26, vue@^3.4.34, "vue@> 3.0.0", vue@3.4.34:
+"vue@^2.6.14 || ^3.3.0", "vue@^2.7 || ^3.0.0", vue@^3, vue@^3.0.0, "vue@^3.0.0 || ^2.0.0", "vue@^3.0.0-0 || ^2.6.0", vue@^3.0.11, vue@^3.2.0, vue@^3.2.25, vue@^3.4.26, vue@^3.4.27, vue@^3.4.34, "vue@> 3.0.0", vue@3.4.34:
   version "3.4.34"
   resolved "https://registry.npmjs.org/vue/-/vue-3.4.34.tgz"
   integrity sha512-VZze05HWlA3ItreQ/ka7Sx7PoD0/3St8FEiSlSTVgb6l4hL+RjtP2/8g5WQBzZgyf8WG2f+g1bXzC7zggLhAJA==
@@ -2801,6 +2801,13 @@ vue3-apexcharts@^1.5.3:
   version "1.5.3"
   resolved "https://registry.npmjs.org/vue3-apexcharts/-/vue3-apexcharts-1.5.3.tgz"
   integrity sha512-yaHTPoj0iVKAtEVg8wEwIwwvf0VG+lPYNufCf3txRzYQOqdKPoZaZ9P3Dj3X+2A1XY9O1kcTk9HVqvLo+rppvQ==
+
+vue3-otp-input@^0.5.40:
+  version "0.5.40"
+  resolved "https://registry.npmjs.org/vue3-otp-input/-/vue3-otp-input-0.5.40.tgz"
+  integrity sha512-3AMYHqNz9ZDa9y7ICwcEcsJG7XdZGaLAr6IRLIl3whvseFE95F5Duc9q963HcqEbu8CeMWilkmbAt/0eZOZxow==
+  dependencies:
+    vue "^3.4.27"
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"

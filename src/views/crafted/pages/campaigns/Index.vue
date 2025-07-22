@@ -22,11 +22,8 @@
                     <KTIcon icon-name="exit-right-corner" icon-type="outline"/>
                     Export
                 </a>
-                <a
-                        href="#"
-                        class="btn btn-flex btn-outline btn-outline-default btn-active-color-primary h-35px py-0 fs-base rounded-3 px-4"
-                        data-bs-toggle="modal"
-                        data-bs-target="#kt_modal_create_app">
+                <a href="javascript:void(0)" @click="$router.push({name:'campaigns_stats'})"
+                   class="btn btn-flex btn-outline btn-outline-default btn-active-color-primary h-35px py-0 fs-base rounded-3 px-4">
                     <KTIcon icon-name="graph" icon-type="outline"/>
                     Campaign Status
                 </a>

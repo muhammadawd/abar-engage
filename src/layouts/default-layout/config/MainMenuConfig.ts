@@ -61,13 +61,13 @@ const MainMenuConfig: Array<MenuItem> = [
             },
             {
                 sectionTitle: "Segment",
-                route: "/analyze/404",
+                route: "/segment",
                 keenthemesIcon: "chart-pie-3",
                 bootstrapIcon: "bi-printer",
                 sub: [
                     {
                         heading: "All Segments",
-                        route: "/404",
+                        route: "/segment/all",
                     },
                     {
                         heading: "Create Segment",

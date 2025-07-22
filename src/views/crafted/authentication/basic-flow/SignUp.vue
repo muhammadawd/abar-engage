@@ -50,17 +50,17 @@
       <div class="row fv-row mb-7">
         <!--begin::Col-->
         <div class="col-xl-6">
-          <label class="form-label fw-bold text-gray-900 fs-6">First Name</label>
+          <label class="form-label fw-bold text-gray-900 fs-6">Company Name</label>
           <Field
             class="form-control form-control-lg form-control-solid"
             type="text"
             placeholder=""
-            name="first_name"
+            name="company_name"
             autocomplete="off"
           />
           <div class="fv-plugins-message-container">
             <div class="fv-help-block">
-              <ErrorMessage name="first_name" />
+              <ErrorMessage name="company_name" />
             </div>
           </div>
         </div>
@@ -68,17 +68,17 @@
 
         <!--begin::Col-->
         <div class="col-xl-6">
-          <label class="form-label fw-bold text-gray-900 fs-6">Last Name</label>
+          <label class="form-label fw-bold text-gray-900 fs-6">Phone</label>
           <Field
             class="form-control form-control-lg form-control-solid"
             type="text"
             placeholder=""
-            name="last_name"
+            name="phone"
             autocomplete="off"
           />
           <div class="fv-plugins-message-container">
             <div class="fv-help-block">
-              <ErrorMessage name="last_name" />
+              <ErrorMessage name="phone" />
             </div>
           </div>
         </div>

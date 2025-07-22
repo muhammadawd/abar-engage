@@ -26,12 +26,22 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             {
-                path: "/engage/campaigns",
-                name: "campaigns",
-                component: () => import("@/views/crafted/pages/campaigns/Index.vue"),
+                path: "/segment/all",
+                name: "segments",
+                component: () => import("@/views/crafted/pages/segments/Index.vue"),
+                meta: {
+                    pageTitle: "Segments",
+                    breadcrumbs: ["Segments"],
+                },
+            },
+
+            {
+                path: "/engage/campaigns/stats",
+                name: "campaigns_stats",
+                component: () => import("@/views/crafted/pages/campaigns/Stats.vue"),
                 meta: {
                     pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns"],
+                    breadcrumbs: ["Campaigns","Campaigns Stats"],
                 },
             },
             {
@@ -41,6 +51,15 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     pageTitle: "Campaigns",
                     breadcrumbs: ["Campaigns","Create Campaign"],
+                },
+            },
+            {
+                path: "/engage/campaigns",
+                name: "campaigns",
+                component: () => import("@/views/crafted/pages/campaigns/Index.vue"),
+                meta: {
+                    pageTitle: "Campaigns",
+                    breadcrumbs: ["Campaigns"],
                 },
             },
         ],
@@ -54,6 +73,15 @@ const routes: Array<RouteRecordRaw> = [
                 name: "sign-in",
                 component: () =>
                     import("@/views/crafted/authentication/basic-flow/SignIn.vue"),
+                meta: {
+                    pageTitle: "Sign In",
+                },
+            },
+            {
+                path: "/auth-otp",
+                name: "auth-otp",
+                component: () =>
+                    import("@/views/crafted/authentication/basic-flow/OTP.vue"),
                 meta: {
                     pageTitle: "Sign In",
                 },
