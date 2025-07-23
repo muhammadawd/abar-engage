@@ -60,7 +60,7 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Campaign Name</label>
                                 <input type="text" v-model="campaign_name" name="campaign_name"
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Campaign Tags</label>
                                 <el-select name="campaign_tags" :collapse-tags="true" :collapse-tags-tooltip="true"
@@ -88,6 +88,52 @@
                                 </el-select>
                                 <span
                                         class="form-text text-muted"> campaign tags for categorizing this campaign.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4" v-if="$route.params.type == 'email'">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Campaign Content Type</label>
+
+                                <div class="d-flex">
+
+                                    <div class="form-check form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="radio" name="content_type"
+                                               value="promotional" id="flexRadioDefault-1"/>
+                                        <label class="form-check-label" for="flexRadioDefault-1">
+                                            Promotional / Marketing
+                                        </label>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="radio" name="content_type"
+                                               value="transactional" id="flexRadioDefault-2"/>
+                                        <label class="form-check-label" for="flexRadioDefault-2">
+                                            Transactional
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4" v-if="$route.params.type == 'email'">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>User attribute with email address</label>
+                                <el-select name="email_user_attribute" placeholder="Select Attribute">
+
+                                </el-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4" v-if="$route.params.type == 'sms'">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>User attribute that stores user's mobile number</label>
+                                <el-select name="phone_user_attribute" placeholder="Mobile Number (Standard)">
+
+                                </el-select>
                             </div>
                         </div>
                     </div>
@@ -468,7 +514,8 @@
                                                     <div class="col-md-2">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <KTIcon icon-name="android" icon-class="fs-3x text-success"/>
+                                                                <KTIcon icon-name="android"
+                                                                        icon-class="fs-3x text-success"/>
                                                                 <br>
                                                                 <h3 class="mt-3">Android</h3>
                                                                 <h1>4.3K</h1>
@@ -490,7 +537,8 @@
                                                     <div class="col-md-2">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <KTIcon icon-name="soft-3" icon-class="fs-3x text-primary"/>
+                                                                <KTIcon icon-name="soft-3"
+                                                                        icon-class="fs-3x text-primary"/>
                                                                 <br>
                                                                 <h3 class="mt-3">Web</h3>
                                                                 <h1>1.1K</h1>
@@ -584,7 +632,7 @@
 
         <section v-if="step==2">
 
-            <div class="row mt-5 match-height">
+            <div v-if="$route.params.type == 'push'" class="row mt-5 match-height">
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header" style="min-height: 50px;">
@@ -789,6 +837,154 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="$route.params.type == 'sms'" class="row mt-5 match-height">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header" style="min-height: 50px;">
+                            <div>
+                                <h4 class="card-title fw-bolders mb-0 pt-3">Basic Details</h4>
+                                <small class="text-muted">Add message content</small>
+                            </div>
+                            <div>
+                                <div class="symbol symbol-circle symbol-45px mt-2">
+                                    <div class="symbol-label bg-primary">
+                                        <KTIcon icon-name="messages" icon-class="fs-4 text-white"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mt-2">
+                                <div class="col-md-4">
+                                    <label>SMS Sender <span class="text-danger">*</span></label>
+                                    <el-select class="w-100" placeholder="Select Sender Provider"></el-select>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="alert alert-primary">
+                                                <KTIcon icon-name="information-3" icon-class="text-primary"/>
+                                                SMS Delivery Tracking is not configured for this sender.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Template Id <span class="text-danger">*</span></label>
+                                    <input class="form-control" v-model="content.messageTitle"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Message <span class="text-danger">*</span></label>
+                                    <textarea rows="6" class="form-control" v-model="content.message"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="preview-phone">
+                        <div class="webBasicNotification ignore-lang">
+                            <div class="mobileBackground"
+                                 :style="{backgroundImage: `url('${getAssetPath('/media/patterns/SMS_mockup.svg')}')`}">
+                                <div style="" class="notificationWrapper">
+                                    <div class="messageWrapper" style="max-height: 348px;background: #eee">
+                                        <div class="messageWrapper__contentWrapper">
+                                            <div class="messageWrapper__contentWrapper__message"
+                                                 style="max-height: 152px; overflow: hidden; text-overflow: ellipsis;">
+                                                {{content.message}}
+                                            </div>
+                                            <div class="buttons">
+                                                <div class="buttons__button" style="width: 24%;"
+                                                     v-for="(button,btnKey) in content.buttons">
+                                                    <span>{{button.title || 'Title'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="$route.params.type == 'email'" class="row mt-5 match-height">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header" style="min-height: 50px;">
+                            <div>
+                                <h4 class="card-title fw-bolders mb-0 pt-3">Basic Details</h4>
+                                <small class="text-muted">Add message content</small>
+                            </div>
+                            <div>
+                                <div class="symbol symbol-circle symbol-45px mt-2">
+                                    <div class="symbol-label bg-primary">
+                                        <KTIcon icon-name="messages" icon-class="fs-4 text-white"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Subject<span class="text-danger">*</span></label>
+                                    <input class="form-control" v-model="mail.subject"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Sender Name<span class="text-danger">*</span></label>
+                                    <input class="form-control" v-model="mail.sender_name"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>From Email Address<span class="text-danger">*</span></label>
+                                    <input class="form-control" v-model="mail.sender_email"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Reply-to Email Address<span class="text-danger">*</span></label>
+                                    <input class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Preview Text<span class="text-danger">*</span></label>
+                                    <input class="form-control" v-model="mail.preview_text"/>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8">
+                                    <label>Content <span class="text-danger">*</span></label>
+                                    <textarea rows="6" class="form-control" v-model="content.message"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>{{mail.subject}}</h4>
+                            <pre>{{mail.sender_email}}</pre>
+                            <hr>
+                            <div style="min-height: 500px">
+                                <div v-html="content.message"></div>
                             </div>
                         </div>
                     </div>
@@ -2808,7 +3004,13 @@
                 schedule_time: 'fixed',
                 send_date: (new Date()),
                 send_time: (new Date()),
-                send_passed_timezone: 'yes'
+                send_passed_timezone: 'yes',
+                mail: {
+                    subject:'Email Subject',
+                    sender_name:'Sender Name',
+                    sender_email:'example@mail.com',
+                    preview_text:'Foo',
+                }
             });
             const updateMenu = () => {
                 setTimeout(() => {

@@ -28,9 +28,7 @@
                     Campaign Status
                 </a>
                 <a href="#"
-                   class="btn btn-sm fw-bold btn-primary"
-                   data-bs-toggle="modal"
-                   data-bs-target="#kt_modal_1">
+                   class="btn btn-sm fw-bold btn-primary" @click="drawer = true">
                     <KTIcon icon-name="plus" icon-type="outline"/>
                     Create Campaign
                 </a>
@@ -264,180 +262,171 @@
     </div>
 
 
-    <div class="modal fade" tabindex="-1" id="kt_modal_1" ref="modalRef">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Create Campaigns</h3>
+    <el-drawer v-model="drawer" title="I am the title" :with-header="true">
 
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                         aria-label="Close">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-
-                <div class="modal-body bg-light">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4>Outbound</h4>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <button class="btn bg-white border w-100" @click="create_state = 'push'"
-                                            :class="create_state == 'push' ? 'border-primary' : ''">
-                                        <KTIcon icon-name="phone" icon-class="text-dark fs-4"/>
-                                        Push
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <KTIcon :icon-name="create_state == 'push' ? 'up' : 'down'" icon-type="solid"
-                                                icon-class="fs-4"/>
-                                    </button>
-                                </div>
-                                <div class="col-md-3">
-                                    <button class="btn bg-white border w-100" @click="create_state = 'email'"
-                                            :class="create_state == 'email' ? 'border-primary' : ''">
-                                        <KTIcon icon-name="messages" icon-class="text-dark fs-4"/>
-                                        Email
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <KTIcon :icon-name="create_state == 'email' ? 'up' : 'down'" icon-type="solid"
-                                                icon-class="fs-4"/>
-                                    </button>
-                                </div>
-                                <div class="col-md-3">
-                                    <button class="btn bg-white border w-100" @click="create_state = 'sms'"
-                                            :class="create_state == 'sms' ? 'border-primary' : ''">
-                                        <KTIcon icon-name="sms" icon-class="text-dark fs-4"/>
-                                        SMS
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <KTIcon :icon-name="create_state == 'sms' ? 'up' : 'down'" icon-type="solid"
-                                                icon-class="fs-4"/>
-                                    </button>
-                                </div>
+        <template #header>
+            <h4>Create Campaign</h4>
+        </template>
+        <template #default>
+            <div class="modal-body bg-lights">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Outbound</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button class="btn bg-white border w-100" @click="create_state = 'push'"
+                                        :class="create_state == 'push' ? 'border-primary' : ''">
+                                    <KTIcon icon-name="phone" icon-class="text-dark fs-4"/>
+                                    Push
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <KTIcon :icon-name="create_state == 'push' ? 'up' : 'down'" icon-type="solid"
+                                            icon-class="fs-4"/>
+                                </button>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4 mb-3" v-if="['push','email','sms'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'one-time'}})">
-                                        <img :src='getAssetPath("media/patterns/onetime.svg")' alt="">
-                                        <h6>One Time</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['push','email','sms'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'periodic'}})">
-                                        <img :src='getAssetPath("media/patterns/periodic.svg")' alt="">
-                                        <h6>Periodic</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['push','email','sms'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'event-triggered'}})">
-                                        <img :src='getAssetPath("media/patterns/eventTriggered.svg")' alt="">
-                                        <h6>Event Triggered</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['push'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'device-triggered'}})">
-                                        <img :src='getAssetPath("media/patterns/deviceTriggered.svg")' alt="">
-                                        <h6>Device Triggered</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['push'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'location-triggered'}})">
-                                        <img :src='getAssetPath("media/patterns/locationTriggered.svg")' alt="">
-                                        <h6>Location Triggered</h6>
-                                    </button>
-                                </div>
+                            <div class="col-md-4">
+                                <button class="btn bg-white border w-100" @click="create_state = 'email'"
+                                        :class="create_state == 'email' ? 'border-primary' : ''">
+                                    <KTIcon icon-name="messages" icon-class="text-dark fs-4"/>
+                                    Email
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <KTIcon :icon-name="create_state == 'email' ? 'up' : 'down'" icon-type="solid"
+                                            icon-class="fs-4"/>
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn bg-white border w-100" @click="create_state = 'sms'"
+                                        :class="create_state == 'sms' ? 'border-primary' : ''">
+                                    <KTIcon icon-name="sms" icon-class="text-dark fs-4"/>
+                                    SMS
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <KTIcon :icon-name="create_state == 'sms' ? 'up' : 'down'" icon-type="solid"
+                                            icon-class="fs-4"/>
+                                </button>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <h4>Messaging Apps</h4>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <button class="btn bg-white border w-100" @click="create_state = 'whatsapp'"
-                                            :class="create_state == 'whatsapp' ? 'border-primary' : ''">
-                                        <KTIcon icon-name="whatsapp" icon-class="text-success fs-4"/>
-                                        Whatsapp
-                                        &nbsp;&nbsp;
-                                        <KTIcon :icon-name="create_state == 'whatsapp' ? 'up' : 'down'"
-                                                icon-type="solid" icon-class="fs-4"/>
-                                    </button>
-                                </div>
+                        <div class="row mt-3 match-height">
+                            <div class="col-md-4 mb-3" v-if="['push','email','sms'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'one-time'}})">
+                                    <img :src='getAssetPath("media/patterns/onetime.svg")' class="w-50" alt="">
+                                    <h6 class="mt-3">One Time</h6>
+                                </button>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4 mb-3" v-if="['whatsapp'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'one-time'}})">
-                                        <img :src='getAssetPath("media/patterns/onetime.svg")' alt="">
-                                        <h6>One Time</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['whatsapp'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'periodic'}})">
-                                        <img :src='getAssetPath("media/patterns/periodic.svg")' alt="">
-                                        <h6>Periodic</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['whatsapp'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'event-triggered'}})">
-                                        <img :src='getAssetPath("media/patterns/eventTriggered.svg")' alt="">
-                                        <h6>Event Triggered</h6>
-                                    </button>
-                                </div>
+                            <div class="col-md-8 mb-3" v-if="['push','email','sms'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'periodic'}})">
+                                    <img :src='getAssetPath("media/patterns/periodic.svg")' class="w-25" alt="">
+                                    <h6 class="mt-3">Periodic</h6>
+                                </button>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <h4>Connectors</h4>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <button class="btn bg-white border w-100" @click="create_state = 'custom'"
-                                            :class="create_state == 'custom' ? 'border-primary' : ''">
-                                        <KTIcon icon-name="data" icon-class="text-dark fs-4"/>
-                                        Custom
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <KTIcon :icon-name="create_state == 'custom' ? 'up' : 'down'" icon-type="solid"
-                                                icon-class="fs-4"/>
-                                    </button>
-                                </div>
+                            <div class="col-md-8 mb-3" v-if="['push','email','sms'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'event-triggered'}})">
+                                    <img :src='getAssetPath("media/patterns/eventTriggered.svg")' class="w-25" alt="">
+                                    <h6 class="mt-3">Event Triggered</h6>
+                                </button>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4 mb-3" v-if="['custom'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'one-time'}})">
-                                        <img :src='getAssetPath("media/patterns/onetime.svg")' alt="">
-                                        <h6>One Time</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['custom'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'periodic'}})">
-                                        <img :src='getAssetPath("media/patterns/periodic.svg")' alt="">
-                                        <h6>Periodic</h6>
-                                    </button>
-                                </div>
-                                <div class="col-md-4 mb-3" v-if="['custom'].includes(create_state)">
-                                    <button class="btn btn-secondary w-100"
-                                            @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'event-triggered'}})">
-                                        <img :src='getAssetPath("media/patterns/eventTriggered.svg")' alt="">
-                                        <h6>Event Triggered</h6>
-                                    </button>
-                                </div>
+                            <div class="col-md-4 mb-3" v-if="['push'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'device-triggered'}})">
+                                    <img :src='getAssetPath("media/patterns/deviceTriggered.svg")' class="w-50" alt="">
+                                    <h6 class="mt-3">Device Triggered</h6>
+                                </button>
+                            </div>
+                            <div class="col-md-12 mb-3" v-if="['push'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'location-triggered'}})">
+                                    <img :src='getAssetPath("media/patterns/locationTriggered.svg")' class="w-25" alt="">
+                                    <h6 class="mt-3">Location Triggered</h6>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h4>Messaging Apps</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn bg-white border w-100" @click="create_state = 'whatsapp'"
+                                        :class="create_state == 'whatsapp' ? 'border-primary' : ''">
+                                    <KTIcon icon-name="whatsapp" icon-class="text-success fs-4"/>
+                                    Whatsapp
+                                    &nbsp;&nbsp;
+                                    <KTIcon :icon-name="create_state == 'whatsapp' ? 'up' : 'down'"
+                                            icon-type="solid" icon-class="fs-4"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4 mb-3" v-if="['whatsapp'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'one-time'}})">
+                                    <img :src='getAssetPath("media/patterns/onetime.svg")' alt="">
+                                    <h6 class="mt-3">One Time</h6>
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3" v-if="['whatsapp'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'periodic'}})">
+                                    <img :src='getAssetPath("media/patterns/periodic.svg")' alt="">
+                                    <h6 class="mt-3">Periodic</h6>
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3" v-if="['whatsapp'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'event-triggered'}})">
+                                    <img :src='getAssetPath("media/patterns/eventTriggered.svg")' alt="">
+                                    <h6 class="mt-3">Event Triggered</h6>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h4>Connectors</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn bg-white border w-100" @click="create_state = 'custom'"
+                                        :class="create_state == 'custom' ? 'border-primary' : ''">
+                                    <KTIcon icon-name="data" icon-class="text-dark fs-4"/>
+                                    Custom
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <KTIcon :icon-name="create_state == 'custom' ? 'up' : 'down'" icon-type="solid"
+                                            icon-class="fs-4"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4 mb-3" v-if="['custom'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'one-time'}})">
+                                    <img :src='getAssetPath("media/patterns/onetime.svg")' alt="">
+                                    <h6 class="mt-3">One Time</h6>
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3" v-if="['custom'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'periodic'}})">
+                                    <img :src='getAssetPath("media/patterns/periodic.svg")' alt="">
+                                    <h6 class="mt-3">Periodic</h6>
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3" v-if="['custom'].includes(create_state)">
+                                <button class="btn btn-secondary w-100 h-100"
+                                        @click="closeModal({name:'create_campaigns',params:{type:create_state,period:'event-triggered'}})">
+                                    <img :src='getAssetPath("media/patterns/eventTriggered.svg")' alt="">
+                                    <h6 class="mt-3">Event Triggered</h6>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </template>
+
+    </el-drawer>
 
 </template>
 
@@ -464,6 +453,7 @@
 
             const state = reactive({
                 create_state: '',
+                drawer: false,
             });
 
             const updateMenu = () => {
@@ -476,7 +466,7 @@
 
             const closeModal = (params) => {
                 router.push(params);
-                hideModal(modalRef.value);
+                // hideModal(modalRef.value);
             };
 
             return {

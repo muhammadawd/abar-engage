@@ -8,8 +8,7 @@
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <a href="#"
                    class="btn btn-sm fw-bold btn-primary"
-                   data-bs-toggle="modal"
-                   data-bs-target="#kt_modal_1">
+                   @click="drawer = true">
                     <KTIcon icon-name="plus" icon-type="outline"/>
                     Segment
                 </a>
@@ -133,61 +132,55 @@
     </div>
 
 
-    <div class="modal fade" tabindex="-1" id="kt_modal_1" ref="modalRef">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Create Segment</h3>
+    <el-drawer v-model="drawer" title="I am the title" :with-header="true">
 
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                         aria-label="Close">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                    </div>
-                    <!--end::Close-->
-                </div>
+        <template #header>
+            <h4>Create Segment</h4>
+        </template>
+        <template #default>
 
-                <div class="modal-body bg-light">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p>Select the type of Segment you want to create</p>
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <button class="btn bg-white border w-100 text-start">
-                                        <KTIcon icon-name="user" icon-class="text-primary fs-4"/>
-                                        <span class="fs-5">Filter Segment</span>
-                                        <p class="text-muted text-capitalize fs-6 mt-4">create a segment of users defined by specific
-                                            properties,
-                                            behaviours,
-                                            personalities and values</p>
-                                    </button>
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <button class="btn bg-white border w-100 text-start">
-                                        <KTIcon icon-name="chart" icon-class="text-danger fs-4"/>
-                                        RFM Segment
-                                        <p class="text-muted text-capitalize fs-6 mt-4">auto segment your users based on their recency , frequency , and monetary
-                                            value</p>
-                                    </button>
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <button class="btn bg-white border w-100 text-start">
-                                        <KTIcon icon-name="file" icon-class="text-warning fs-4"/>
-                                        File Segment
-                                        <p class="text-muted text-capitalize fs-6 mt-4">create user segments that have been identified through a user analysis at
-                                            your end</p>
-                                    </button>
-                                </div>
+            <div class="modal-body bg-lights">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Select the type of Segment you want to create</p>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <button class="btn bg-white border w-100 text-start">
+                                    <KTIcon icon-name="user" icon-class="text-primary fs-4"/>
+                                    <span class="fs-5">Filter Segment</span>
+                                    <p class="text-muted text-capitalize fs-6 mt-4">create a segment of users defined by
+                                        specific
+                                        properties,
+                                        behaviours,
+                                        personalities and values</p>
+                                </button>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <button class="btn bg-white border w-100 text-start">
+                                    <KTIcon icon-name="chart" icon-class="text-danger fs-4"/>
+                                    RFM Segment
+                                    <p class="text-muted text-capitalize fs-6 mt-4">auto segment your users based on
+                                        their recency , frequency , and monetary
+                                        value</p>
+                                </button>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <button class="btn bg-white border w-100 text-start">
+                                    <KTIcon icon-name="file" icon-class="text-warning fs-4"/>
+                                    File Segment
+                                    <p class="text-muted text-capitalize fs-6 mt-4">create user segments that have been
+                                        identified through a user analysis at
+                                        your end</p>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </div>
+        </template>
+    </el-drawer>
 
 </template>
 
@@ -214,6 +207,7 @@
 
             const state = reactive({
                 create_state: '',
+                drawer: false
             });
 
             const updateMenu = () => {

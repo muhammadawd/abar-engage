@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
+
+@font-face {
+    font-family: 'FS Albert Arabic';
+    src: url('./fonts/FSAlbertArabic-Regular.eot');
+    src: url('./fonts/FSAlbertArabic-Regular.eot?#iefix') format('embedded-opentype'), url('./fonts/FSAlbertArabic-Regular.woff2') format('woff2'), url('./fonts/FSAlbertArabic-Regular.woff') format('woff'), url('./fonts/FSAlbertArabic-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    /*zoom: 0.85 !important;*/
+}
+
+html[lang="ar"] body, html[lang="ar"] .section, html[lang="ar"] .h1, html[lang="ar"] .h2, html[lang="ar"] .h3, html[lang="ar"] .h4,
+html[lang="ar"] .h5, html[lang="ar"] .h6, h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] h4, html[lang="ar"] h5, html[lang="ar"] h6, html[lang="ar"] div,
+html[lang="ar"] .ui-input, html[lang="ar"] input, html[lang="ar"] button, html[lang="ar"] .apexcharts-text tspan, html[lang="ar"] .apexcharts-legend-text {
+    /*font-family: 'FS Albert Arabic', sans-serif !important;*/
+    font-family: 'Readex Pro', sans-serif !important;
+}
+
+html[lang="en"] body, html[lang="en"] .section, html[lang="en"] .h1, html[lang="en"] .h2, html[lang="en"] .h3, html[lang="en"] .h4,
+html[lang="en"] .h5, html[lang="en"] .h6, h1, html[lang="en"] h2, html[lang="en"] h3, html[lang="en"] h4, html[lang="en"] h5, html[lang="en"] h6, html[lang="en"] div,
+html[lang="en"] .ui-input, html[lang="en"] input, html[lang="en"] button, html[lang="en"] .apexcharts-text tspan, html[lang="en"] .apexcharts-legend-text {
+    /*font-family: 'FS Albert Arabic', sans-serif !important;*/
+    font-family: 'Readex Pro', sans-serif !important;
+}
+
+html[lang="ar"] .end-0 {
+    left: 0 !important;
+    right: auto !important;
+}
+
+html[lang="ar"] .text-start {
+    text-align: right !important;
+}
+
+html[lang="ar"] .text-end {
+    text-align: left !important;
+}
+
+html[lang="ar"] .ps-15 {
+    padding-right: 3.75rem !important;
+    padding-left: 0 !important;
+}
+
+html[lang="ar"] .me-6 {
+    margin-left: 1.5rem !important;
+    margin-right: 0 !important;
+}
+
+html[lang="ar"] .me-5 {
+    margin-left: 1.25rem !important;
+    margin-right: 0 !important;
+}
+
+html[lang="ar"] .ms-6 {
+    margin-right: 1.5rem !important;
+    margin-left: 0 !important;
+}
+
+html[lang="ar"] .ms-5 {
+    margin-right: 1.25rem !important;
+    margin-left: 0 !important;
+}
+
+html[lang="ar"] .menu-item .menu-link .menu-arrow {
+    transform: rotate(180deg);
+}
+
+html[lang="ar"] .el-select__placeholder.is-transparent,
+html[lang="ar"] .el-select__placeholder {
+    text-align: right !important;
+}
+
+.row.match-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+
+.match-height > [class*='col'] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+}
+
+.match-height > [class*='col'] > .card {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link .menu-icon, [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link .menu-icon .svg-icon, [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link .menu-icon i {
+    color: #e5e5e5!important;
+}
+[data-kt-app-layout=dark-sidebar] .app-sidebar{
+    background-color: #244188!important;
+}
