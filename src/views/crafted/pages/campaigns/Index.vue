@@ -278,7 +278,7 @@
                                         :class="create_state == 'push' ? 'border-primary' : ''">
                                     <KTIcon icon-name="phone" icon-class="text-dark fs-4"/>
                                     Push
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <KTIcon :icon-name="create_state == 'push' ? 'up' : 'down'" icon-type="solid"
                                             icon-class="fs-4"/>
                                 </button>
@@ -288,7 +288,7 @@
                                         :class="create_state == 'email' ? 'border-primary' : ''">
                                     <KTIcon icon-name="messages" icon-class="text-dark fs-4"/>
                                     Email
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
                                     <KTIcon :icon-name="create_state == 'email' ? 'up' : 'down'" icon-type="solid"
                                             icon-class="fs-4"/>
                                 </button>
@@ -298,7 +298,7 @@
                                         :class="create_state == 'sms' ? 'border-primary' : ''">
                                     <KTIcon icon-name="sms" icon-class="text-dark fs-4"/>
                                     SMS
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <KTIcon :icon-name="create_state == 'sms' ? 'up' : 'down'" icon-type="solid"
                                             icon-class="fs-4"/>
                                 </button>

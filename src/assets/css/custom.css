@@ -106,3 +106,6 @@ html[lang="ar"] .el-select__placeholder {
 [data-kt-app-layout=dark-sidebar] .app-sidebar{
     background-color: #244188!important;
 }
+[data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active{
+    background-color: #2196F3!important;
+}
