@@ -17,7 +17,7 @@ const MainMenuConfig: Array<MenuItem> = [
         pages: [
             {
                 sectionTitle: "Analyze",
-                route: "/analyze/404",
+                route: "/app/analyze/404",
                 keenthemesIcon: "graph",
                 bootstrapIcon: "bi-printer",
                 sub: [
@@ -61,7 +61,7 @@ const MainMenuConfig: Array<MenuItem> = [
             },
             {
                 sectionTitle: "Segment",
-                route: "/segment",
+                route: "/app/segment",
                 keenthemesIcon: "chart-pie-3",
                 bootstrapIcon: "bi-printer",
                 sub: [
@@ -93,7 +93,7 @@ const MainMenuConfig: Array<MenuItem> = [
             },
             {
                 sectionTitle: "Engage",
-                route: "/engage",
+                route: "/app/engage",
                 keenthemesIcon: "crown",
                 bootstrapIcon: "bi-printer",
                 sub: [
@@ -113,7 +113,7 @@ const MainMenuConfig: Array<MenuItem> = [
             },
             {
                 sectionTitle: "Inform",
-                route: "/analyze/404",
+                route: "/app/analyze/404",
                 keenthemesIcon: "call",
                 bootstrapIcon: "bi-printer",
                 sub: [
@@ -125,7 +125,7 @@ const MainMenuConfig: Array<MenuItem> = [
             },
             {
                 sectionTitle: "Personalize",
-                route: "/analyze/404",
+                route: "/app/analyze/404",
                 keenthemesIcon: "parcel",
                 bootstrapIcon: "bi-printer",
                 sub: [

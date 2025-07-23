@@ -1127,7 +1127,8 @@
 
                       </template>
                       <template v-if="custom.body_type == 'raw'">
-                        <textarea name="" class="form-control" rows="4" placeholder="type raw content as object {}"></textarea>
+                        <textarea name="" class="form-control" rows="4"
+                                  placeholder="type raw content as object {}"></textarea>
                       </template>
                     </div>
                   </div>
@@ -3121,7 +3122,7 @@ export default defineComponent({
 
     const state = reactive({
 
-      step: 2,
+      step: 1,
 
       optionGroups: [],
       selectedDetail: null,
@@ -3163,7 +3164,7 @@ export default defineComponent({
       },
 
       custom: {
-        method: 'post',
+        method: 'get',
         params: [{
           key: '',
           value: '',
