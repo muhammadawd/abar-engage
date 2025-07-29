@@ -48,8 +48,17 @@ const routes: Array<RouteRecordRaw> = [
                 name: "all_user_imports_segment",
                 component: () => import("@/views/crafted/pages/segments/userImports/Index.vue"),
                 meta: {
-                    pageTitle: "Segments",
+                    pageTitle: "User Imports",
                     breadcrumbs: ["Segments", "User Imports"],
+                },
+            },
+            {
+                path: "/segment/user-imports/create",
+                name: "create_user_imports_segment",
+                component: () => import("@/views/crafted/pages/segments/userImports/Add.vue"),
+                meta: {
+                    pageTitle: "Create User Import",
+                    breadcrumbs: ["Segments", "User Import"],
                 },
             },
 
