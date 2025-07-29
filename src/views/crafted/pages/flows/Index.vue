@@ -7,10 +7,10 @@
 
         </div>
 
-        <div class="card" style="height: 600px; width: 100%">
+        <div class="card" style="height: 600px; width: 100%;background: #eee">
             <VueFlow
                     v-model="elements"
-                    :fit-view-on-init="true"
+                    :fit-view-on-init="false"
                     :nodes-draggable="true"
                     :nodes-connectable="true"
             >

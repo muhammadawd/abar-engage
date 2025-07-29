@@ -103,7 +103,7 @@ const MainMenuConfig: Array<MenuItem> = [
                     },
                     {
                         heading: "Flows",
-                        route: "/404",
+                        route: "/engage/flows",
                     },
                     {
                         heading: "Drafts",

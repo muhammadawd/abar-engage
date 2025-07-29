@@ -72,12 +72,12 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: "/engage/campaigns/flow",
-                name: "campaigns_flow",
-                component: () => import("@/views/crafted/pages/campaigns/flow/Index.vue"),
+                path: "/engage/flows",
+                name: "flows",
+                component: () => import("@/views/crafted/pages/flows/Index.vue"),
                 meta: {
-                    pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns", "Campaigns Flow"],
+                    pageTitle: "Flows",
+                    breadcrumbs: ["Flows", "Template Flow"],
                 },
             },
             {
