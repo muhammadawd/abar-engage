@@ -27,23 +27,19 @@
                             />
                             <input
                                     type="text"
-                                    class="form-control form-control-solid w-100 ps-15"
-                                    placeholder="Search Custom Segment"
+                                    class="form-control form-control-solids w-100 ps-15"
+                                    placeholder="Search By Import Name "
                             />
                         </div>
                         <div class="mt-4">
-                            <el-select class="min-w-300px" placeholder="Select Segment Type">
-                                <el-option>Filter</el-option>
-                                <el-option>File</el-option>
-                            </el-select>
+
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer table-striped">
-                            <thead class="bg-light">
+                            <thead class="bg-lights">
                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
-                                <th class="ps-4 min-w-300px rounded-start">Custom Segment Name</th>
-                                <th>Segment Type</th>
+                                <th class="ps-4 min-w-300px rounded-start">Custom Name</th>
                                 <th>Created On</th>
                                 <th>Last Run Time</th>
                                 <th class="min-w-200px text-end rounded-end">Actions</th>
@@ -53,73 +49,15 @@
                             <template v-for="(item,itemKey) in [1,2,3]" :key="itemKey">
                                 <tr class="border-bottom border-gray-300">
                                     <td class="ps-3 text-gray-700">
-                                        <a href="" class="fs-5 fw-lighter mb-1">
-                                            <span>July21</span>
+                                        <a href="" class="fs-5  mb-1">
+                                            <small>July21</small>
                                         </a>
                                     </td>
-                                    <td class="text-gray-700">
-                                        <div class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1">
-                                            <b>File</b>
-                                        </div>
-                                    </td>
                                     <td>
                                         <span>17 Jul 2025, 5:05 am</span>
                                     </td>
                                     <td>
                                         <span>17 Jul 2025, 5:05 am</span>
-                                    </td>
-                                    <td class="text-end">
-
-                                        <div class="text-end">
-                                            <a href="#" class="btn btn-sm "
-                                               data-kt-menu-trigger="click"
-                                               data-kt-menu-placement="bottom-end"
-                                               data-kt-menu-flip="top-end">
-                                                <KTIcon icon-type="outline" icon-name="dots-circle"
-                                                        icon-class="fs-1 m-0"/>
-                                            </a>
-                                            <!--begin::Menu-->
-                                            <div
-                                                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4"
-                                                    data-kt-menu="true">
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        View
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        Edit
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        Duplicate
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        Archive
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        Export Users
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        Create Campaign
-                                                    </a>
-                                                </div>
-                                                <div class="menu-item px-3">
-                                                    <a class="menu-link px-3">
-                                                        Analyze Segment
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!--end::Menu-->
-                                        </div>
                                     </td>
                                 </tr>
                             </template>

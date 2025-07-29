@@ -34,6 +34,24 @@ const routes: Array<RouteRecordRaw> = [
                     breadcrumbs: ["Segments"],
                 },
             },
+            {
+                path: "/segment/create",
+                name: "create_segment",
+                component: () => import("@/views/crafted/pages/segments/Create.vue"),
+                meta: {
+                    pageTitle: "Segments",
+                    breadcrumbs: ["Create Segments"],
+                },
+            },
+            {
+                path: "/segment/user-imports/all",
+                name: "all_user_imports_segment",
+                component: () => import("@/views/crafted/pages/segments/userImports/Index.vue"),
+                meta: {
+                    pageTitle: "Segments",
+                    breadcrumbs: ["Segments", "User Imports"],
+                },
+            },
 
             {
                 path: "/engage/campaigns/stats",
@@ -41,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/campaigns/Stats.vue"),
                 meta: {
                     pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns","Campaigns Stats"],
+                    breadcrumbs: ["Campaigns", "Campaigns Stats"],
                 },
             },
             {
@@ -50,7 +68,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/campaigns/Add.vue"),
                 meta: {
                     pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns","Create Campaign"],
+                    breadcrumbs: ["Campaigns", "Create Campaign"],
                 },
             },
             {

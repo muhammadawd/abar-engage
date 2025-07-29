@@ -1,0 +1,2618 @@
+<template>
+
+    <div>
+        <div class=" d-flex flex-stack">
+
+            <KTToolbar/>
+
+
+            <div class="d-flex align-items-center position-relative my-1">
+                <KTIcon
+                        icon-name="magnifier"
+                        icon-class="fs-1 position-absolute ms-6"
+                />
+                <input
+                        type="text" v-model="filters.search" @keyup.enter="triggerFilter()"
+                        class="form-control w-100 ps-15 min-w-400px fs-6"
+                        :placeholder="'Search User by ID, Email, Mobile No. or App ID'"
+                />
+            </div>
+        </div>
+
+
+        <section>
+
+            <div class="card mt-5">
+                <div class="card-header">
+                    <div class="row card-title">
+                        <div class="col-md-12">
+                            <div class="d-flex fs-6">
+
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" v-model="filter_user_option" type="radio"
+                                           value="all_users"
+                                           id="flexRadioDefault"/>
+                                    <label class="form-check-label" for="flexRadioDefault">
+                                        All Users
+                                    </label>
+                                </div>
+                                &nbsp;&nbsp;&nbsp;
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" v-model="filter_user_option" type="radio"
+                                           value="by_user"
+                                           id="flexRadioDefault1"/>
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Filter Users By
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-12 mt-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <template v-if="filter_user_option == 'all_users'">
+                                        <h4 class="text-uppercase mb-0 pb-0 fw-bolder">→ All users selected</h4>
+                                    </template>
+                                    <template v-else>
+
+                                        <div class="btn-group" role="group" aria-label="Radio toggle button group">
+                                            <input type="radio" class="btn-check" name="options" id="option1"
+                                                   v-model="user_option.type"
+                                                   autocomplete="off" value="user_property">
+                                            <label class="btn btn-light"
+                                                   :class="user_option.type == 'user_property' ? 'btn-primary' : ''"
+                                                   for="option1">User Property</label>
+
+                                            <input type="radio" class="btn-check" name="options" id="option2"
+                                                   v-model="user_option.type"
+                                                   autocomplete="off" value="user_behavior">
+                                            <label class="btn btn-light"
+                                                   :class="user_option.type == 'user_behavior' ? 'btn-primary' : ''"
+                                                   for="option2">User Behavior</label>
+
+                                            <input type="radio" class="btn-check" name="options" id="option3" disabled
+                                                   v-model="user_option.type"
+                                                   autocomplete="off" value="user_affinity">
+                                            <label class="btn btn-light"
+                                                   :class="user_option.type == 'user_affinity' ? 'btn-primary' : ''"
+                                                   for="option3">User Affinity</label>
+
+                                            <input type="radio" class="btn-check" name="options" id="option4"
+                                                   v-model="user_option.type"
+                                                   autocomplete="off" value="custom_segment">
+                                            <label class="btn btn-light"
+                                                   :class="user_option.type == 'custom_segment' ? 'btn-primary' : ''"
+                                                   for="option4">Custom Segment</label>
+                                        </div>
+
+                                        <template v-if="user_option.type == 'user_property'">
+                                            <div class="mt-5">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <el-select name="property"
+                                                                   placeholder="Select Property"></el-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template v-if="user_option.type == 'user_behavior'">
+                                            <div class="mt-5">
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <el-select name="ex_option" v-model="user_option.ex_option">
+                                                            <el-option value="has_executed" :label="'Has Executed'">Has
+                                                                Executed
+                                                            </el-option>
+                                                            <el-option value="has_not_executed"
+                                                                       :label="'Has Not Executed'">
+                                                                Has
+                                                                Not Executed
+                                                            </el-option>
+                                                        </el-select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <el-select
+                                                                v-model="user_option.event"
+                                                                filterable
+                                                                placeholder="Select an event"
+                                                                class="custom-select-with-detail"
+                                                                @change="handleEventChange"
+                                                        >
+                                                            <el-option-group
+                                                                    v-for="group in EventOptions"
+                                                                    :key="group.label"
+                                                                    :label="group.label"
+                                                            >
+                                                                <el-option
+                                                                        v-for="item in group.options"
+                                                                        :key="item.value"
+                                                                        :label="item.label"
+                                                                        :value="item.value"
+                                                                >
+                                                                    <span>{{ item.label }}</span>
+                                                                </el-option>
+                                                            </el-option-group>
+                                                        </el-select>
+
+                                                    </div>
+                                                    <div class="col-md-1" v-if="user_option.event">
+                                                        <el-select name="event_period"
+                                                                   v-model="user_option.event_count">
+                                                            <el-option value="exactly" :label="'Exactly'"/>
+                                                            <el-option value="at_least" :label="'At Least'"/>
+                                                            <el-option value="at_most" :label="'At Most'"/>
+                                                            <el-option value="for_the_first_time"
+                                                                       :label="'For The First Time'"/>
+                                                            <el-option value="for_the_last_time"
+                                                                       :label="'For The Last Time'"/>
+                                                        </el-select>
+                                                    </div>
+                                                    <div class="col-md-1" v-if="user_option.event">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <input type="number" v-model.number="user_option.times"
+                                                                   name="times"
+                                                                   class="form-control form-control-sm">
+                                                            &nbsp;
+                                                            <span>Times</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-4">
+
+                                                    <div class="col-md-2" v-if="user_option.event">
+                                                        <el-select name="event_period"
+                                                                   v-model="user_option.event_period">
+                                                            <el-option value="in_the_last" :label="'In The Last'"/>
+                                                            <el-option value="in_between" :label="'In Between'"/>
+                                                            <el-option value="before" :label="'Before'"/>
+                                                            <el-option value="after" :label="'After'"/>
+                                                            <el-option value="on" :label="'On'"/>
+                                                            <el-option value="today" :label="'Today'"/>
+                                                            <el-option value="yesterday" :label="'Yesterday'"/>
+                                                            <el-option value="this_week" :label="'This Week'"/>
+                                                            <el-option value="last_week" :label="'Last Week'"/>
+                                                            <el-option value="this_month" :label="'This Month'"/>
+                                                            <el-option value="last_month" :label="'Last Month'"/>
+                                                        </el-select>
+                                                    </div>
+                                                    <div class="col-md-1" v-if="user_option.event">
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <input type="number"
+                                                                   v-model.number="user_option.period_times"
+                                                                   name="times"
+                                                                   class="form-control form-control-sm">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1" v-if="user_option.event">
+                                                        <el-select name="event_period"
+                                                                   v-model="user_option.period_times_operator">
+                                                            <el-option value="hours" :label="'Hours'"/>
+                                                            <el-option value="days" :label="'Days'"/>
+                                                            <el-option value="weeks" :label="'Weeks'"/>
+                                                            <el-option value="months" :label="'Months'"/>
+                                                        </el-select>
+                                                    </div>
+
+                                                    <div class="col-md-12 mt-4" v-if="user_option.event">
+                                                        <a href="javascript:void(0)"
+                                                           @click="user_option.attributes.push({operator:'and',attribute_option:'is'})">
+                                                            <KTIcon icon-name="plus" icon-class="fs-4 text-primary"/>
+                                                            <b class="fs-5 text-primary">Attributes</b>
+                                                        </a>
+                                                        <div class="ps-10 pe-10"
+                                                             v-for="(i,k) in user_option.attributes">
+                                                            <div class="row mt-3">
+                                                                <div class="col-2">
+                                                            <span v-if="k ==0"
+                                                                  class="text-muted fs-5">With Attribute</span>
+                                                                    <div v-else>
+                                                                        <div class="btn-group" role="group"
+                                                                             aria-label="Radio toggle button group">
+                                                                            <input type="radio" class="btn-check"
+                                                                                   name="option_operators"
+                                                                                   :id="`option_${k}_operators`"
+                                                                                   v-model="i.operator"
+                                                                                   autocomplete="off" value="and">
+                                                                            <label class="btn btn-sm btn-light"
+                                                                                   :class="i.operator == 'and' ? 'btn-primary' : ''"
+                                                                                   :for="`option_${k}_operators`">And</label>
+
+                                                                            <input type="radio" class="btn-check"
+                                                                                   name="option_operators"
+                                                                                   :id="`option_${k}_operators2`"
+                                                                                   v-model="i.operator"
+                                                                                   autocomplete="off" value="or">
+                                                                            <label class="btn btn-sm btn-light"
+                                                                                   :class="i.operator == 'or' ? 'btn-primary' : ''"
+                                                                                   :for="`option_${k}_operators2`">OR</label>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <el-select :name="`select_${k}_attribute`"
+                                                                               v-model="i.attribute"
+                                                                               :placeholder="`Select Attribute`">
+                                                                        <el-option :value="'Attribute'"
+                                                                                   :label="'Attribute 1'"/>
+                                                                        <el-option :value="'Attribute2'"
+                                                                                   :label="'Attribute 2'"/>
+                                                                        <el-option :value="'Attribute3'"
+                                                                                   :label="'Attribute 3'"/>
+                                                                    </el-select>
+                                                                </div>
+                                                                <div class="col-1" v-if="i.attribute">
+                                                                    <el-select :name="`select_${k}_attribute_option`"
+                                                                               v-model="i.attribute_option"
+                                                                               :placeholder="`Select Operator`">
+                                                                        <el-option :value="'is'" :label="'is'"/>
+                                                                        <el-option :value="'not_is'" :label="'not_is'"/>
+                                                                        <el-option :value="'contains'"
+                                                                                   :label="'contains'"/>
+                                                                        <el-option :value="'contains_spaces'"
+                                                                                   :label="'contains_spaces'"/>
+                                                                        <el-option :value="'not_contain'"
+                                                                                   :label="'not_contain'"/>
+                                                                        <el-option :value="'start_with'"
+                                                                                   :label="'start_with'"/>
+                                                                        <el-option :value="'not_start_with'"
+                                                                                   :label="'not_start_with'"/>
+                                                                        <el-option :value="'end_with'"
+                                                                                   :label="'end_with'"/>
+                                                                        <el-option :value="'not_end_with'"
+                                                                                   :label="'not_end_with'"/>
+                                                                        <el-option :value="'exists'" :label="'exists'"/>
+                                                                        <el-option :value="'not_exists'"
+                                                                                   :label="'not_exists'"/>
+                                                                        <el-option :value="'is_empty'"
+                                                                                   :label="'is_empty'"/>
+                                                                        <el-option :value="'is_not_empty'"
+                                                                                   :label="'is_not_empty'"/>
+                                                                    </el-select>
+                                                                </div>
+                                                                <div class="col-2" v-if="i.attribute">
+                                                                    <el-select :name="`select_${k}option_value`"
+                                                                               v-model="i.option_value"
+                                                                               :placeholder="`Select Value`">
+                                                                    </el-select>
+                                                                </div>
+                                                                <div class="col-2" v-if="i.attribute">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                               value="1" v-model="i.case_sensitive"
+                                                                               :name="`case_${k}_attribute`"
+                                                                               :id="`case_${k}_attribute`"/>
+                                                                        <label class="form-check-label"
+                                                                               :for="`case_${k}_attribute`">
+                                                                            Case Sensitive
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <button type="button"
+                                                                            class="btn btn-sm p-0 btn-light"
+                                                                            @click="user_option.attributes.splice(k, 1);">
+                                                                        <KTIcon icon-name="trash" icon-class="fs-2"/>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template v-if="user_option.type == 'custom_segment'">
+                                            <div class="mt-5">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <el-select name="Segment"
+                                                                   placeholder="Select Segment"></el-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                    </template>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <button class="btn border border-primary text-primary btn-sm mt-4">
+                                    <KTIcon icon-name="plus" icon-class="text-primary"/>
+                                    Filter
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row align-items-center mt-4">
+                        <div class="col-md-6">
+                            <a href="">
+                                <KTIcon icon-name="arrows-circle" icon-class="text-primary" icon-type="solid"/>
+                                Reset Filters
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-sm btn-primary">
+                                Show Count
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mt-4">Query results</h4>
+            <div class="card">
+                <div class="card-body p-0 pt-4">
+
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer table-striped">
+                        <thead class="bg-lights">
+                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
+                            <th width="50" class="ps-4 rounded-start"></th>
+                            <th>Query Time</th>
+                            <th>Description</th>
+                            <th>Source</th>
+                            <th>User Count</th>
+                            <th class="rounded-end">Reachable Users</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="p-3 bg-light">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">
+                                            <KTIcon icon-name="share" icon-class="text-dark fs-4"/>
+                                            &nbsp;
+                                            Reachability
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <small>Reachable usersinfo</small>
+                                        <div class="alert alert-dark">
+                                            <h2>21</h2>
+                                            <p class="m-0"> 16.67% of total user count</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h4 class="card-title">
+                                            <KTIcon icon-name="user" icon-class="text-dark fs-4"/>
+                                            &nbsp;
+                                            Sample users
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="d-flex">
+                                            <div class="symbol symbol-60px symbol-circle mb-5"><span
+                                                    class="symbol-label fs-6 fw-bolder text-capitalize text-primary bg-light-primary">AH</span>
+                                            </div>
+                                            &nbsp;
+                                            <div class="symbol symbol-60px symbol-circle mb-5"><span
+                                                    class="symbol-label fs-6 fw-bolder text-capitalize text-danger bg-light-danger">SM</span>
+                                            </div>
+                                            &nbsp;
+                                            <div class="symbol symbol-60px symbol-circle mb-5"><span
+                                                    class="symbol-label fs-6 fw-bolder text-capitalize text-primary bg-light-primary">MO</span>
+                                            </div>
+                                            &nbsp;
+                                            <div class="symbol symbol-60px symbol-circle mb-5"><span
+                                                    class="symbol-label fs-6 fw-bolder text-capitalize text-primary bg-light-primary">م</span>
+                                            </div>
+                                            &nbsp;
+                                            <div class="symbol symbol-60px symbol-circle mb-5"><span
+                                                    class="symbol-label fs-6 fw-bolder text-capitalize text-warning bg-light-warning">GS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end mt-4 fs-6">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="">
+                                            <i class="fa fa-edit"></i>
+                                            Edit query
+                                        </a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="">
+                                            <i class="fa fa-file-export"></i>
+                                            Export users
+                                        </a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="">
+                                            <i class="fa fa-plus"></i>
+                                            Create campaign
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">
+                                <a href="">
+                                    <KTIcon icon-name="arrow-down-left" icon-class="text-primary"/>
+                                </a>
+                            </td>
+                            <td>
+                                <small>
+                                    <div>04:55 pm</div>
+                                    24 Jul 2025
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Has executed Page Viewed atleast 1 time before Jul 25, 2025 with attributes
+                                    (Platform is in [web] (case insensitive) )
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    Segmentation
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    328
+                                </small>
+                            </td>
+                            <td>
+                                <small>
+                                    213
+                                </small>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </section>
+
+
+        <el-drawer v-model="searchDrawer" title="I am the title" :with-header="true" size="90%">
+
+            <template #header>
+                <h4>Search</h4>
+            </template>
+            <template #default>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center position-relative my-1">
+                            <KTIcon
+                                    icon-name="magnifier"
+                                    icon-class="fs-1 position-absolute ms-6"
+                            />
+                            <input
+                                    type="text" v-model="filters.search" @keyup.enter="triggerFilter()"
+                                    class="form-control w-100 ps-15 min-w-400px fs-6"
+                                    :placeholder="'Search User by ID, Email, Mobile No. or App ID'"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <p>Showing 50 of 68993 results for "{{filters.search}}"</p>
+                    </div>
+                    <div class="col-12">
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer table-striped">
+                            <thead class="bg-light">
+                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
+                                <th class="ps-4 min-w-300px rounded-start">Name</th>
+                                <th>Email (Standard)</th>
+                                <th>Mobile Number (Standard)</th>
+                                <th>Id</th>
+                                <th>App Id</th>
+                                <th>First seen</th>
+                                <th>Last seen</th>
+                                <th class="rounded-end">No of Sessions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="i in [1,2]">
+                                <td>
+                                    <a href="">العميل</a>
+                                </td>
+                                <td>null</td>
+                                <td>null</td>
+                                <td>1254</td>
+                                <td>68869075175129137d20e953</td>
+                                <td>11:47 PM, 27 Jul 2025</td>
+                                <td>10:06 AM, 29 Jul 2025</td>
+                                <td>5</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </template>
+        </el-drawer>
+    </div>
+
+</template>
+
+<script lang="ts">
+    import {getAssetPath} from "@/core/helpers/assets";
+    import {computed, defineComponent, reactive, toRefs} from "vue";
+    import KTToolbar from "@/layouts/default-layout/components/toolbar/Toolbar.vue";
+    import {MenuComponent} from "@/assets/ts/components";
+    import flatPickr from 'vue-flatpickr-component';
+    import 'flatpickr/dist/flatpickr.css';
+
+
+    export default defineComponent({
+        name: "campaigns",
+        components: {
+            KTToolbar,
+            flatPickr,
+            MenuComponent
+        },
+        setup() {
+            const fixedData = {
+                "filter_dropdown": {
+                    "MOE_APP_OPENED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_APP_OPENED",
+                        "readable_name": "App/Site Opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.352000",
+                        "last_received_time": "2025-07-19T11:55:39.068000",
+                        "description": "Tracked when a user session begins on the app or website.",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID",
+                            "web"
+                        ],
+                        "category": "Lifecycle",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "MOE_USER_MERGE_EVENT": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_USER_MERGE_EVENT",
+                        "readable_name": "User merged",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.622000",
+                        "last_received_time": "2025-07-18T19:00:05.892000",
+                        "description": "This event is tracked whenever a moengage user object is merged with another user.",
+                        "platforms": [
+                            "unknown"
+                        ],
+                        "category": "Lifecycle",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "MOE_USER_MERGED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_USER_MERGED",
+                        "readable_name": "User Merged",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.648000",
+                        "last_received_time": "2025-07-16T16:22:41.875000",
+                        "description": "This event is tracked for a known user whenever a moengage user object is merged with it",
+                        "platforms": [
+                            "unknown"
+                        ],
+                        "category": "Lifecycle",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "MOE_LOGOUT": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_LOGOUT",
+                        "readable_name": "User Logout",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:59:55.322000",
+                        "last_received_time": "2025-07-17T05:49:35.233000",
+                        "description": "Tracked when a user logs out of the app/site.",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID",
+                            "web"
+                        ],
+                        "category": "Lifecycle",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "TOKEN_EVENT": {
+                        "retention_period_in_days": 365,
+                        "name": "TOKEN_EVENT",
+                        "readable_name": "Push ID Register Android",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T10:05:14.419000",
+                        "last_received_time": "2025-07-18T15:48:40.967000",
+                        "description": "Tracked when MoEngage system registers the push id for Android devices. Attribute registered_by has the status.",
+                        "platforms": [
+                            "ANDROID"
+                        ],
+                        "category": "Lifecycle",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_PAGE_VIEWED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_PAGE_VIEWED",
+                        "readable_name": "Viewed Web Page",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T11:52:41.770000",
+                        "last_received_time": "2025-07-19T11:52:45.657000",
+                        "description": "Tracked when a user visits a web page. Select page URL as an event attribute to find a number of users visiting a particular page or use it to set up a \"Drop-off capture\" Smart Trigger Web Push.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Lifecycle",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "REINSTALL": {
+                        "retention_period_in_days": 365,
+                        "name": "REINSTALL",
+                        "readable_name": "Device ReInstall",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.674000",
+                        "last_received_time": "2025-07-19T06:28:27.912000",
+                        "description": "Tracked when a user reinstalls the app on a device.",
+                        "platforms": [
+                            "unknown",
+                            "iOS"
+                        ],
+                        "category": "Uninstall",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL",
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL",
+                            "SDK"
+                        ]
+                    },
+                    "MOE_USER_REINSTALL": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_USER_REINSTALL",
+                        "readable_name": "User ReInstall",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.720000",
+                        "last_received_time": "2025-07-17T15:15:02.658000",
+                        "description": "Tracked when a inactive user reinstalls the app on a device.",
+                        "platforms": [
+                            "unknown"
+                        ],
+                        "category": "Uninstall",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "Device Uninstall": {
+                        "retention_period_in_days": 365,
+                        "name": "Device Uninstall",
+                        "readable_name": "Uninstalled from device",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-24T10:52:57.674000",
+                        "last_received_time": "2025-02-27T22:47:38.102000",
+                        "description": "Tracked when a user uninstalls the app on a device.",
+                        "platforms": [
+                            "unknown"
+                        ],
+                        "category": "Uninstall",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "MOE_PUSH_PERMISSION_STATE_ALLOWED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_PUSH_PERMISSION_STATE_ALLOWED",
+                        "readable_name": "Subscribed to Push",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.407000",
+                        "last_received_time": "2025-07-18T11:45:56.982000",
+                        "description": "Event notifying MoE that the end user has triggered an Opt-in confirmation for push notifications.",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID",
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_PUSH_PERMISSION_STATE_BLOCKED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_PUSH_PERMISSION_STATE_BLOCKED",
+                        "readable_name": "Unsubscribed to Push",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-17T09:18:45.776000",
+                        "last_received_time": "2025-07-19T12:50:20.702000",
+                        "description": "Event notifying MoE that the end user has triggered an Opt-out confirmation for push notifications.",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID",
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_WEB_OPTIN_BANNER_LOAD": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_WEB_OPTIN_BANNER_LOAD",
+                        "readable_name": "Viewed Web Push Soft-ask",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T11:52:42.238000",
+                        "last_received_time": "2025-07-19T11:53:22.133000",
+                        "description": "Tracked when a user views the Push Permission Soft-ask on your website as part of the 2-step Push Opt-in mechanism.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_WEB_OPTIN_ACCEPTED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_WEB_OPTIN_ACCEPTED",
+                        "readable_name": "Accepted Web Push Soft-ask",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T11:54:57.556000",
+                        "last_received_time": "2025-07-16T11:54:57.556000",
+                        "description": "Tracked when a user accepts the Push Permission Soft-ask on your website as part of the 2-step Push Opt-in mechanism.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_OPT_IN_SHOWN": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_OPT_IN_SHOWN",
+                        "readable_name": "Displayed Web Push Subscription",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T11:54:57.591000",
+                        "last_received_time": "2025-07-16T11:54:57.591000",
+                        "description": "Tracked when a push subscription prompt is shown to the user.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_OPT_IN_ALLOWED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_OPT_IN_ALLOWED",
+                        "readable_name": "Allowed Web Push Subscription",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T11:54:57.632000",
+                        "last_received_time": "2025-07-16T11:54:57.632000",
+                        "description": "Tracked when a user allows to receive push notifications on Web.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_OPT_IN_BLOCKED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_OPT_IN_BLOCKED",
+                        "readable_name": "Denied Web Push Subscription",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T12:02:03.628000",
+                        "last_received_time": "2025-07-16T12:02:03.628000",
+                        "description": "Tracked when a user denies to receive push notifications on Web.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_WEB_OPTIN_CLOSED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_WEB_OPTIN_CLOSED",
+                        "readable_name": "Closed Web Push Soft-ask",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T12:11:29.183000",
+                        "last_received_time": "2025-07-19T13:36:14.590000",
+                        "description": "Tracked when a user closes the Push Permission Soft-ask on your website as part of the 2-step Push Opt-in mechanism.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_OPT_IN_DISMISSED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_OPT_IN_DISMISSED",
+                        "readable_name": "Dismissed Web Push Subscription",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T17:18:31.168000",
+                        "last_received_time": "2025-07-16T17:18:31.168000",
+                        "description": "Tracked when a user dismisses the push subscription prompt.",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Reachability",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "NOTIFICATION_RECEIVED_MOE": {
+                        "retention_period_in_days": 365,
+                        "name": "NOTIFICATION_RECEIVED_MOE",
+                        "readable_name": "Notification Received Android",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T10:06:16.002000",
+                        "last_received_time": "2025-02-06T10:06:16.002000",
+                        "description": "Tracked when a user receives notification on Android device. It may take up to 12 hours for this event to be available in user profiles, for Segmentation and Analytics. There will be no delay for updating impressions in your campaign stats and for your Smart Trigger Campaigns to be triggered basis this event.",
+                        "platforms": [
+                            "ANDROID"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "NOTIFICATION_CLICKED_MOE": {
+                        "retention_period_in_days": 365,
+                        "name": "NOTIFICATION_CLICKED_MOE",
+                        "readable_name": "Notification Clicked Android",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T10:47:31.474000",
+                        "last_received_time": "2025-02-06T10:47:31.474000",
+                        "description": "Tracked when a user clicks notification on Android device.",
+                        "platforms": [
+                            "ANDROID"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_IN_APP_SHOWN": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_IN_APP_SHOWN",
+                        "readable_name": "Mobile In-App Shown",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T10:49:03.810000",
+                        "last_received_time": "2025-06-21T14:12:42.969000",
+                        "description": "Tracked when a Mobile In-App Message is shown to the user.",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "NOTIFICATION_RECEIVED_IOS_MOE": {
+                        "retention_period_in_days": 365,
+                        "name": "NOTIFICATION_RECEIVED_IOS_MOE",
+                        "readable_name": "Notification Received iOS",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T13:19:15.562000",
+                        "last_received_time": "2025-07-17T07:02:36.632000",
+                        "description": "Tracked when a user receives notification on iOS device.",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "n_i_s": {
+                        "retention_period_in_days": 365,
+                        "name": "n_i_s",
+                        "readable_name": "Notification Sent iOS",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T13:20:43.107000",
+                        "last_received_time": "2025-07-17T07:07:41.871000",
+                        "description": "Tracked when a notification is sent to the user on iOS, doesn't indicate if the notification is received.",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "MOE_IN_APP_DISMISSED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_IN_APP_DISMISSED",
+                        "readable_name": "Mobile In-App Closed",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T13:25:19.211000",
+                        "last_received_time": "2025-06-19T15:40:01.940000",
+                        "description": "Tracked when a Mobile In-App Message is closed by the user",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "WEBHOOK_SENT": {
+                        "retention_period_in_days": 365,
+                        "name": "WEBHOOK_SENT",
+                        "readable_name": "Connector Sent",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-06T15:58:30.184000",
+                        "last_received_time": "2025-07-18T18:17:33.367000",
+                        "description": "Tracked when a connector was sent successfully.",
+                        "platforms": [
+                            "webhook"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "INTERNAL"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "INTERNAL"
+                        ]
+                    },
+                    "NOTIFICATION_DISMISSED_IOS_MOE": {
+                        "retention_period_in_days": 365,
+                        "name": "NOTIFICATION_DISMISSED_IOS_MOE",
+                        "readable_name": "Notification Dismissed iOS",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-18T18:15:54.071000",
+                        "last_received_time": "2025-07-17T07:12:38.228000",
+                        "description": "Tracked when user dismiss the notification on iOS.",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "NOTIFICATION_CLICKED_IOS_MOE": {
+                        "retention_period_in_days": 365,
+                        "name": "NOTIFICATION_CLICKED_IOS_MOE",
+                        "readable_name": "Notification Clicked iOS",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-18T18:16:40.331000",
+                        "last_received_time": "2025-07-17T07:12:22.373000",
+                        "description": "Tracked when a user clicks notification on iOS device.",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_GEOFENCE_HIT": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_GEOFENCE_HIT",
+                        "readable_name": "Geo Fence Triggered",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-25T05:26:11.282000",
+                        "last_received_time": "2025-04-26T17:31:55.031000",
+                        "description": "Tracked when a user satisfies geofence trigger condition.",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_IN_APP_AUTO_DISMISS": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_IN_APP_AUTO_DISMISS",
+                        "readable_name": "Mobile In-App Auto Dismissed",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-05-04T11:31:30.922000",
+                        "last_received_time": "2025-05-04T11:31:30.922000",
+                        "description": "Tracked when a Mobile InApp Message is auto dismissed.",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Campaign Activity",
+                        "type": "moe_standard",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Geolocation Without Brands": {
+                        "retention_period_in_days": 365,
+                        "name": "Geolocation Without Brands",
+                        "readable_name": "Geolocation Without Brands",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:10:40.451000",
+                        "last_received_time": "2025-01-29T09:05:00.172000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "More Opened": {
+                        "retention_period_in_days": 365,
+                        "name": "More Opened",
+                        "readable_name": "More Opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:58:31.447000",
+                        "last_received_time": "2025-01-29T09:05:18.241000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Signup Initiated": {
+                        "retention_period_in_days": 365,
+                        "name": "Signup Initiated",
+                        "readable_name": "Signup Initiated",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:58:31.474000",
+                        "last_received_time": "2025-01-29T09:05:18.250000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Test Event": {
+                        "retention_period_in_days": 365,
+                        "name": "Test Event",
+                        "readable_name": "Test Event",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:59:10.970000",
+                        "last_received_time": "2025-01-23T11:59:10.970000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Signup Completed": {
+                        "retention_period_in_days": 365,
+                        "name": "Signup Completed",
+                        "readable_name": "Signup Completed",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-23T11:59:11.021000",
+                        "last_received_time": "2025-01-28T08:42:18.838000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Skipped Login": {
+                        "retention_period_in_days": 365,
+                        "name": "Skipped Login",
+                        "readable_name": "Skipped Login",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-25T22:08:38.973000",
+                        "last_received_time": "2025-01-26T10:53:47.031000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Orders Opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Orders Opened",
+                        "readable_name": "Orders Opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-25T22:08:39.039000",
+                        "last_received_time": "2025-01-29T09:05:00.212000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Offers Opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Offers Opened",
+                        "readable_name": "Offers Opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-25T22:08:39.066000",
+                        "last_received_time": "2025-07-18T07:30:34.521000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Mosque Opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Mosque Opened",
+                        "readable_name": "Mosque Opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-26T10:53:47.063000",
+                        "last_received_time": "2025-07-18T20:37:47.850000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Mosque Order Initiated": {
+                        "retention_period_in_days": 365,
+                        "name": "Mosque Order Initiated",
+                        "readable_name": "Mosque Order Initiated",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-26T11:04:32.657000",
+                        "last_received_time": "2025-01-26T11:04:32.657000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "MOE_NOTIFICATION_PERMISSION_REQUEST_ATTEMPTED": {
+                        "retention_period_in_days": 365,
+                        "name": "MOE_NOTIFICATION_PERMISSION_REQUEST_ATTEMPTED",
+                        "readable_name": "MOE_NOTIFICATION_PERMISSION_REQUEST_ATTEMPTED",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-28T08:41:20.061000",
+                        "last_received_time": "2025-07-18T08:00:01.862000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Home Opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Home Opened",
+                        "readable_name": "Home Opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-28T08:43:02.704000",
+                        "last_received_time": "2025-01-29T11:44:00.175000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Wallet Feature Used": {
+                        "retention_period_in_days": 365,
+                        "name": "Wallet Feature Used",
+                        "readable_name": "Wallet Feature Used",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-28T16:52:56.973000",
+                        "last_received_time": "2025-01-28T16:52:56.973000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Geolocation With Brands": {
+                        "retention_period_in_days": 365,
+                        "name": "Geolocation With Brands",
+                        "readable_name": "Geolocation With Brands",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-01-28T16:53:58.657000",
+                        "last_received_time": "2025-01-28T16:53:58.657000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "App opened": {
+                        "retention_period_in_days": 365,
+                        "name": "App opened",
+                        "readable_name": "App opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-04T12:28:58.386000",
+                        "last_received_time": "2025-07-18T07:08:36.827000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Home opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Home opened",
+                        "readable_name": "Home opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-04T12:30:12.395000",
+                        "last_received_time": "2025-07-18T07:09:33.369000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Mosque category": {
+                        "retention_period_in_days": 365,
+                        "name": "Mosque category",
+                        "readable_name": "Mosque category",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-04T12:33:43.257000",
+                        "last_received_time": "2025-07-18T20:37:47.876000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Search": {
+                        "retention_period_in_days": 365,
+                        "name": "Search",
+                        "readable_name": "Search",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-04T14:35:54.250000",
+                        "last_received_time": "2025-07-18T13:06:37.774000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Login": {
+                        "retention_period_in_days": 365,
+                        "name": "Login",
+                        "readable_name": "Login",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T07:48:29.031000",
+                        "last_received_time": "2025-07-18T21:10:40.467000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Access request": {
+                        "retention_period_in_days": 365,
+                        "name": "Access request",
+                        "readable_name": "Access request",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T08:15:47.037000",
+                        "last_received_time": "2025-07-19T15:08:27.633000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Update profile": {
+                        "retention_period_in_days": 365,
+                        "name": "Update profile",
+                        "readable_name": "Update profile",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T08:59:51.628000",
+                        "last_received_time": "2025-07-19T09:59:43.396000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Logout": {
+                        "retention_period_in_days": 365,
+                        "name": "Logout",
+                        "readable_name": "Logout",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:00:18.356000",
+                        "last_received_time": "2025-07-18T07:30:34.529000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Brand opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Brand opened",
+                        "readable_name": "Brand opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:00:51.595000",
+                        "last_received_time": "2025-07-18T06:21:19.892000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Product dialog opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Product dialog opened",
+                        "readable_name": "Product dialog opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:02:52.226000",
+                        "last_received_time": "2025-07-18T08:01:27.919000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Order reordered": {
+                        "retention_period_in_days": 365,
+                        "name": "Order reordered",
+                        "readable_name": "Order reordered",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:18:06.664000",
+                        "last_received_time": "2025-07-18T14:38:53.753000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Order rated": {
+                        "retention_period_in_days": 365,
+                        "name": "Order rated",
+                        "readable_name": "Order rated",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:18:06.731000",
+                        "last_received_time": "2025-07-17T08:06:12.918000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Wallet opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Wallet opened",
+                        "readable_name": "Wallet opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:19:06.640000",
+                        "last_received_time": "2025-07-19T11:16:22.787000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Charge wallet completed": {
+                        "retention_period_in_days": 365,
+                        "name": "Charge wallet completed",
+                        "readable_name": "Charge wallet completed",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:19:06.669000",
+                        "last_received_time": "2025-07-17T13:40:00.612000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Add to Cart": {
+                        "retention_period_in_days": 365,
+                        "name": "Add to Cart",
+                        "readable_name": "Add to Cart",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:23:06.701000",
+                        "last_received_time": "2025-07-18T09:25:21.319000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Update Cart": {
+                        "retention_period_in_days": 365,
+                        "name": "Update Cart",
+                        "readable_name": "Update Cart",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:24:06.631000",
+                        "last_received_time": "2025-07-18T14:31:57.929000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Cart opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Cart opened",
+                        "readable_name": "Cart opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:24:06.687000",
+                        "last_received_time": "2025-07-18T09:26:15.157000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Offer selected": {
+                        "retention_period_in_days": 365,
+                        "name": "Offer selected",
+                        "readable_name": "Offer selected",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:27:06.628000",
+                        "last_received_time": "2025-07-18T10:50:13.744000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Order cancelled": {
+                        "retention_period_in_days": 365,
+                        "name": "Order cancelled",
+                        "readable_name": "Order cancelled",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:28:06.688000",
+                        "last_received_time": "2025-07-18T15:43:37.368000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Add address": {
+                        "retention_period_in_days": 365,
+                        "name": "Add address",
+                        "readable_name": "Add address",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:28:06.738000",
+                        "last_received_time": "2025-07-18T15:53:21.764000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Location not permitted": {
+                        "retention_period_in_days": 365,
+                        "name": "Location not permitted",
+                        "readable_name": "Location not permitted",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T09:28:38.690000",
+                        "last_received_time": "2025-07-18T20:31:14.263000",
+                        "platforms": [
+                            "iOS",
+                            "ANDROID"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Store opened": {
+                        "retention_period_in_days": 365,
+                        "name": "Store opened",
+                        "readable_name": "Store opened",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:57:42.804000",
+                        "last_received_time": "2025-02-05T19:55:20.319000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Delivery time selected": {
+                        "retention_period_in_days": 365,
+                        "name": "Delivery time selected",
+                        "readable_name": "Delivery time selected",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:58:14.035000",
+                        "last_received_time": "2025-07-18T09:46:45.681000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Coupon applied": {
+                        "retention_period_in_days": 365,
+                        "name": "Coupon applied",
+                        "readable_name": "Coupon applied",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:58:14.081000",
+                        "last_received_time": "2025-07-18T17:51:48.263000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Order created": {
+                        "retention_period_in_days": 365,
+                        "name": "Order created",
+                        "readable_name": "Order created",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:58:14.138000",
+                        "last_received_time": "2025-07-18T09:46:45.716000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Payment initiated": {
+                        "retention_period_in_days": 365,
+                        "name": "Payment initiated",
+                        "readable_name": "Payment initiated",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:58:14.245000",
+                        "last_received_time": "2025-07-18T09:46:45.745000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Payment completed": {
+                        "retention_period_in_days": 365,
+                        "name": "Payment completed",
+                        "readable_name": "Payment completed",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:58:14.303000",
+                        "last_received_time": "2025-07-18T09:50:31.102000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Delete account": {
+                        "retention_period_in_days": 365,
+                        "name": "Delete account",
+                        "readable_name": "Delete account",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:59:51.672000",
+                        "last_received_time": "2025-07-17T05:49:35.214000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Signup": {
+                        "retention_period_in_days": 365,
+                        "name": "Signup",
+                        "readable_name": "Signup",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T17:59:51.745000",
+                        "last_received_time": "2025-07-18T10:20:15.636000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Referral code used": {
+                        "retention_period_in_days": 365,
+                        "name": "Referral code used",
+                        "readable_name": "Referral code used",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-02-05T18:00:29.902000",
+                        "last_received_time": "2025-07-18T10:21:10.142000",
+                        "platforms": [
+                            "ANDROID",
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    },
+                    "Added to Cart": {
+                        "retention_period_in_days": 365,
+                        "name": "Added to Cart",
+                        "readable_name": "Added to Cart",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-03-25T12:35:37.101000",
+                        "last_received_time": "2025-03-25T12:35:37.101000",
+                        "platforms": [
+                            "iOS"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "S2S"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "S2S"
+                        ]
+                    },
+                    "Purchase": {
+                        "retention_period_in_days": 365,
+                        "name": "Purchase",
+                        "readable_name": "Purchase",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-03-25T12:35:37.137000",
+                        "last_received_time": "2025-03-25T12:35:37.137000",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "S2S"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "S2S"
+                        ]
+                    },
+                    "Order Delivered": {
+                        "retention_period_in_days": 365,
+                        "name": "Order Delivered",
+                        "readable_name": "Order Delivered",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-03-25T14:22:15.063000",
+                        "last_received_time": "2025-07-18T08:17:17.313000",
+                        "platforms": [
+                            "unknown"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "S2S"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "S2S"
+                        ]
+                    },
+                    "Page Viewed": {
+                        "retention_period_in_days": 365,
+                        "name": "Page Viewed",
+                        "readable_name": "Page Viewed",
+                        "status": "WHITELISTED",
+                        "created_time": "2025-07-16T11:52:29.414000",
+                        "last_received_time": "2025-07-19T12:01:00.436000",
+                        "platforms": [
+                            "web"
+                        ],
+                        "category": "Tracked User Events",
+                        "type": "custom",
+                        "hidden": false,
+                        "source": [
+                            "SDK"
+                        ],
+                        "is_auto_blocked": false,
+                        "data_sources": [
+                            "SDK"
+                        ]
+                    }
+                },
+                "actions": [
+                    "MOE_APP_OPENED",
+                    "MOE_USER_MERGE_EVENT",
+                    "MOE_USER_MERGED",
+                    "MOE_LOGOUT",
+                    "TOKEN_EVENT",
+                    "MOE_PAGE_VIEWED",
+                    "REINSTALL",
+                    "MOE_USER_REINSTALL",
+                    "Device Uninstall",
+                    "MOE_PUSH_PERMISSION_STATE_ALLOWED",
+                    "MOE_PUSH_PERMISSION_STATE_BLOCKED",
+                    "MOE_WEB_OPTIN_BANNER_LOAD",
+                    "MOE_WEB_OPTIN_ACCEPTED",
+                    "MOE_OPT_IN_SHOWN",
+                    "MOE_OPT_IN_ALLOWED",
+                    "MOE_OPT_IN_BLOCKED",
+                    "MOE_WEB_OPTIN_CLOSED",
+                    "MOE_OPT_IN_DISMISSED",
+                    "NOTIFICATION_RECEIVED_MOE",
+                    "NOTIFICATION_CLICKED_MOE",
+                    "MOE_IN_APP_SHOWN",
+                    "NOTIFICATION_RECEIVED_IOS_MOE",
+                    "n_i_s",
+                    "MOE_IN_APP_DISMISSED",
+                    "WEBHOOK_SENT",
+                    "NOTIFICATION_DISMISSED_IOS_MOE",
+                    "NOTIFICATION_CLICKED_IOS_MOE",
+                    "MOE_GEOFENCE_HIT",
+                    "MOE_IN_APP_AUTO_DISMISS",
+                    "Geolocation Without Brands",
+                    "More Opened",
+                    "Signup Initiated",
+                    "Test Event",
+                    "Signup Completed",
+                    "Skipped Login",
+                    "Orders Opened",
+                    "Offers Opened",
+                    "Mosque Opened",
+                    "Mosque Order Initiated",
+                    "MOE_NOTIFICATION_PERMISSION_REQUEST_ATTEMPTED",
+                    "Home Opened",
+                    "Wallet Feature Used",
+                    "Geolocation With Brands",
+                    "App opened",
+                    "Home opened",
+                    "Mosque category",
+                    "Search",
+                    "Login",
+                    "Access request",
+                    "Update profile",
+                    "Logout",
+                    "Brand opened",
+                    "Product dialog opened",
+                    "Order reordered",
+                    "Order rated",
+                    "Wallet opened",
+                    "Charge wallet completed",
+                    "Add to Cart",
+                    "Update Cart",
+                    "Cart opened",
+                    "Offer selected",
+                    "Order cancelled",
+                    "Add address",
+                    "Location not permitted",
+                    "Store opened",
+                    "Delivery time selected",
+                    "Coupon applied",
+                    "Order created",
+                    "Payment initiated",
+                    "Payment completed",
+                    "Delete account",
+                    "Signup",
+                    "Referral code used",
+                    "Added to Cart",
+                    "Purchase",
+                    "Order Delivered",
+                    "Page Viewed"
+                ]
+            };
+
+            const state = reactive({
+                searchDrawer: false,
+                filters: {
+                    search: ''
+                },
+
+                optionGroups: [],
+                selectedDetail: null,
+
+                show_count: false,
+
+                campaign_name: "",
+                campaign_tags: [],
+                filter_user_option: "by_user",
+                user_option: {
+                    type: "user_behavior",
+                    ex_option: "has_executed",
+                    event: "",
+                    event_count: "at_least",
+                    times: 1,
+                    event_period: "in_the_last",
+                    period_times: 1,
+                    period_times_operator: "days",
+                    attributes: [],
+                },
+            });
+            const updateMenu = () => {
+                setTimeout(() => {
+                    MenuComponent.reinitialization();
+                }, 200);
+            };
+
+            updateMenu();
+
+            const EventOptions = computed(() => {
+                const groups = {};
+
+                Object.values(fixedData.filter_dropdown).forEach(event => {
+                    const category = event.category || 'Uncategorized';
+
+                    if (!groups[category]) {
+                        groups[category] = [];
+                    }
+
+                    groups[category].push({
+                        label: event.readable_name,
+                        value: event.name
+                    });
+                });
+
+                return Object.entries(groups).map(([label, options]) => ({
+                    label,
+                    options
+                }));
+            })
+
+
+            const handleEventChange = (val) => {
+                state.selectedDetail = Object.values(fixedData.filter_dropdown).find(
+                    event => event.name === val
+                );
+            };
+
+            const triggerFilter = (val) => {
+                state.searchDrawer = true
+            };
+
+            return {
+                ...toRefs(state),
+                triggerFilter,
+                handleEventChange,
+                getAssetPath,
+                EventOptions,
+            };
+        },
+    });
+</script>

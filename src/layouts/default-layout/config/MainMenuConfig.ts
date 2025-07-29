@@ -71,7 +71,7 @@ const MainMenuConfig: Array<MenuItem> = [
                     },
                     {
                         heading: "Create Segment",
-                        route: "/404",
+                        route: "/segment/create",
                     },
                     {
                         heading: "RFM Segment",
@@ -87,7 +87,7 @@ const MainMenuConfig: Array<MenuItem> = [
                     },
                     {
                         heading: "User Imports",
-                        route: "/404",
+                        route: "/segment/user-imports/all",
                     },
                 ],
             },
