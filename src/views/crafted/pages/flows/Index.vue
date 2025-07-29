@@ -35,9 +35,14 @@
                                 :fit-view-on-init="false"
                                 :nodes-draggable="true"
                                 :nodes-connectable="true"
-                                :node-types="nodeTypes"
-                        >
+                                :node-types="nodeTypes">
+
                             <Background/>
+
+                            <template #Action="props">
+                                <Action :id="props.id" :data="props.data"/>
+                            </template>
+
                             <MiniMap v-if="showMap" class="bg-white"/>
                         </VueFlow>
                     </div>
@@ -60,7 +65,7 @@
     import '@vue-flow/core/dist/style.css';
     import '@vue-flow/core/dist/theme-default.css';
     import EntryRules from "@/layouts/default-layout/components/flow/EntryRules.vue";
-
+    import Action from "@/layouts/default-layout/components/flow/Action.vue";
 
 
     export default defineComponent({
@@ -82,8 +87,8 @@
             } = useVueFlow();
             const state = reactive({
                 showMap: true,
-                nodeTypes:{
-
+                nodeTypes: {
+                    Action,
                     EntryRules,
                 }
             });
@@ -93,7 +98,47 @@
                     id: '1',
                     type: 'EntryRules',
                     data: {label: 'Start Journey'},
-                    position: {x: 250, y: 5},
+                    position: {x: 0, y: 0},
+                },
+                {
+                    id: '2',
+                    type: 'Action',
+                    data: {
+                        icon: 'pushi.svg',
+                        title: 'Welcome To Our App',
+                        description: 'Push',
+                    },
+                    position: {x: 425, y: 200},
+                },
+                {
+                    id: '3',
+                    type: 'Action',
+                    data: {
+                        icon: 'randmoi.svg',
+                        title: 'Wait',
+                        description: '2 days',
+                    },
+                    position: {x: 425, y: 300},
+                },
+                {
+                    id: '4',
+                    type: 'Action',
+                    data: {
+                        icon: 'eventci.svg',
+                        title: 'Has Purchased ?',
+                        description: 'Has Done Event ...',
+                    },
+                    position: {x: 425, y: 400},
+                },
+                {
+                    id: '5',
+                    type: 'Action',
+                    data: {
+                        icon: 'stopi.svg',
+                        title: 'Exit',
+                        description: 'ID:rT5213SD',
+                    },
+                    position: {x: 425, y: 500},
                 },
                 // {
                 //     id: '1',
@@ -111,11 +156,26 @@
                 //     data: {label: 'Wait 1 Day'},
                 //     position: {x: 300, y: 150},
                 // },
-                // {
-                //     id: 'e1-2',
-                //     source: '1',
-                //     target: '2',
-                // },
+                {
+                    id: 'x1',
+                    source: '1',
+                    target: '2',
+                },
+                {
+                    id: 'x2',
+                    source: '2',
+                    target: '3',
+                },
+                {
+                    id: 'x3',
+                    source: '3',
+                    target: '4',
+                },
+                {
+                    id: 'x3',
+                    source: '3',
+                    target: '4',
+                },
                 // {
                 //     id: 'e2-3',
                 //     source: '2',
