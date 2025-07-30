@@ -1,30 +1,41 @@
 import dagre from 'dagre'
 
-export function layoutElements(nodes: any[], edges: any[], direction = 'TB') {
-    const dagreGraph = new dagre.graphlib.Graph()
-    dagreGraph.setDefaultEdgeLabel(() => ({}))
-    dagreGraph.setGraph({rankdir: direction}) // TB = top-bottom, LR = left-right
+export function layoutElements(elements, direction = 'TB') {
+    const g = new dagre.graphlib.Graph()
+    g.setDefaultEdgeLabel(() => ({}))
 
-    // Setup nodes in dagre graph
+    g.setGraph({
+        rankdir: direction,
+        nodesep: 80, // المسافة الأفقية
+        ranksep: 120, // المسافة الرأسية
+        marginx: 150,
+        marginy: 100,
+    })
+
+    const nodes = elements.filter((el) => !el.source)
+    const edges = elements.filter((el) => el.source)
+
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, {width: 0, height: 0})
+        g.setNode(node.id, {
+            width: 220,  // زودت الحجم العرضي
+            height: 100, // زودت الارتفاع لتفادي التراكب
+        })
     })
 
-    // Setup edges in dagre graph
     edges.forEach((edge) => {
-        dagreGraph.setEdge(edge.source, edge.target)
+        g.setEdge(edge.source, edge.target)
     })
 
-    dagre.layout(dagreGraph)
+    dagre.layout(g)
 
-    return nodes.map((node) => {
-        const pos = dagreGraph.node(node.id)
-        return {
-            ...node,
-            position: {
-                x: pos.x - 75, // adjust for width
-                y: pos.y - 25, // adjust for height
-            },
+    return elements.map((el) => {
+        if (!el.source) {
+            const nodeWithPos = g.node(el.id)
+            el.position = {
+                x: nodeWithPos.x - 110,
+                y: nodeWithPos.y - 50,
+            }
         }
+        return el
     })
 }

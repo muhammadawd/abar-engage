@@ -1,6 +1,7 @@
 <template>
 
-    <div>
+    <div class="transition"
+        :class="payload.animate ? 'animate-fade-in' : ''">
         <div class="card" style="min-width: 250px">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center">
