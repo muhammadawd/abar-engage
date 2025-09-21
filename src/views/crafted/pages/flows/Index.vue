@@ -30,14 +30,14 @@
       <el-dialog v-model="showModal" title="Shipping address" width="800">
         <h5>Select Node Type</h5>
         <ul>
-          <li>
-            <a href="javascript:void(0)" @click="addNewNode('Action',{
-            icon: 'eventci.svg',
-            title: 'Has Purchased ?',
-            description: 'Has Done Event ...',
-          })">Condition Action
-            </a>
-          </li>
+<!--          <li>-->
+<!--            <a href="javascript:void(0)" @click="addNewNode('Action',{-->
+<!--            icon: 'eventci.svg',-->
+<!--            title: 'Has Purchased ?',-->
+<!--            description: 'Has Done Event ...',-->
+<!--          })">Condition Action-->
+<!--            </a>-->
+<!--          </li>-->
           <li>
             <a href="javascript:void(0)" @click="addNewNode('ConditionSplit',{
             icon: 'eventci.svg',
@@ -57,9 +57,41 @@
           <li>
             <a href="javascript:void(0)" @click="addNewNode('Action',{
             icon: 'pushi.svg',
-            title: 'Welcome To Our App',
+            title: 'Push Notification',
             description: 'Push',
           })">Push Action
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" @click="addNewNode('Action',{
+            icon: 'connectori.svg',
+            title: 'Connector',
+            description: 'Connector',
+          })">Connector Action
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" @click="addNewNode('Action',{
+            icon: 'onsitei.svg',
+            title: 'On-Site',
+            description: 'On-Site',
+          })">On Site Action
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" @click="addNewNode('Action',{
+            icon: 'smsi.svg',
+            title: 'Send SMS Message',
+            description: 'Send SMS',
+          })">SMS Action
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" @click="addNewNode('Action',{
+            icon: 'emaili.svg',
+            title: 'Send Email',
+            description: 'Email',
+          })">Email Action
             </a>
           </li>
           <li>
@@ -216,7 +248,15 @@ export default defineComponent({
     const modalPosition = ref({x: 0, y: 0})
     const nodeIdCounter = ref(100)
 
+    provide('deleteNode', (id: string) => {
+      alert('delete Node: ' + id)
+      const idx = state.elements.findIndex((el) => el.id === id)
+      if (idx !== -1) state.elements.splice(idx, 1)
+    })
 
+    provide('editNode', (id: string) => {
+      alert('Edit Node: ' + id)
+    })
     const addNodeCallback = (edgeId: string, x: number, y: number) => {
       selectedEdgeId.value = edgeId
       modalPosition.value = {x, y}

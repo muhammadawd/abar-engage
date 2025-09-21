@@ -74,7 +74,6 @@ const props = defineProps([
   'targetY',
   'data'
 ])
-console.log(JSON.stringify(props))
 const edgePath = computed(() =>
     // getBezierPath({
     //   sourceX: props.sourceX,
@@ -98,7 +97,6 @@ const labelY = computed(() => centerY.value - 12)
 const centerX = computed(() => (props.sourceX + props.targetX) / 2)
 const centerY = computed(() => (props.sourceY + props.targetY) / 2)
 
-console.log(edgeLabel)
 const handleClick = () => {
   if (addNodeCallback) {
     addNodeCallback(props.id, centerX.value, centerY.value)
