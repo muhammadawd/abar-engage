@@ -22,4 +22,8 @@ export const destroyToken = (): void => {
   window.localStorage.removeItem(ID_TOKEN_KEY);
 };
 
-export default { getToken, saveToken, destroyToken };
+export const getLanguage = (): any | null => {
+  return window.localStorage.getItem("lang") || "en";
+};
+
+export default { getToken, saveToken, destroyToken, getLanguage };

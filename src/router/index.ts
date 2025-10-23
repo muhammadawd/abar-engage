@@ -5,6 +5,8 @@ import {
 } from "vue-router";
 import {useAuthStore} from "@/stores/auth";
 import {useConfigStore} from "@/stores/config";
+import JwtService from "@/core/services/JwtService";
+import store from "@/stores";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -203,15 +205,16 @@ router.beforeEach((to, from, next) => {
     configStore.resetLayoutConfig();
 
     // verify auth token before each page change
-    authStore.verifyAuth();
+    // authStore.verifyAuth();
+    store.dispatch("moduleAdmin/verifyAdmin");
 
     // before page access check if page requires authentication
     if (to.meta.middleware == "auth") {
-        if (authStore.isAuthenticated) {
+        if (JwtService.getToken()) {
             next();
         } else {
-            next();
-            // next({ name: "sign-in" });
+            // next();
+            next({name: "sign-in"});
         }
     } else {
         next();

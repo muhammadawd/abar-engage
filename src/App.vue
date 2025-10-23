@@ -16,6 +16,26 @@ export default defineComponent({
   components: {
     RouterView,
   },
+  mounted() {
+    // const vm = this;
+    if (localStorage.getItem('lang') == 'ar') {
+      //RTL version styles
+      document.documentElement.setAttribute('direction', 'rtl');
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.documentElement.setAttribute('lang', 'ar');
+      document.documentElement.style.direction = 'rtl';
+      localStorage.setItem('lang', 'ar');
+      // vm.isRtl = true;
+    } else {
+      //LTR version styles
+      document.documentElement.removeAttribute('direction');
+      document.documentElement.removeAttribute('dir');
+      document.documentElement.setAttribute('lang', 'en');
+      document.documentElement.style.direction = 'ltr';
+      localStorage.setItem('lang', 'en');
+      // vm.isRtl = false;
+    }
+  },
   setup() {
     const configStore = useConfigStore();
     const themeStore = useThemeStore();

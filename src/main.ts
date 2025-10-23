@@ -16,6 +16,8 @@ import { initApexCharts } from "@/core/plugins/apexcharts";
 import { initInlineSvg } from "@/core/plugins/inline-svg";
 import { initVeeValidate } from "@/core/plugins/vee-validate";
 import { initKtIcon } from "@/core/plugins/keenthemes";
+import { Vue3BsPaginate } from "vue3-bootstrap-paginate";
+import store from "@/stores/index";
 
 import "@/core/plugins/prismjs";
 
@@ -24,12 +26,15 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(ElementPlus);
+app.use(store);
 
 ApiService.init(app);
 initApexCharts(app);
 initInlineSvg(app);
 initKtIcon(app);
 initVeeValidate();
+
+app.component("Vue3BsPaginate", Vue3BsPaginate);
 
 app.use(i18n);
 

@@ -25,14 +25,46 @@ class ApiService {
 
   /**
    * @description set the default HTTP request headers
+   * set default values for all requests header
    */
   public static setHeader(): void {
+
+    // set auth token
+    let token = JwtService.getToken();
     ApiService.vueInstance.axios.defaults.headers.common[
-      "Authorization"
-    ] = `Token ${JwtService.getToken()}`;
+      "ApiToken"
+      ] = token ? `${token}` : null;
+
+    // set accept headers
     ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
       "application/json";
+
+    // set lang header
+    let lang = null;
+    if (JwtService.getLanguage()) {
+      lang = (JwtService.getLanguage());
+    }
+    ApiService.vueInstance.axios.defaults.headers.common[
+      "Lang"
+      ] = lang ? lang : "en";
+
+    ApiService.vueInstance.axios.defaults.headers.common[
+      "AccessKey"
+      ] = "123456789";
+
   }
+
+  public static setHeaderPayload(key: any, value: any): void {
+    axios.defaults.headers.common[key] = value;
+  }
+  /**
+   *
+   * @param url
+   */
+  public static setBaseUrl(url): void {
+    ApiService.vueInstance.axios.defaults.baseURL = url;
+  }
+
 
   /**
    * @description send the GET HTTP request
