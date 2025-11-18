@@ -68,7 +68,7 @@
                 <label>Campaign Name</label>
                 <input type="text" v-model="campaign_name" name="campaign_name"
                        placeholder="Campaign Name"
-                       class="form-control form-control-solid form-control-lg"><span
+                       class="form-control"><span
                   class="form-text text-muted">Please enter your campaign name.</span>
               </div>
             </div>
@@ -182,14 +182,14 @@
                   <template v-else>
 
                     <div class="btn-group" role="group" aria-label="Radio toggle button group">
-                      <input type="radio" class="btn-check" name="options" id="option1"
+                      <input type="radio" class="btn-check" name="options" id="option1" disabled
                              v-model="user_option.type"
                              autocomplete="off" value="user_property">
                       <label class="btn btn-light"
                              :class="user_option.type == 'user_property' ? 'btn-primary' : ''"
                              for="option1">User Property</label>
 
-                      <input type="radio" class="btn-check" name="options" id="option2"
+                      <input type="radio" class="btn-check" name="options" id="option2" disabled
                              v-model="user_option.type"
                              autocomplete="off" value="user_behavior">
                       <label class="btn btn-light"
@@ -1147,7 +1147,289 @@
     <section v-if="step==3">
       <div class="row mt-4">
         <div class="col-md-12">
-          <div class="card">
+          <div v-if="$route.params.period == 'periodic'" class="card">
+            <div class="card-header" style="min-height: 50px;">
+              <div>
+                <h4 class="card-title fw-bolders mb-0 pt-3">Send Campaign</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <p class="text-muted">Periodic</p>
+                  <div>
+                    <div class="form-check form-check-custom form-check-solid">
+                      <input class="form-check-input" name="periodic_value" v-model="periodic_value"
+                             type="radio"
+                             value="daily"
+                             id="daily"/>
+                      <label class="form-check-label" for="daily">
+                        Daily
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <div class="form-check form-check-custom form-check-solid">
+                      <input class="form-check-input" name="periodic_value" v-model="periodic_value"
+                             type="radio"
+                             value="weekly"
+                             id="weekly"/>
+                      <label class="form-check-label" for="weekly">
+                        Weekly
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <div class="form-check form-check-custom form-check-solid">
+                      <input class="form-check-input" name="periodic_value" v-model="periodic_value"
+                             type="radio"
+                             value="monthly"
+                             id="monthly"/>
+                      <label class="form-check-label" for="monthly">
+                        Monthly
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-9">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="d-flex">
+
+                        <div>
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="schedule_time"
+                                   v-model="schedule_time"
+                                   type="radio"
+                                   value="fixed"
+                                   id="fixed"/>
+                            <label class="form-check-label" for="fixed">
+                              At Fixed Time
+                            </label>
+                          </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div>
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="schedule_time"
+                                   v-model="schedule_time"
+                                   type="radio"
+                                   value="timezone"
+                                   id="timezone"/>
+                            <label class="form-check-label" for="timezone">
+                              Send in user time zone
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="row mt-4">
+                    <div class="col-md-4">
+                      <label>Start Date</label>
+                      <flat-pickr
+                          v-model="send_date"
+                          :config="{dateFormat: 'Y-m-d',enableTime: false}"
+                          class="form-control"
+                          placeholder="Select date"
+                          name="send_date"/>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Send Time</label>
+                      <flat-pickr
+                          v-model="send_time"
+                          :config="{enableTime: true,noCalendar: true,inline:true,dateFormat: 'H:i'}"
+                          class="form-control d-none"
+                          placeholder="Select time"
+                          name="send_date"/>
+                    </div>
+                  </div>
+
+                  <div class="row mt-2" v-if="periodic_value == 'daily'">
+                    <div class="col-12">
+                      <div class="d-flex align-items-center">
+                        <div>
+                          <label>Repeat Every</label>
+                          <input type="number" step="1" class="form-control">
+                        </div>
+                        <div class="ms-3 mt-5">
+                          <b>Day</b>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2" v-if="periodic_value == 'weekly'">
+                    <div class="col-12">
+                      <div class="d-flex align-items-center">
+                        <div>
+                          <label>Repeat Every</label>
+                          <input type="number" step="1" class="form-control">
+                        </div>
+                        <div class="ms-3 mt-5">
+                          <b>Week</b>
+                        </div>
+                        <div class="ms-3">
+                          <label>Repeat On</label>
+                          <div>
+                            <el-select v-model="periodic_weeks_value" class="min-w-200px" multiple>
+                              <el-option label="Saturday" value="SA"/>
+                              <el-option label="Sunday" value="SU"/>
+                              <el-option label="Monday" value="MO"/>
+                              <el-option label="Tuesday" value="TU"/>
+                              <el-option label="Wednesday" value="WE"/>
+                              <el-option label="Thursday" value="TH"/>
+                              <el-option label="Friday" value="FR"/>
+                            </el-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2" v-if="periodic_value == 'monthly'">
+                    <div class="col-12">
+                      <div class="d-flex align-items-center">
+                        <div>
+                          <label>Repeat Every</label>
+                          <input type="number" step="1" class="form-control">
+                        </div>
+                        <div class="ms-3 mt-5">
+                          <b>Month</b>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mt-2">
+                      <div class="col-md-4">
+                        <label>Day Of Month</label>
+                        <flat-pickr
+                            v-model="periodic_month_value"
+                            :config="{dateFormat: 'd' ,altInput: true,altInputClass: 'flatpickr-months-hide',inline:true,enableTime: false}"
+                            class="form-control d-none"
+                            placeholder="Select date"
+                            name="send_date"/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <p>Ends</p>
+                      <div class="d-flex">
+                        <div class="mt-3 ms-3">
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="periodic_ends_value" v-model="periodic_ends_value"
+                                   type="radio"
+                                   value="never"
+                                   id="never"/>
+                            <label class="form-check-label" for="never">
+                              Never
+                            </label>
+                          </div>
+                        </div>
+                        <div class="mt-3 ms-3">
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="periodic_ends_value" v-model="periodic_ends_value"
+                                   type="radio"
+                                   value="on"
+                                   id="on"/>
+                            <label class="form-check-label" for="on">
+                              On
+                            </label>
+                          </div>
+                        </div>
+                        <div class="mt-3 ms-3">
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="periodic_ends_value" v-model="periodic_ends_value"
+                                   type="radio"
+                                   value="after"
+                                   id="after"/>
+                            <label class="form-check-label" for="after">
+                              After
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-if="periodic_ends_value == 'on'">
+                        <div class="row mt-3">
+                          <div class="col-md-4">
+                            <label>End Date</label>
+                            <flat-pickr
+                                v-model="periodic_ends_value_on"
+                                :config="{dateFormat: 'Y-m-d',enableTime: false}"
+                                class="form-control"
+                                placeholder="Select date"
+                                name="send_date"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-if="periodic_ends_value == 'after'">
+                        <div class="row mt-4">
+                          <div class="col-12">
+                            <div class="d-flex align-items-center">
+                              <div>
+                                <input type="number" step="1" class="form-control">
+                              </div>
+                              <div class="ms-3">
+                                <b>Occurrences</b>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="row mt-4" v-if="schedule_time == 'timezone'">
+                    <div class="col-12">
+                      <p>Send if the user time zone has passed</p>
+
+                      <div class="d-flex mt-2">
+
+                        <div>
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="send_passed_timezone"
+                                   v-model="send_passed_timezone"
+                                   type="radio"
+                                   value="yes"
+                                   id="yes"/>
+                            <label class="form-check-label" for="yes">
+                              Yes, send it
+                            </label>
+                          </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div>
+                          <div class="form-check form-check-custom form-check-solid">
+                            <input class="form-check-input" name="send_passed_timezone"
+                                   v-model="send_passed_timezone"
+                                   type="radio"
+                                   value="no"
+                                   id="no"/>
+                            <label class="form-check-label" for="no">
+                              No, don't send it
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="alert alert-secondary text-dark">
+                        Campaign will be next sent on <b>{{ new Date(send_date).toLocaleDateString() }}
+                        {{ new Date(send_time).toTimeString() }}</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="card">
             <div class="card-header" style="min-height: 50px;">
               <div>
                 <h4 class="card-title fw-bolders mb-0 pt-3">Send Campaign</h4>
@@ -3133,7 +3415,7 @@ export default defineComponent({
       campaign_tags: [],
       filter_user_option: "by_user",
       user_option: {
-        type: "user_behavior",
+        type: "custom_segment",
         ex_option: "has_executed",
         event: "",
         event_count: "at_least",
@@ -3150,6 +3432,12 @@ export default defineComponent({
         buttons: [],
         imageOption: 'default',
       },
+
+      periodic_value: 'daily',
+      periodic_weeks_value: [],
+      periodic_month_value: null,
+      periodic_ends_value: 'never',
+      periodic_ends_value_on: null,
 
       send_option: 'now',
       schedule_time: 'fixed',
@@ -3350,6 +3638,10 @@ export default defineComponent({
   box-shadow: 0px 0px 16px rgba(201, 200, 200, .4);
   border-radius: 4px;
   text-align: center
+}
+
+.flatpickr-months-hide {
+  display: none;
 }
 
 </style>

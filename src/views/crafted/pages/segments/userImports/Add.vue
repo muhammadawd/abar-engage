@@ -241,7 +241,7 @@
               </tr>
               </tbody>
             </table>
-            <small class="text-muted">Total columns in file: {{ csvData[0] ? csvData[0].length : 0 }}</small>
+            <small class="text-muted">Total columns in file: {{ (csvData && csvData[0]) ? csvData[0].length : 0 }}</small>
           </div>
           <div class="card-header">
             <h4 class="card-title">
@@ -501,8 +501,9 @@ export default defineComponent({
   },
   setup() {
 
+    let nullAny:any = []
     const state = reactive({
-      csvData: [],
+      csvData: nullAny,
       step: 1,
       userIdentifier: null,
       importStatus: false,

@@ -2539,6 +2539,7 @@
                 ]
             };
 
+            let nullAny:any = null;
             const state = reactive({
                 searchDrawer: false,
                 filters: {
@@ -2546,7 +2547,7 @@
                 },
 
                 optionGroups: [],
-                selectedDetail: null,
+                selectedDetail: nullAny,
 
                 show_count: false,
 
@@ -2602,7 +2603,7 @@
                 );
             };
 
-            const triggerFilter = (val) => {
+            const triggerFilter = () => {
                 state.searchDrawer = true
             };
 

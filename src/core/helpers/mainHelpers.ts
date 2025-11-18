@@ -29,7 +29,7 @@ const actionLoader = (type): void => {
 };
 
 const getCountry = (): any => {
-    let country = window.localStorage.getItem("CURRENT_COUNTRY");
+    let country:any = window.localStorage.getItem("CURRENT_COUNTRY");
     return JSON.parse(country);
 };
 

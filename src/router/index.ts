@@ -213,8 +213,8 @@ router.beforeEach((to, from, next) => {
         if (JwtService.getToken()) {
             next();
         } else {
-            // next();
-            next({name: "sign-in"});
+            next();
+            // next({name: "sign-in"});
         }
     } else {
         next();
