@@ -79,6 +79,7 @@ export default defineComponent({
 @import "@vueform/multiselect/themes/default.css";
 @import "prism-themes/themes/prism-shades-of-purple.css";
 @import "element-plus/dist/index.css";
+@import "mosha-vue-toastify/dist/style.css";
 
 // Main demo style scss
 @import "assets/keenicons/duotone/style.css";

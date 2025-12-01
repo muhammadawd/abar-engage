@@ -136,8 +136,6 @@ export default defineComponent({
 
       // loginAdmin
       values["device_id"] = Math.random().toString(36).substr(2, 15);
-      values["device_type"] = "web";
-      // values["ip"] = "111222";
       store
           .dispatch("moduleAdmin/loginAdmin", values)
           .then((data) => {
@@ -147,7 +145,7 @@ export default defineComponent({
             submitButton.value.setAttribute("data-kt-indicator", "off");
             // Go to page after successfully login
             router.push({ name: "dashboard" }).then(() => {
-              // window.location.reload();
+              window.location.reload();
             });
           })
           .catch((response) => {

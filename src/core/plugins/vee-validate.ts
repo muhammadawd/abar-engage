@@ -22,7 +22,6 @@ export function initVeeValidate() {
 
   Object.keys(AllRules).forEach(rule => {
     if (rule != "all") {
-      console.log(rule)
       defineRule(rule, AllRules[rule]);
     }
   });

@@ -87,15 +87,21 @@ const handleResponseErr = (response, translate, router, store, passObject = {}):
             //   passObject.setErrors(validationObj);
             // }
             // if (validationApi["error_id"] && validationApi["error_id"][0]) showMessage("danger", translate("error"), validationApi["error_id"][0]);
-            showMessage("danger", translate("error"), translate("server_error_422"));
+            // showMessage("danger", translate("error"), translate("server_error_422"));
+            showMessage("danger", translate("error"), response.response.data.msg);
             return;
         }
 
         // un authenticated
+        if (response.response.status == 400) {
+            showMessage("danger", translate("error"), response.response.data.msg);
+            return;
+        }
+        // un authenticated
         if (response.response.status == 401) {
             router.push({
                 name: "sign-in",
-                // query: {redirect: router.to.fullPath}
+                query: {redirect: router.to.fullPath}
             }).then(() => {
                 window.location.reload();
             });

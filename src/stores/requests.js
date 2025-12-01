@@ -11,5 +11,5 @@ export default {
     // auth base api routes
     REFRESH_ACCESS_TOKEN: "",
     ADMIN_AUTH: "/api/admin/login",
-    ADMIN_VERIFY: "/api/admin/auth-data",
+    ADMIN_VERIFY: "/api/admin/profile",
 };
