@@ -35,21 +35,21 @@
       </router-link>
     </div>
     <!--end::Menu item-->
-    <!--begin::Menu item-->
-    <div class="menu-item px-3 my-0">
-      <router-link
-        :to="path"
-        :class="{ active: themeMode === 'system' }"
-        class="menu-link px-3 py-2"
-        @click="setMode('system')"
-      >
-        <span class="menu-icon" data-kt-element="icon">
-          <KTIcon icon-name="screen" icon-class="fs-2" />
-        </span>
-        <span class="menu-title">System</span>
-      </router-link>
-    </div>
-    <!--end::Menu item-->
+<!--    &lt;!&ndash;begin::Menu item&ndash;&gt;-->
+<!--    <div class="menu-item px-3 my-0">-->
+<!--      <router-link-->
+<!--        :to="path"-->
+<!--        :class="{ active: themeMode === 'system' }"-->
+<!--        class="menu-link px-3 py-2"-->
+<!--        @click="setMode('system')"-->
+<!--      >-->
+<!--        <span class="menu-icon" data-kt-element="icon">-->
+<!--          <KTIcon icon-name="screen" icon-class="fs-2" />-->
+<!--        </span>-->
+<!--        <span class="menu-title">System</span>-->
+<!--      </router-link>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;end::Menu item&ndash;&gt;-->
   </div>
   <!--end::Menu-->
 </template>

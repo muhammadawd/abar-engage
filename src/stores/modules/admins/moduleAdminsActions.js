@@ -15,18 +15,6 @@ export default {
       });
     });
   },
-  banAdmin({ commit, dispatch }, payload) {
-    return new Promise((resolve, reject) => {
-      ApiService.setHeader();
-      ApiService.setBaseUrl(requests.URL_BASE);
-      ApiService.post(requests.BAN_ADMIN.replace(":id",payload.id), payload)
-        .then(({ data }) => {
-          resolve(data);
-        }).catch((response) => {
-        reject(response);
-      });
-    });
-  },
   createAdmin({ commit, dispatch }, payload) {
     return new Promise((resolve, reject) => {
       ApiService.setHeader();
@@ -43,9 +31,21 @@ export default {
   updateAdmin({ commit, dispatch }, payload) {
     return new Promise((resolve, reject) => {
       ApiService.setHeader();
+      ApiService.setBaseUrl(requests.URL_BASE);
+      ApiService.patch(requests.UPDATE_ADMIN.replace(":id", payload.id), payload)
+        .then((data) => {
+          resolve(data);
+        }).catch((response) => {
+        reject(response);
+      });
+    });
+  },
+  updateStatusAdmin({ commit, dispatch }, payload) {
+    return new Promise((resolve, reject) => {
+      ApiService.setHeader();
       ApiService.setHeaderPayload("Content-Type", "multipart/form-data");
       ApiService.setBaseUrl(requests.URL_BASE);
-      ApiService.post(requests.UPDATE_ADMIN.replace(":id", payload.payload.id)+'?_method=put', payload.form_data)
+      ApiService.post(requests.UPDATE_STATUS_ADMIN.replace(":id", payload.payload.id)+'?_method=put', payload.form_data)
         .then((data) => {
           resolve(data);
         }).catch((response) => {
@@ -92,6 +92,18 @@ export default {
       });
     });
   },
+  updateProfile({ commit, dispatch }, payload) {
+    return new Promise((resolve, reject) => {
+      ApiService.setHeader();
+      ApiService.setBaseUrl(requests.URL_BASE);
+      ApiService.patch(requests.ADMIN_UPDATE_PROFILE, payload)
+        .then(({ data }) => {
+          resolve(data);
+        }).catch((response) => {
+        reject(response);
+      });
+    });
+  },
   verifyAdmin({ commit, dispatch }, payload) {
     return new Promise((resolve, reject) => {
       ApiService.setHeader();
@@ -107,6 +119,7 @@ export default {
   },
   logoutAdmin({ commit, dispatch }, payload) {
     localStorage.removeItem("ADMIN_INFO");
+    ApiService.query(requests.ADMIN_PURGE, {})
     JwtService.destroyToken();
   },
 

@@ -23,83 +23,149 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/Dashboard.vue"),
                 meta: {
                     pageTitle: "Dashboard",
-                    breadcrumbs: ["Dashboards"],
+                    breadcrumbs: ["Dashboard"],
                 },
             },
 
             {
-                path: "/segment/all",
-                name: "segments",
-                component: () => import("@/views/crafted/pages/segments/Index.vue"),
+                path: "/settings/profile",
+                name: "user_profile",
+                component: () => import("@/views/crafted/pages/Settings/Profile.vue"),
                 meta: {
-                    pageTitle: "Segments",
-                    breadcrumbs: ["Segments"],
-                },
-            },
-            {
-                path: "/segment/create",
-                name: "create_segment",
-                component: () => import("@/views/crafted/pages/segments/Create.vue"),
-                meta: {
-                    pageTitle: "Segments",
-                    breadcrumbs: ["Create Segments"],
-                },
-            },
-            {
-                path: "/segment/user-imports/all",
-                name: "all_user_imports_segment",
-                component: () => import("@/views/crafted/pages/segments/userImports/Index.vue"),
-                meta: {
-                    pageTitle: "User Imports",
-                    breadcrumbs: ["Segments", "User Imports"],
-                },
-            },
-            {
-                path: "/segment/user-imports/create",
-                name: "create_user_imports_segment",
-                component: () => import("@/views/crafted/pages/segments/userImports/Add.vue"),
-                meta: {
-                    pageTitle: "Create User Import",
-                    breadcrumbs: ["Segments", "User Import"],
+                    pageTitle: "Profile",
+                    breadcrumbs: ["Dashboard","Settings","Profile"],
                 },
             },
 
             {
-                path: "/engage/campaigns/stats",
-                name: "campaigns_stats",
-                component: () => import("@/views/crafted/pages/campaigns/Stats.vue"),
+                path: "/dashboard/settings/roles",
+                name: "list_roles",
+                component: () => import("@/views/crafted/pages/Settings/Roles/Index.vue"),
                 meta: {
-                    pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns", "Campaigns Stats"],
-                },
+                    pageTitle: "Roles List",
+                    breadcrumbs: ["Dashboards", "Roles", "Roles List"]
+                }
             },
             {
-                path: "/engage/flows",
-                name: "flows",
-                component: () => import("@/views/crafted/pages/flows/Index.vue"),
+                path: "/dashboard/settings/roles/create",
+                name: "create_role",
+                component: () => import("@/views/crafted/pages/Settings/Roles/Create.vue"),
                 meta: {
-                    pageTitle: "Flows",
-                    breadcrumbs: ["Flows", "Template Flow"],
-                },
+                    pageTitle: "Roles Create",
+                    breadcrumbs: ["Dashboards", "Roles", "Roles Create"]
+                }
             },
             {
-                path: "/engage/campaigns/create/:type/:period",
-                name: "create_campaigns",
-                component: () => import("@/views/crafted/pages/campaigns/Add.vue"),
+                path: "/dashboard/settings/roles/edit/:id",
+                name: "edit_role",
+                component: () => import("@/views/crafted/pages/Settings/Roles/Edit.vue"),
                 meta: {
-                    pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns", "Create Campaign"],
-                },
+                    pageTitle: "Roles Edit",
+                    breadcrumbs: ["Dashboards", "Roles", "Roles Edit"]
+                }
+            },
+
+            {
+                path: "/dashboard/settings/admins",
+                name: "list_admins",
+                component: () => import("@/views/crafted/pages/Settings/Admins/Index.vue"),
+                meta: {
+                    pageTitle: "Admins List",
+                    breadcrumbs: ["Dashboards", "Admins", "Admins List"]
+                }
             },
             {
-                path: "/engage/campaigns",
-                name: "campaigns",
-                component: () => import("@/views/crafted/pages/campaigns/Index.vue"),
+                path: "/dashboard/settings/admins/create",
+                name: "create_admin",
+                component: () => import("@/views/crafted/pages/Settings/Admins/Create.vue"),
                 meta: {
-                    pageTitle: "Campaigns",
-                    breadcrumbs: ["Campaigns"],
-                },
+                    pageTitle: "Admins Create",
+                    breadcrumbs: ["Dashboards", "Admins", "Admins Create"]
+                }
             },
+            {
+                path: "/dashboard/settings/admins/edit/:id",
+                name: "edit_admin",
+                component: () => import("@/views/crafted/pages/Settings/Admins/Edit.vue"),
+                meta: {
+                    pageTitle: "Admins Edit",
+                    breadcrumbs: ["Dashboards", "Admins", "Admins Edit"]
+                }
+            },
+
+            // {
+            //     path: "/segment/all",
+            //     name: "segments",
+            //     component: () => import("@/views/crafted/pages/segments/Index.vue"),
+            //     meta: {
+            //         pageTitle: "Segments",
+            //         breadcrumbs: ["Segments"],
+            //     },
+            // },
+            // {
+            //     path: "/segment/create",
+            //     name: "create_segment",
+            //     component: () => import("@/views/crafted/pages/segments/Create.vue"),
+            //     meta: {
+            //         pageTitle: "Segments",
+            //         breadcrumbs: ["Create Segments"],
+            //     },
+            // },
+            // {
+            //     path: "/segment/user-imports/all",
+            //     name: "all_user_imports_segment",
+            //     component: () => import("@/views/crafted/pages/segments/userImports/Index.vue"),
+            //     meta: {
+            //         pageTitle: "User Imports",
+            //         breadcrumbs: ["Segments", "User Imports"],
+            //     },
+            // },
+            // {
+            //     path: "/segment/user-imports/create",
+            //     name: "create_user_imports_segment",
+            //     component: () => import("@/views/crafted/pages/segments/userImports/Add.vue"),
+            //     meta: {
+            //         pageTitle: "Create User Import",
+            //         breadcrumbs: ["Segments", "User Import"],
+            //     },
+            // },
+            //
+            // {
+            //     path: "/engage/campaigns/stats",
+            //     name: "campaigns_stats",
+            //     component: () => import("@/views/crafted/pages/campaigns/Stats.vue"),
+            //     meta: {
+            //         pageTitle: "Campaigns",
+            //         breadcrumbs: ["Campaigns", "Campaigns Stats"],
+            //     },
+            // },
+            // {
+            //     path: "/engage/flows",
+            //     name: "flows",
+            //     component: () => import("@/views/crafted/pages/flows/Index.vue"),
+            //     meta: {
+            //         pageTitle: "Flows",
+            //         breadcrumbs: ["Flows", "Template Flow"],
+            //     },
+            // },
+            // {
+            //     path: "/engage/campaigns/create/:type/:period",
+            //     name: "create_campaigns",
+            //     component: () => import("@/views/crafted/pages/campaigns/Add.vue"),
+            //     meta: {
+            //         pageTitle: "Campaigns",
+            //         breadcrumbs: ["Campaigns", "Create Campaign"],
+            //     },
+            // },
+            // {
+            //     path: "/engage/campaigns",
+            //     name: "campaigns",
+            //     component: () => import("@/views/crafted/pages/campaigns/Index.vue"),
+            //     meta: {
+            //         pageTitle: "Campaigns",
+            //         breadcrumbs: ["Campaigns"],
+            //     },
+            // },
         ],
     },
     {
@@ -115,33 +181,33 @@ const routes: Array<RouteRecordRaw> = [
                     pageTitle: "Sign In",
                 },
             },
-            {
-                path: "/auth-otp",
-                name: "auth-otp",
-                component: () =>
-                    import("@/views/crafted/authentication/basic-flow/OTP.vue"),
-                meta: {
-                    pageTitle: "Sign In",
-                },
-            },
-            {
-                path: "/sign-up",
-                name: "sign-up",
-                component: () =>
-                    import("@/views/crafted/authentication/basic-flow/SignUp.vue"),
-                meta: {
-                    pageTitle: "Sign Up",
-                },
-            },
-            {
-                path: "/password-reset",
-                name: "password-reset",
-                component: () =>
-                    import("@/views/crafted/authentication/basic-flow/PasswordReset.vue"),
-                meta: {
-                    pageTitle: "Password reset",
-                },
-            },
+            // {
+            //     path: "/auth-otp",
+            //     name: "auth-otp",
+            //     component: () =>
+            //         import("@/views/crafted/authentication/basic-flow/OTP.vue"),
+            //     meta: {
+            //         pageTitle: "Sign In",
+            //     },
+            // },
+            // {
+            //     path: "/sign-up",
+            //     name: "sign-up",
+            //     component: () =>
+            //         import("@/views/crafted/authentication/basic-flow/SignUp.vue"),
+            //     meta: {
+            //         pageTitle: "Sign Up",
+            //     },
+            // },
+            // {
+            //     path: "/password-reset",
+            //     name: "password-reset",
+            //     component: () =>
+            //         import("@/views/crafted/authentication/basic-flow/PasswordReset.vue"),
+            //     meta: {
+            //         pageTitle: "Password reset",
+            //     },
+            // },
         ],
     },
     {

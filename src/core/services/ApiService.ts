@@ -32,8 +32,8 @@ class ApiService {
     // set auth token
     let token = JwtService.getToken();
     ApiService.vueInstance.axios.defaults.headers.common[
-      "ApiToken"
-      ] = token ? `${token}` : null;
+      "Authorization"
+      ] = token ? `Bearer ${token}` : null;
 
     // set accept headers
     ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
@@ -112,6 +112,15 @@ class ApiService {
     params: any
   ): Promise<AxiosResponse> {
     return ApiService.vueInstance.axios.put(`${resource}/${slug}`, params);
+  }
+  /**
+   * @description set the PATCH HTTP request
+   * @param resource: string
+   * @param params: any
+   * @returns Promise<AxiosResponse>
+   */
+  public static patch(resource: string, params: any): Promise<AxiosResponse> {
+    return ApiService.vueInstance.axios.patch(`${resource}`, params);
   }
 
   /**
