@@ -300,12 +300,24 @@ const getMapStyles = () => {
     }];
 
 };
+
+// 0 - DRAFT
+// 1 - SCHEDULED
+// 2 - RUNNING
+// 3 - PAUSED
+// 4 - COMPLETED
+// 5 - CANCELLED
+// 6 - FAILED
+// 7 - ACTIVE (recurring campaigns between executions)
 const campaignStatusValues = (name = null) => {
     const list = [
         {value: 0, name: "DRAFT", label: "Draft", color: "#6b7280"},
         {value: 1, name: "SCHEDULED", label: "Scheduled", color: "#3b82f6"},
-        {value: 2, name: "RUNNING", label: "Running", color: "#f59e0b"},
+        {value: 2, name: "RUN_YESTERDAY", label: "Run Yesterday", color: "#f59e0b"},
+        {value: 3, name: "PAUSED", label: "Paused", color: "#f59e0b"},
         {value: 4, name: "COMPLETED", label: "Completed", color: "#10b981"},
+        {value: 5, name: "CANCELLED", label: "Cancelled", color: "#10b981"},
+        {value: 6, name: "FAILED", label: "Failed", color: "#10b981"},
         {value: 7, name: "ACTIVE", label: "Active", color: "#8b5cf6"}
     ];
 

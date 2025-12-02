@@ -45,7 +45,7 @@
                  @click="filters.status = null">
                 {{ $t('all_campaigns') }}
                 &nbsp;
-                <label class="badge bg-gray-300 badge-circle">0</label>
+                <label class="badge bg-gray-300 badge-circle">{{ statistics.all || 0 }}</label>
               </a>
             </li>
             <!--end::Nav item-->
@@ -57,7 +57,7 @@
                  @click="filters.status = campaignStatusValues('ACTIVE').value;triggerFilter()">
                 {{ campaignStatusValues('ACTIVE').label }}
                 &nbsp;
-                <label class="badge bg-gray-300 badge-circle">0</label></a>
+                <label class="badge bg-gray-300 badge-circle">{{ statistics.active || 0 }}</label></a>
             </li>
             <!--begin::Nav item-->
             <!--begin::Nav item-->
@@ -68,18 +68,18 @@
                  @click="filters.status = campaignStatusValues('SCHEDULED').value;triggerFilter()">
                 {{ campaignStatusValues('SCHEDULED').label }}
                 &nbsp;
-                <label class="badge bg-gray-300 badge-circle">0</label></a>
+                <label class="badge bg-gray-300 badge-circle">{{ statistics.scheduled || 0 }}</label></a>
             </li>
             <!--begin::Nav item-->
             <!--begin::Nav item-->
             <li class="nav-item mt-2">
               <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                 :class="filters.status == campaignStatusValues('RUNNING').value ? 'active' : ''"
+                 :class="filters.status == campaignStatusValues('RUN_YESTERDAY').value ? 'active' : ''"
                  href="javascript:void(0)"
-                 @click="filters.status = campaignStatusValues('RUNNING').value;triggerFilter()">
-                {{ campaignStatusValues('RUNNING').label }}
+                 @click="filters.status = campaignStatusValues('RUN_YESTERDAY').value;triggerFilter()">
+                {{ campaignStatusValues('RUN_YESTERDAY').label }}
                 &nbsp;
-                <label class="badge bg-gray-300 badge-circle">0</label></a>
+                <label class="badge bg-gray-300 badge-circle">{{ statistics.run_yesterday || 0 }}</label></a>
             </li>
             <!--begin::Nav item-->
             <!--begin::Nav item-->
@@ -90,7 +90,7 @@
                  @click="filters.status = campaignStatusValues('COMPLETED').value;triggerFilter()">
                 {{ campaignStatusValues('COMPLETED').label }}
                 &nbsp;
-                <label class="badge bg-gray-300 badge-circle">0</label></a>
+                <label class="badge bg-gray-300 badge-circle">{{ statistics.completed || 0 }}</label></a>
             </li>
             <!--begin::Nav item-->
           </ul>
@@ -147,19 +147,19 @@
                     </div>
                   </td>
                   <td>
-                    <!--                    <div v-if="itemKey%2==0">-->
-                    <!--                      &lt;!&ndash;<label class="badge bg-success-subtle p-3">&ndash;&gt;-->
-                    <!--                      &lt;!&ndash;<KTIcon icon-name="check-circle" icon-class="text-success" icon-type="outline"/>&ndash;&gt;-->
-                    <!--                      &lt;!&ndash;&nbsp;&ndash;&gt;-->
-                    <!--                      &lt;!&ndash;Active&ndash;&gt;-->
-                    <!--                      &lt;!&ndash;</label>&ndash;&gt;-->
-                    <!--                      &lt;!&ndash;&nbsp;&ndash;&gt;-->
-                    <!--                      <label class="badge bg-warning-subtle p-3">-->
-                    <!--                        <KTIcon icon-name="row-vertical" icon-class="text-warning" icon-type="outline"/>-->
-                    <!--                        &nbsp;-->
-                    <!--                        Paused-->
-                    <!--                      </label>-->
-                    <!--                    </div>-->
+                    <div>
+                      <!--<label class="badge bg-success-subtle p-3">-->
+                      <!--<KTIcon icon-name="check-circle" icon-class="text-success" icon-type="outline"/>-->
+                      <!--&nbsp;-->
+                      <!--Active-->
+                      <!--</label>-->
+                      <!--&nbsp;-->
+                      <label class="badge bg-warning-subtle p-3">
+<!--                        <KTIcon icon-name="row-vertical" icon-class="text-warning" icon-type="outline"/>-->
+<!--                        &nbsp;-->
+                        {{ item.status_label }}
+                      </label>
+                    </div>
                     <!--                    <div class="mt-3" v-else>-->
                     <!--                      &lt;!&ndash;                      <label class="badge bg-primary-subtle p-3">&ndash;&gt;-->
                     <!--                      &lt;!&ndash;                        <KTIcon icon-name="check-circle" icon-class="text-primary"&ndash;&gt;-->
@@ -270,6 +270,24 @@
               </template>
               </tbody>
             </table>
+            <div class="  d-flex align-items-center justify-content-center flex-column"
+                 v-if="loading || !items.length">
+              <div class="text-center" v-if="!loading && !items.length">
+                <img
+                    :src="getAssetPath('media/no-data.png')"
+                    class="mw-100 mh-300px theme-light-show"
+                    alt=""
+                />
+                <img
+                    :src="getAssetPath('media/no-data.png')"
+                    class="mw-100 mh-300px theme-dark-show"
+                    alt=""
+                />
+                <h4 class="mt-5">
+                  {{ $t("no_data") }}
+                </h4>
+              </div>
+            </div>
           </div>
           <div class="card-footer p-2">
             <div class="row">
@@ -289,219 +307,217 @@
     </div>
   </div>
 
+  <el-drawer v-model="drawer" title="Create Campaign" :with-header="true" size="60%">
+    <template #header>
+      <div class="drawer-header">
+        <h4 class="mb-0">
+          <KTIcon icon-name="element-11" icon-class="text-primary fs-3 me-2"/>
+          Create New Campaign
+        </h4>
+        <p class="text-muted mb-0 mt-1" v-if="create_state">
+          Select a campaign schedule for {{ getChannelLabel(create_state) }}
+        </p>
+      </div>
+    </template>
 
-    <el-drawer v-model="drawer" title="Create Campaign" :with-header="true" size="60%">
-      <template #header>
-        <div class="drawer-header">
-          <h4 class="mb-0">
-            <KTIcon icon-name="element-11" icon-class="text-primary fs-3 me-2"/>
-            Create New Campaign
-          </h4>
-          <p class="text-muted mb-0 mt-1" v-if="create_state">
-            Select a campaign schedule for {{ getChannelLabel(create_state) }}
-          </p>
-        </div>
-      </template>
-
-      <template #default>
-        <div class="modal-body bg-light p-4">
-          <!-- Campaign Categories with smooth transitions -->
-          <transition-group name="fade-slide" mode="out-in">
-            <!-- Outbound Section -->
-            <div key="outbound" class="campaign-section mb-5">
-              <div class="section-header d-flex align-items-center mb-3">
-                <div class="icon-wrapper bg-primary bg-opacity-10 rounded p-2 me-3">
-                  <KTIcon icon-name="send" icon-class="text-primary fs-2"/>
-                </div>
-                <div>
-                  <h4 class="mb-0">Outbound Channels</h4>
-                  <small class="text-muted">Direct customer communication channels</small>
-                </div>
+    <template #default>
+      <div class="modal-body bg-light p-4">
+        <!-- Campaign Categories with smooth transitions -->
+        <transition-group name="fade-slide" mode="out-in">
+          <!-- Outbound Section -->
+          <div key="outbound" class="campaign-section mb-5">
+            <div class="section-header d-flex align-items-center mb-3">
+              <div class="icon-wrapper bg-primary bg-opacity-10 rounded p-2 me-3">
+                <KTIcon icon-name="send" icon-class="text-primary fs-2"/>
               </div>
-
-              <!-- Channel Selection Buttons -->
-              <div class="row g-3 mb-4">
-                <div class="col-md-4" v-for="channel in outboundChannels" :key="channel.type">
-                  <button
-                      class="channel-btn w-100 position-relative overflow-hidden"
-                      :class="{ 'active': create_state === channel.type }"
-                      @click="selectChannel(channel.type)">
-                    <div class="channel-content">
-                      <KTIcon :icon-name="channel.icon" icon-class="fs-2x mb-2" :class="channel.iconColor"/>
-                      <h6 class="mb-1">{{ channel.label }}</h6>
-                      <small class="text-muted">{{ channel.description }}</small>
-                    </div>
-                    <div class="expand-indicator">
-                      <KTIcon
-                          :icon-name="create_state === channel.type ? 'up' : 'down'"
-                          icon-type="solid"
-                          icon-class="fs-5"/>
-                    </div>
-                  </button>
-                </div>
+              <div>
+                <h4 class="mb-0">Outbound Channels</h4>
+                <small class="text-muted">Direct customer communication channels</small>
               </div>
-
-              <!-- Campaign Types for Outbound -->
-              <transition name="expand">
-                <div v-if="['push','email','sms'].includes(create_state)" class="campaign-types">
-                  <div class="types-label mb-3">
-                    <KTIcon icon-name="calendar" icon-class="text-primary me-2"/>
-                    <span class="fw-bold">Choose Campaign Schedule</span>
-                  </div>
-                  <div class="row g-3">
-                    <div
-                        class="col-md-4"
-                        v-for="(type, index) in getAvailableTypes(create_state)"
-                        :key="type.period"
-                        :style="{ animationDelay: `${index * 0.1}s` }">
-                      <button
-                          class="campaign-type-card h-100 w-100"
-                          @click="createCampaign(create_state, type.period)">
-                        <div class="card-icon mb-3">
-                          <img :src="getAssetPath(type.image)" :alt="type.label" class="type-image">
-                        </div>
-                        <h6 class="mb-2">{{ type.label }}</h6>
-                        <small class="text-muted d-block">{{ type.description }}</small>
-                        <div class="hover-arrow">
-                          <KTIcon icon-name="arrow-right" icon-class="text-primary"/>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </transition>
             </div>
 
-            <!-- Messaging Apps Section -->
-            <div key="messaging" class="campaign-section mb-5">
-              <div class="section-header d-flex align-items-center mb-3">
-                <div class="icon-wrapper bg-success bg-opacity-10 rounded p-2 me-3">
-                  <KTIcon icon-name="messages" icon-class="text-success fs-2"/>
-                </div>
-                <div>
-                  <h4 class="mb-0">Messaging Apps</h4>
-                  <small class="text-muted">Connect through popular messaging platforms</small>
-                </div>
-              </div>
-
-              <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                  <button
-                      class="channel-btn w-100"
-                      :class="{ 'active': create_state === 'whatsapp' }"
-                      @click="selectChannel('whatsapp')">
-                    <div class="channel-content">
-                      <KTIcon icon-name="whatsapp" icon-class="text-success fs-2x mb-2"/>
-                      <h6 class="mb-1">WhatsApp</h6>
-                      <small class="text-muted">Business messaging</small>
-                    </div>
-                    <div class="expand-indicator">
-                      <KTIcon
-                          :icon-name="create_state === 'whatsapp' ? 'up' : 'down'"
-                          icon-type="solid"
-                          icon-class="fs-5"/>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <transition name="expand">
-                <div v-if="create_state === 'whatsapp'" class="campaign-types">
-                  <div class="types-label mb-3">
-                    <KTIcon icon-name="calendar" icon-class="text-primary me-2"/>
-                    <span class="fw-bold">Choose Campaign Schedule</span>
+            <!-- Channel Selection Buttons -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-4" v-for="channel in outboundChannels" :key="channel.type">
+                <button
+                    class="channel-btn w-100 position-relative overflow-hidden"
+                    :class="{ 'active': create_state === channel.type }"
+                    @click="selectChannel(channel.type)">
+                  <div class="channel-content">
+                    <KTIcon :icon-name="channel.icon" icon-class="fs-2x mb-2" :class="channel.iconColor"/>
+                    <h6 class="mb-1">{{ channel.label }}</h6>
+                    <small class="text-muted">{{ channel.description }}</small>
                   </div>
-                  <div class="row g-3">
-                    <div
-                        class="col-md-4"
-                        v-for="(type, index) in basicCampaignTypes"
-                        :key="type.period"
-                        :style="{ animationDelay: `${index * 0.1}s` }">
-                      <button
-                          class="campaign-type-card h-100 w-100"
-                          @click="createCampaign('whatsapp', type.period)">
-                        <div class="card-icon mb-3">
-                          <img :src="getAssetPath(type.image)" :alt="type.label" class="type-image">
-                        </div>
-                        <h6 class="mb-2">{{ type.label }}</h6>
-                        <small class="text-muted d-block">{{ type.description }}</small>
-                        <div class="hover-arrow">
-                          <KTIcon icon-name="arrow-right" icon-class="text-primary"/>
-                        </div>
-                      </button>
-                    </div>
+                  <div class="expand-indicator">
+                    <KTIcon
+                        :icon-name="create_state === channel.type ? 'up' : 'down'"
+                        icon-type="solid"
+                        icon-class="fs-5"/>
                   </div>
-                </div>
-              </transition>
+                </button>
+              </div>
             </div>
 
-            <!-- Connectors Section -->
-            <div key="connectors" class="campaign-section">
-              <div class="section-header d-flex align-items-center mb-3">
-                <div class="icon-wrapper bg-info bg-opacity-10 rounded p-2 me-3">
-                  <KTIcon icon-name="element-plus" icon-class="text-info fs-2"/>
+            <!-- Campaign Types for Outbound -->
+            <transition name="expand">
+              <div v-if="['push','email','sms'].includes(create_state)" class="campaign-types">
+                <div class="types-label mb-3">
+                  <KTIcon icon-name="calendar" icon-class="text-primary me-2"/>
+                  <span class="fw-bold">Choose Campaign Schedule</span>
                 </div>
-                <div>
-                  <h4 class="mb-0">Custom Connectors</h4>
-                  <small class="text-muted">Integrate with custom endpoints and APIs</small>
-                </div>
-              </div>
-
-              <div class="row g-3 mb-4">
-                <div class="col-md-6">
-                  <button
-                      class="channel-btn w-100"
-                      :class="{ 'active': create_state === 'custom' }"
-                      @click="selectChannel('custom')">
-                    <div class="channel-content">
-                      <KTIcon icon-name="data" icon-class="text-info fs-2x mb-2"/>
-                      <h6 class="mb-1">Custom Integration</h6>
-                      <small class="text-muted">API-based campaigns</small>
-                    </div>
-                    <div class="expand-indicator">
-                      <KTIcon
-                          :icon-name="create_state === 'custom' ? 'up' : 'down'"
-                          icon-type="solid"
-                          icon-class="fs-5"/>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <transition name="expand">
-                <div v-if="create_state === 'custom'" class="campaign-types">
-                  <div class="types-label mb-3">
-                    <KTIcon icon-name="calendar" icon-class="text-primary me-2"/>
-                    <span class="fw-bold">Choose Campaign Schedule</span>
-                  </div>
-                  <div class="row g-3">
-                    <div
-                        class="col-md-4"
-                        v-for="(type, index) in basicCampaignTypes"
-                        :key="type.period"
-                        :style="{ animationDelay: `${index * 0.1}s` }">
-                      <button
-                          class="campaign-type-card h-100 w-100"
-                          @click="createCampaign('custom', type.period)">
-                        <div class="card-icon mb-3">
-                          <img :src="getAssetPath(type.image)" :alt="type.label" class="type-image">
-                        </div>
-                        <h6 class="mb-2">{{ type.label }}</h6>
-                        <small class="text-muted d-block">{{ type.description }}</small>
-                        <div class="hover-arrow">
-                          <KTIcon icon-name="arrow-right" icon-class="text-primary"/>
-                        </div>
-                      </button>
-                    </div>
+                <div class="row g-3">
+                  <div
+                      class="col-md-4"
+                      v-for="(type, index) in getAvailableTypes(create_state)"
+                      :key="type.period"
+                      :style="{ animationDelay: `${index * 0.1}s` }">
+                    <button
+                        class="campaign-type-card h-100 w-100"
+                        @click="createCampaign(create_state, type.period)">
+                      <div class="card-icon mb-3">
+                        <img :src="getAssetPath(type.image)" :alt="type.label" class="type-image">
+                      </div>
+                      <h6 class="mb-2">{{ type.label }}</h6>
+                      <small class="text-muted d-block">{{ type.description }}</small>
+                      <div class="hover-arrow">
+                        <KTIcon icon-name="arrow-right" icon-class="text-primary"/>
+                      </div>
+                    </button>
                   </div>
                 </div>
-              </transition>
+              </div>
+            </transition>
+          </div>
+
+          <!-- Messaging Apps Section -->
+          <div key="messaging" class="campaign-section mb-5">
+            <div class="section-header d-flex align-items-center mb-3">
+              <div class="icon-wrapper bg-success bg-opacity-10 rounded p-2 me-3">
+                <KTIcon icon-name="messages" icon-class="text-success fs-2"/>
+              </div>
+              <div>
+                <h4 class="mb-0">Messaging Apps</h4>
+                <small class="text-muted">Connect through popular messaging platforms</small>
+              </div>
             </div>
-          </transition-group>
-        </div>
-      </template>
-    </el-drawer>
 
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <button
+                    class="channel-btn w-100"
+                    :class="{ 'active': create_state === 'whatsapp' }"
+                    @click="selectChannel('whatsapp')">
+                  <div class="channel-content">
+                    <KTIcon icon-name="whatsapp" icon-class="text-success fs-2x mb-2"/>
+                    <h6 class="mb-1">WhatsApp</h6>
+                    <small class="text-muted">Business messaging</small>
+                  </div>
+                  <div class="expand-indicator">
+                    <KTIcon
+                        :icon-name="create_state === 'whatsapp' ? 'up' : 'down'"
+                        icon-type="solid"
+                        icon-class="fs-5"/>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <transition name="expand">
+              <div v-if="create_state === 'whatsapp'" class="campaign-types">
+                <div class="types-label mb-3">
+                  <KTIcon icon-name="calendar" icon-class="text-primary me-2"/>
+                  <span class="fw-bold">Choose Campaign Schedule</span>
+                </div>
+                <div class="row g-3">
+                  <div
+                      class="col-md-4"
+                      v-for="(type, index) in basicCampaignTypes"
+                      :key="type.period"
+                      :style="{ animationDelay: `${index * 0.1}s` }">
+                    <button
+                        class="campaign-type-card h-100 w-100"
+                        @click="createCampaign('whatsapp', type.period)">
+                      <div class="card-icon mb-3">
+                        <img :src="getAssetPath(type.image)" :alt="type.label" class="type-image">
+                      </div>
+                      <h6 class="mb-2">{{ type.label }}</h6>
+                      <small class="text-muted d-block">{{ type.description }}</small>
+                      <div class="hover-arrow">
+                        <KTIcon icon-name="arrow-right" icon-class="text-primary"/>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+
+          <!-- Connectors Section -->
+          <div key="connectors" class="campaign-section">
+            <div class="section-header d-flex align-items-center mb-3">
+              <div class="icon-wrapper bg-info bg-opacity-10 rounded p-2 me-3">
+                <KTIcon icon-name="element-plus" icon-class="text-info fs-2"/>
+              </div>
+              <div>
+                <h4 class="mb-0">Custom Connectors</h4>
+                <small class="text-muted">Integrate with custom endpoints and APIs</small>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <button
+                    class="channel-btn w-100"
+                    :class="{ 'active': create_state === 'custom' }"
+                    @click="selectChannel('custom')">
+                  <div class="channel-content">
+                    <KTIcon icon-name="data" icon-class="text-info fs-2x mb-2"/>
+                    <h6 class="mb-1">Custom Integration</h6>
+                    <small class="text-muted">API-based campaigns</small>
+                  </div>
+                  <div class="expand-indicator">
+                    <KTIcon
+                        :icon-name="create_state === 'custom' ? 'up' : 'down'"
+                        icon-type="solid"
+                        icon-class="fs-5"/>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <transition name="expand">
+              <div v-if="create_state === 'custom'" class="campaign-types">
+                <div class="types-label mb-3">
+                  <KTIcon icon-name="calendar" icon-class="text-primary me-2"/>
+                  <span class="fw-bold">Choose Campaign Schedule</span>
+                </div>
+                <div class="row g-3">
+                  <div
+                      class="col-md-4"
+                      v-for="(type, index) in basicCampaignTypes"
+                      :key="type.period"
+                      :style="{ animationDelay: `${index * 0.1}s` }">
+                    <button
+                        class="campaign-type-card h-100 w-100"
+                        @click="createCampaign('custom', type.period)">
+                      <div class="card-icon mb-3">
+                        <img :src="getAssetPath(type.image)" :alt="type.label" class="type-image">
+                      </div>
+                      <h6 class="mb-2">{{ type.label }}</h6>
+                      <small class="text-muted d-block">{{ type.description }}</small>
+                      <div class="hover-arrow">
+                        <KTIcon icon-name="arrow-right" icon-class="text-primary"/>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+        </transition-group>
+      </div>
+    </template>
+  </el-drawer>
 
 </template>
 
@@ -605,6 +621,7 @@ export default defineComponent({
         total: 0,
         per_page: 20
       },
+      statistics: {},
       items: [],
       create_state: '',
       drawer: false,
@@ -630,9 +647,10 @@ export default defineComponent({
       store.dispatch("moduleCampaign/getAllCampaigns", payload)
           .then(({data}) => {
             actionLoader("hide");
-            state.items = data.data;
-            // state.pagination.per_page = data.pagination.per_page;
-            // state.pagination.total = data.pagination.total_items;
+            state.items = data.data.campaigns;
+            state.pagination.per_page = data.data.pagination.per_page;
+            state.pagination.total = data.data.pagination.total_items;
+            state.statistics = data.data.statistics;
             updateMenu();
           })
           .catch((response) => {
@@ -679,8 +697,15 @@ export default defineComponent({
         params: {type, period}
       });
     }
+
+    const onChangePage = (e) => {
+      state.pagination.page = e;
+      fetchRequestApi();
+    };
+
     return {
       ...toRefs(state),
+      onChangePage,
       selectChannel,
       getChannelLabel,
       getAvailableTypes,
@@ -705,7 +730,7 @@ export default defineComponent({
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .section-header .icon-wrapper {
