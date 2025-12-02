@@ -15,6 +15,19 @@ export default {
     ADMIN_VERIFY: "/api/admin/profile",
     ADMIN_UPDATE_PROFILE: "/api/admin/update-profile",
 
+    // tags api routes
+    LIST_CAMPAIGNS: "/api/admin/campaigns",
+    CREATE_CAMPAIGN: "/api/admin/campaigns",
+    FIND_CAMPAIGN: "/api/admin/campaigns/:id",
+    DELETE_CAMPAIGN: "/api/admin/campaigns/:id",
+
+    // tags api routes
+    LIST_TAG: "/api/admin/tags",
+    CREATE_TAG: "/api/admin/tags",
+    FIND_TAG: "/api/admin/tags/:id",
+    UPDATE_TAG: "/api/admin/tags/:id",
+    DELETE_TAG: "/api/admin/tags/:id",
+
     // roles api routes
     LIST_ROLE: "/api/admin/admin-roles",
     LIST_ALL_ROLE: "/api/admin/admin-roles",
@@ -28,7 +41,7 @@ export default {
     LIST_ADMIN: "/api/admin/admins",
     CREATE_ADMIN: "/api/admin/admins",
     FIND_ADMIN: "/api/admin/admins/:id",
-    // UPDATE_STATUS_ADMIN: "/api/admin/admins/ban/:id",
+    // UPDATE_STATUS_ADMIN: "/api/admin/admins/status/:id",
     UPDATE_ADMIN: "/api/admin/admins/:id",
     DELETE_ADMIN: "/api/admin/admins/:id",
 };

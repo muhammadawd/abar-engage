@@ -9,7 +9,7 @@
 }
 
 body {
-    /*zoom: 0.85 !important;*/
+    zoom: 0.85 !important;
 }
 
 html[lang="ar"] body, html[lang="ar"] .section, html[lang="ar"] .h1, html[lang="ar"] .h2, html[lang="ar"] .h3, html[lang="ar"] .h4,
@@ -108,4 +108,16 @@ html[lang="ar"] .el-select__placeholder {
 }
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active{
     background-color: #2196F3!important;
+}
+
+.el-select__wrapper {
+    height: 48px !important; /* نفس ارتفاع form-control-lg */
+    min-height: 48px !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.el-input__inner {
+    height: 48px !important;
+    line-height: 48px !important;
 }

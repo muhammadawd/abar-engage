@@ -29,7 +29,7 @@ const actionLoader = (type): void => {
 };
 
 const getCountry = (): any => {
-    let country:any = window.localStorage.getItem("CURRENT_COUNTRY");
+    let country: any = window.localStorage.getItem("CURRENT_COUNTRY");
     return JSON.parse(country);
 };
 
@@ -300,8 +300,25 @@ const getMapStyles = () => {
     }];
 
 };
+const campaignStatusValues = (name = null) => {
+    const list = [
+        {value: 0, name: "DRAFT", label: "Draft", color: "#6b7280"},
+        {value: 1, name: "SCHEDULED", label: "Scheduled", color: "#3b82f6"},
+        {value: 2, name: "RUNNING", label: "Running", color: "#f59e0b"},
+        {value: 4, name: "COMPLETED", label: "Completed", color: "#10b981"},
+        {value: 7, name: "ACTIVE", label: "Active", color: "#8b5cf6"}
+    ];
+
+    if (name) {
+        return list.find((item) => item.name === name);
+    }
+
+    return list;
+};
+
 
 export {
+    campaignStatusValues,
     extractLatLng,
     momentHelper,
     actionLoader,

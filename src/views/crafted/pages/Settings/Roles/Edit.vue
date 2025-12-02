@@ -52,19 +52,51 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-3 mb-2" v-for="(permission,permissionKey) in permissions">
-                      <label
-                          class='form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack form-check-success'>
-                        {{ permission.name }}
-                        <input class='form-check-input form-check-sm'
-                               type='checkbox' name="permissions"
-                               v-model="model.permissions"
-                               :value="permission.id"/>
-                      </label>
+                  <ul class="nav nav-pills mb-4" id="permissionTabs" role="tablist">
+                    <li class="nav-item" v-for="(groupPermission, groupKey, index) in permissions" :key="groupKey">
+                      <button
+                          class="nav-link"
+                          :class="{ active: index === 0 }"
+                          :id="`tab-${groupKey}`"
+                          data-bs-toggle="pill"
+                          :data-bs-target="`#pane-${groupKey}`"
+                          type="button"
+                          role="tab"
+                      >
+                        {{ groupKey.toUpperCase() }}
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="permissionTabsContent">
+                    <div
+                        v-for="(groupPermission, groupKey, index) in permissions"
+                        class="tab-pane fade"
+                        :class="{ 'show active': index === 0 }"
+                        :id="`pane-${groupKey}`"
+                        role="tabpanel"
+                    >
+                      <div class="row">
+                        <div class="col-md-3 mb-2"
+                             v-for="(permission, pKey) in groupPermission"
+                             :key="permission.id">
+                          <label
+                              class='form-check form-switch text-capitalize form-switch-sm
+                   form-check-custom form-check-solid text-capitalize flex-stack form-check-success'
+                          >
+                            {{ groupKey }} {{ permission.name }}
+                            <input class='form-check-input form-check-sm'
+                                   type='checkbox'
+                                   name="permissions"
+                                   v-model="model.permissions"
+                                   :value="permission.id"/>
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="col-md-12  mt-3">
                   <button type="submit" class="btn btn-primary" :disabled="loading">
                     <slot v-if="loading"><i class="fa fa-spin fa-spinner"></i></slot>
@@ -153,7 +185,7 @@ export default defineComponent({
       store.dispatch("moduleRole/permissionRole", payload)
           .then(({data}) => {
             actionLoader("hide");
-            state.permissions = data.data.data || [];
+            state.permissions = data.data.permissions || [];
           })
           .catch((response) => {
             actionLoader("hide");

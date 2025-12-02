@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Roles/Index.vue"),
                 meta: {
                     pageTitle: "Roles List",
-                    breadcrumbs: ["Dashboards", "Roles", "Roles List"]
+                    breadcrumbs: ["Dashboard", "Roles", "Roles List"]
                 }
             },
             {
@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Roles/Create.vue"),
                 meta: {
                     pageTitle: "Roles Create",
-                    breadcrumbs: ["Dashboards", "Roles", "Roles Create"]
+                    breadcrumbs: ["Dashboard", "Roles", "Roles Create"]
                 }
             },
             {
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Roles/Edit.vue"),
                 meta: {
                     pageTitle: "Roles Edit",
-                    breadcrumbs: ["Dashboards", "Roles", "Roles Edit"]
+                    breadcrumbs: ["Dashboard", "Roles", "Roles Edit"]
                 }
             },
 
@@ -71,7 +71,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Admins/Index.vue"),
                 meta: {
                     pageTitle: "Admins List",
-                    breadcrumbs: ["Dashboards", "Admins", "Admins List"]
+                    breadcrumbs: ["Dashboard", "Admins", "Admins List"]
                 }
             },
             {
@@ -80,7 +80,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Admins/Create.vue"),
                 meta: {
                     pageTitle: "Admins Create",
-                    breadcrumbs: ["Dashboards", "Admins", "Admins Create"]
+                    breadcrumbs: ["Dashboard", "Admins", "Admins Create"]
                 }
             },
             {
@@ -89,7 +89,35 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Admins/Edit.vue"),
                 meta: {
                     pageTitle: "Admins Edit",
-                    breadcrumbs: ["Dashboards", "Admins", "Admins Edit"]
+                    breadcrumbs: ["Dashboard", "Admins", "Admins Edit"]
+                }
+            },
+
+            {
+                path: "/dashboard/engage/tags",
+                name: "list_tags",
+                component: () => import("@/views/crafted/pages/Settings/Tags/Index.vue"),
+                meta: {
+                    pageTitle: "Tags List",
+                    breadcrumbs: ["Dashboard", "Tags Management", "Tags List"]
+                }
+            },
+            {
+                path: "/dashboard/engage/tags/create",
+                name: "create_tag",
+                component: () => import("@/views/crafted/pages/Settings/Tags/Create.vue"),
+                meta: {
+                    pageTitle: "Tags Create",
+                    breadcrumbs: ["Dashboard", "Tags Management", "Tags Create"]
+                }
+            },
+            {
+                path: "/dashboard/engage/tags/edit/:id",
+                name: "edit_tag",
+                component: () => import("@/views/crafted/pages/Settings/Tags/Edit.vue"),
+                meta: {
+                    pageTitle: "Admins Edit",
+                    breadcrumbs: ["Dashboard", "Tags Management", "Tags Edit"]
                 }
             },
 
@@ -130,15 +158,34 @@ const routes: Array<RouteRecordRaw> = [
             //     },
             // },
             //
-            // {
-            //     path: "/engage/campaigns/stats",
-            //     name: "campaigns_stats",
-            //     component: () => import("@/views/crafted/pages/campaigns/Stats.vue"),
-            //     meta: {
-            //         pageTitle: "Campaigns",
-            //         breadcrumbs: ["Campaigns", "Campaigns Stats"],
-            //     },
-            // },
+            {
+                path: "/dashboard/engage/campaigns/stats",
+                name: "campaigns_stats",
+                component: () => import("@/views/crafted/pages/Campaigns/Stats.vue"),
+                meta: {
+                    pageTitle: "Campaigns Stats",
+                    breadcrumbs: ["Dashboard", "Campaigns", "Campaigns Stats"],
+                },
+            },
+            {
+                path: "/dashboard/engage/campaigns/create/:type/:period",
+                name: "create_campaigns",
+                component: () => import("@/views/crafted/pages/Campaigns/Add.vue"),
+                props: (route) => ({ campaignType: route.params.type as string, campaignPeriod: route.params.period as string }),
+                meta: {
+                    pageTitle: "Create Campaigns",
+                    breadcrumbs: ["Dashboard", "Campaigns", "Create Campaign"],
+                },
+            },
+            {
+                path: "/dashboard/engage/campaigns",
+                name: "campaigns",
+                component: () => import("@/views/crafted/pages/Campaigns/Index.vue"),
+                meta: {
+                    pageTitle: "All Campaigns",
+                    breadcrumbs: ["Dashboard", "Campaigns"],
+                },
+            },
             // {
             //     path: "/engage/flows",
             //     name: "flows",
@@ -146,24 +193,6 @@ const routes: Array<RouteRecordRaw> = [
             //     meta: {
             //         pageTitle: "Flows",
             //         breadcrumbs: ["Flows", "Template Flow"],
-            //     },
-            // },
-            // {
-            //     path: "/engage/campaigns/create/:type/:period",
-            //     name: "create_campaigns",
-            //     component: () => import("@/views/crafted/pages/campaigns/Add.vue"),
-            //     meta: {
-            //         pageTitle: "Campaigns",
-            //         breadcrumbs: ["Campaigns", "Create Campaign"],
-            //     },
-            // },
-            // {
-            //     path: "/engage/campaigns",
-            //     name: "campaigns",
-            //     component: () => import("@/views/crafted/pages/campaigns/Index.vue"),
-            //     meta: {
-            //         pageTitle: "Campaigns",
-            //         breadcrumbs: ["Campaigns"],
             //     },
             // },
         ],

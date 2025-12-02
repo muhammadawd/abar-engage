@@ -1,0 +1,50 @@
+<!-- ============================================ -->
+<!-- COMPONENT: CustomContentEditor.vue -->
+<!-- ============================================ -->
+<template>
+  <div class="card">
+    <div class="card-header bg-light">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div>
+          <h4 class="mb-0">Whatsapp</h4>
+          <p class="text-muted mb-0 mt-1">Configure Whatsapp request</p>
+        </div>
+        <div class="symbol symbol-circle symbol-50px p-2 bg-info">
+          <i class="ki-outline ki-code text-white fs-2"></i>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-5">
+
+      <div class="mb-4">
+        <label class="form-label required">Whatsapp Templates</label>
+        <el-select
+            v-model="modelValue.whatsapp.templateId"
+            placeholder="Select Whatsapp Template"
+            @input="emit('update')">
+        </el-select>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label required">Whatsapp Template Params</label>
+        <KeyValueEditor
+            v-model="modelValue.whatsapp.body"
+            @update="emit('update')"
+            placeholder-key="Key"
+            placeholder-value="Value"/>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import KeyValueEditor from './KeyValueEditor.vue';
+
+defineProps<{
+  modelValue: any;
+}>();
+
+const emit = defineEmits(['update']);
+
+</script>

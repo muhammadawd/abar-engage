@@ -91,26 +91,30 @@ const MainMenuConfig: Array<MenuItem> = [
             //         },
             //     ],
             // },
-            // {
-            //     sectionTitle: "Engage",
-            //     route: "/app/engage",
-            //     keenthemesIcon: "crown",
-            //     bootstrapIcon: "bi-printer",
-            //     sub: [
-            //         {
-            //             heading: "Campaigns",
-            //             route: "/engage/campaigns",
-            //         },
-            //         {
-            //             heading: "Flows",
-            //             route: "/engage/flows",
-            //         },
-            //         {
-            //             heading: "Drafts",
-            //             route: "/404",
-            //         },
-            //     ],
-            // },
+            {
+                sectionTitle: "Engage",
+                route: "/dashboard/engage",
+                keenthemesIcon: "crown",
+                bootstrapIcon: "bi-printer",
+                sub: [
+                    {
+                        heading: "Tags Management",
+                        route: "/dashboard/engage/tags",
+                    },
+                    {
+                        heading: "Campaigns",
+                        route: "/dashboard/engage/campaigns",
+                    },
+                    // {
+                    //     heading: "Flows",
+                    //     route: "/engage/flows",
+                    // },
+                    // {
+                    //     heading: "Drafts",
+                    //     route: "/404",
+                    // },
+                ],
+            },
             // {
             //     sectionTitle: "Inform",
             //     route: "/app/analyze/404",
@@ -200,7 +204,7 @@ const MainMenuConfig: Array<MenuItem> = [
                     {
                         heading: "Roles",
                         route: "/dashboard/settings/roles",
-                    },
+                    }
                 ],
             },
         ],
