@@ -220,7 +220,7 @@ const formData = ref({
   // Whatsapp specific
   whatsapp: {
     templateId: '',
-    body: [{key: '', value: ''}],
+    body: [],
   },
 
   // Custom connector
@@ -361,7 +361,7 @@ const submitCampaign = () => {
       RqPayload = {
         name: DTO.campaignName || "",
         description: DTO.description || "",
-        channel: "email",
+        channel: "push",
         campaign_type: "one_time",
         send_timing: DTO.schedule.sendOption,
         time_delivery: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.scheduleTime : null,
@@ -392,8 +392,8 @@ const submitCampaign = () => {
         start_date: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.sendDate : null,
         time_of_day: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.sendTime : null,
         content: {
-          templateId: DTO.whatsapp.templateId,
-          params: DTO.whatsapp.body || [],
+          template_name: DTO.whatsapp.templateId,
+          // params: DTO.whatsapp.body || [],
         },
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],
@@ -429,7 +429,7 @@ const submitCampaign = () => {
     store.dispatch("moduleCampaign/createCampaign", RqPayload)
         .then(({data}) => {
           actionLoader("hide");
-          router.push({name:'campaigns'})
+          router.push({name: 'campaigns'})
         })
         .catch((response) => {
           actionLoader("hide");
