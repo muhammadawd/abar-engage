@@ -20,6 +20,7 @@ export default {
     CREATE_CAMPAIGN: "/api/admin/campaigns",
     FIND_CAMPAIGN: "/api/admin/campaigns/:id",
     DELETE_CAMPAIGN: "/api/admin/campaigns/:id",
+    LIST_WHATSAPP_TEMPLATES: "/api/admin/campaigns/whatsapp-templates",
 
     // tags api routes
     LIST_TAG: "/api/admin/tags",

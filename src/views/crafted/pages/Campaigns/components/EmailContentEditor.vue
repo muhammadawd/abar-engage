@@ -5,12 +5,12 @@
 <template>
   <div class="card">
     <div class="card-header bg-light">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
           <h4 class="mb-0">Email Details</h4>
           <p class="text-muted mb-0 mt-1">Configure email content</p>
         </div>
-        <div class="symbol symbol-circle symbol-50px bg-primary">
+        <div class="symbol symbol-circle symbol-50px p-2 bg-primary">
           <i class="ki-outline ki-sms text-white fs-2"></i>
         </div>
       </div>
@@ -69,12 +69,20 @@
 
         <div class="col-12">
           <label class="form-label required">Email Content</label>
-          <textarea
-              v-model="modelValue.email.htmlContent"
-              class="form-control"
-              rows="12"
-              placeholder="Enter your email HTML content here..."
-              @input="emit('update')"></textarea>
+<!--          <textarea-->
+<!--              v-model="modelValue.email.htmlContent"-->
+<!--              class="form-control"-->
+<!--              rows="12"-->
+<!--              placeholder="Enter your email HTML content here..."-->
+<!--              @input="emit('update')"></textarea>-->
+
+          <QuillEditor
+              v-model:content="modelValue.email.htmlContent"
+              content-type="html"
+              theme="snow"
+              @update:content="emit('update')"
+              style="height: 300px; background: white;"
+          />
           <span class="form-text">You can use HTML tags for formatting</span>
         </div>
       </div>

@@ -85,9 +85,9 @@
         Launch Campaign
       </button>
     </div>
-<!--    <pre>-->
-<!--      {{ formData }}-->
-<!--    </pre>-->
+    <!--    <pre>-->
+    <!--      {{ formData }}-->
+    <!--    </pre>-->
   </div>
 </template>
 
@@ -106,12 +106,12 @@ const router = useRouter();
 const store = useStore();
 
 const state = reactive({
-  tags: []
-})
+  tags: [],
+});
+
 const fetchTagsRequestApi = () => {
   actionLoader("show");
   let payload = {};
-  // state.tags = [{id: 1, name: "Activation"}, {id: 2, name: "All Users"}];
   store.dispatch("moduleTag/getAllTags", payload)
       .then(({data}) => {
         actionLoader("hide");
@@ -122,6 +122,7 @@ const fetchTagsRequestApi = () => {
         handleResponseErr(response, i18n.t, router, store, {});
       });
 };
+
 
 onMounted(() => {
   fetchTagsRequestApi();
@@ -166,6 +167,7 @@ const steps: StepItem[] = [
 const formData = ref({
   // Step 1: Target Users
   campaignName: '',
+  description: '',
   campaignTags: [],
   contentType: 'promotional',
   filterUserOption: 'all_users',
@@ -173,7 +175,7 @@ const formData = ref({
     type: 'custom_segment',
     exOption: 'has_executed',
     event: '',
-    segment: '',
+    segment: 'all',
     eventCount: 'at_least',
     times: 1,
     eventPeriod: 'in_the_last',
@@ -310,11 +312,12 @@ const saveDraft = () => {
 const submitCampaign = () => {
   if (validateCurrentStep()) {
     let DTO = JSON.parse(JSON.stringify(formData.value))
+    let RqPayload = {};
 
     if (campaignType.value == 'sms' && campaignPeriod.value == 'one-time') {
-      console.log("SMS ONE TIME PAYLOAD", {
+      RqPayload = {
         name: DTO.campaignName || "",
-        description: "",
+        description: DTO.description || "",
         channel: "sms",
         campaign_type: "one_time",
         send_timing: DTO.schedule.sendOption,
@@ -328,13 +331,13 @@ const submitCampaign = () => {
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],
         segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
-      })
+      };
     }
 
     if (campaignType.value == 'email' && campaignPeriod.value == 'one-time') {
-      console.log("EMAIL ONE TIME PAYLOAD", {
+      RqPayload = {
         name: DTO.campaignName || "",
-        description: "",
+        description: DTO.description || "",
         channel: "email",
         campaign_type: "one_time",
         send_timing: DTO.schedule.sendOption,
@@ -351,13 +354,13 @@ const submitCampaign = () => {
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],
         segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
-      })
+      };
     }
 
     if (campaignType.value == 'push' && campaignPeriod.value == 'one-time') {
-      console.log("Push ONE TIME PAYLOAD", {
+      RqPayload = {
         name: DTO.campaignName || "",
-        description: "",
+        description: DTO.description || "",
         channel: "email",
         campaign_type: "one_time",
         send_timing: DTO.schedule.sendOption,
@@ -375,14 +378,14 @@ const submitCampaign = () => {
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],
         segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
-      })
+      };
     }
 
     if (campaignType.value == 'whatsapp' && campaignPeriod.value == 'one-time') {
-      console.log("Whatsapp ONE TIME PAYLOAD", {
+      RqPayload = {
         name: DTO.campaignName || "",
-        description: "",
-        channel: "email",
+        description: DTO.description || "",
+        channel: "whatsapp",
         campaign_type: "one_time",
         send_timing: DTO.schedule.sendOption,
         time_delivery: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.scheduleTime : null,
@@ -395,11 +398,44 @@ const submitCampaign = () => {
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],
         segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
-      })
+      };
     }
 
+    if (campaignType.value == 'custom' && campaignPeriod.value == 'one-time') {
+      RqPayload = {
+        name: DTO.campaignName || "",
+        description: DTO.description || "",
+        channel: "custom",
+        campaign_type: "one_time",
+        send_timing: DTO.schedule.sendOption,
+        time_delivery: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.scheduleTime : null,
+        start_date: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.sendDate : null,
+        time_of_day: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.sendTime : null,
+        content: {
+          method: DTO.custom.method,
+          webhookUrl: DTO.custom.webhookUrl,
+          bodyType: DTO.custom.bodyType,
+          params: DTO.custom.params || [],
+          headers: DTO.custom.headers || [],
+          body: DTO.custom.body || [],
+        },
+        tags: DTO.campaignTags || [],
+        target_platform: DTO.platforms || [],
+        segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
+      };
+    }
 
-    console.log('Submitting campaign...', formData.value);
+    actionLoader("show");
+    store.dispatch("moduleCampaign/createCampaign", RqPayload)
+        .then(({data}) => {
+          actionLoader("hide");
+          router.push({name:'campaigns'})
+        })
+        .catch((response) => {
+          actionLoader("hide");
+          handleResponseErr(response, i18n.t, router, store, {});
+        });
+    // console.log('Submitting campaign...', formData.value);
     // alert('Campaign launched successfully!');
   }
 };

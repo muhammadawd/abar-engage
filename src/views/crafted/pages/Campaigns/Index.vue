@@ -41,8 +41,8 @@
             <!--begin::Nav item-->
             <li class="nav-item mt-2">
               <a class="nav-link text-active-primary ms-0 me-10 py-5" href="javascript:void(0)"
-                 :class="filters.status == null ? 'active' : ''"
-                 @click="filters.status = null">
+                 :class="filters.filter == null ? 'active' : ''"
+                 @click="filters.filter = null;triggerFilter()">
                 {{ $t('all_campaigns') }}
                 &nbsp;
                 <label class="badge bg-gray-300 badge-circle">{{ statistics.all || 0 }}</label>
@@ -52,9 +52,9 @@
             <!--begin::Nav item-->
             <li class="nav-item mt-2">
               <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                 :class="filters.status == campaignStatusValues('ACTIVE').value ? 'active' : ''"
+                 :class="filters.filter == campaignStatusValues('ACTIVE').value ? 'active' : ''"
                  href="javascript:void(0)"
-                 @click="filters.status = campaignStatusValues('ACTIVE').value;triggerFilter()">
+                 @click="filters.filter = campaignStatusValues('ACTIVE').value;triggerFilter()">
                 {{ campaignStatusValues('ACTIVE').label }}
                 &nbsp;
                 <label class="badge bg-gray-300 badge-circle">{{ statistics.active || 0 }}</label></a>
@@ -63,9 +63,9 @@
             <!--begin::Nav item-->
             <li class="nav-item mt-2">
               <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                 :class="filters.status == campaignStatusValues('SCHEDULED').value ? 'active' : ''"
+                 :class="filters.filter == campaignStatusValues('SCHEDULED').value ? 'active' : ''"
                  href="javascript:void(0)"
-                 @click="filters.status = campaignStatusValues('SCHEDULED').value;triggerFilter()">
+                 @click="filters.filter = campaignStatusValues('SCHEDULED').value;triggerFilter()">
                 {{ campaignStatusValues('SCHEDULED').label }}
                 &nbsp;
                 <label class="badge bg-gray-300 badge-circle">{{ statistics.scheduled || 0 }}</label></a>
@@ -74,9 +74,9 @@
             <!--begin::Nav item-->
             <li class="nav-item mt-2">
               <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                 :class="filters.status == campaignStatusValues('RUN_YESTERDAY').value ? 'active' : ''"
+                 :class="filters.filter == campaignStatusValues('RUN_YESTERDAY').value ? 'active' : ''"
                  href="javascript:void(0)"
-                 @click="filters.status = campaignStatusValues('RUN_YESTERDAY').value;triggerFilter()">
+                 @click="filters.filter = campaignStatusValues('RUN_YESTERDAY').value;triggerFilter()">
                 {{ campaignStatusValues('RUN_YESTERDAY').label }}
                 &nbsp;
                 <label class="badge bg-gray-300 badge-circle">{{ statistics.run_yesterday || 0 }}</label></a>
@@ -85,9 +85,9 @@
             <!--begin::Nav item-->
             <li class="nav-item mt-2">
               <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                 :class="filters.status == campaignStatusValues('COMPLETED').value ? 'active' : ''"
+                 :class="filters.filter == campaignStatusValues('COMPLETED').value ? 'active' : ''"
                  href="javascript:void(0)"
-                 @click="filters.status = campaignStatusValues('COMPLETED').value;triggerFilter()">
+                 @click="filters.filter = campaignStatusValues('COMPLETED').value;triggerFilter()">
                 {{ campaignStatusValues('COMPLETED').label }}
                 &nbsp;
                 <label class="badge bg-gray-300 badge-circle">{{ statistics.completed || 0 }}</label></a>
@@ -154,9 +154,9 @@
                       <!--Active-->
                       <!--</label>-->
                       <!--&nbsp;-->
-                      <label class="badge bg-warning-subtle p-3">
-<!--                        <KTIcon icon-name="row-vertical" icon-class="text-warning" icon-type="outline"/>-->
-<!--                        &nbsp;-->
+                      <label class="badge p-3" :style="{background:campaignStatusValues(null,item.status_label).color}">
+                        <!--                        <KTIcon icon-name="row-vertical" icon-class="text-warning" icon-type="outline"/>-->
+                        <!--                        &nbsp;-->
                         {{ item.status_label }}
                       </label>
                     </div>
@@ -614,7 +614,8 @@ export default defineComponent({
       ],
       filters: {
         search: "",
-        status: null
+        status: null,
+        filter: null,
       },
       pagination: {
         page: 1,

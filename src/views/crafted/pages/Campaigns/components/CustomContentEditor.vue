@@ -6,12 +6,12 @@
 <template>
   <div class="card">
     <div class="card-header bg-light">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
           <h4 class="mb-0">Custom Connector</h4>
           <p class="text-muted mb-0 mt-1">Configure API request</p>
         </div>
-        <div class="symbol symbol-circle symbol-50px bg-info">
+        <div class="symbol symbol-circle symbol-50px p-2 bg-info">
           <i class="ki-outline ki-code text-white fs-2"></i>
         </div>
       </div>

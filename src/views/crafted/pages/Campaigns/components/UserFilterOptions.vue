@@ -124,7 +124,7 @@
     <transition name="fade">
       <div v-if="modelValue.type === 'custom_segment'" class="filter-content">
         <select v-model="modelValue.segment" class="form-select" @change="emit('update')">
-          <option value="">Select Segment</option>
+          <option value="all">List Segment</option>
           <option value="segment1">High Value Users</option>
           <option value="segment2">Recent Signups</option>
           <option value="segment3">Inactive Users</option>

@@ -77,6 +77,16 @@ import CampaignCreator from './CampaignCreator.vue';
             <span class="form-text">Hold Ctrl/Cmd to select multiple tags</span>
           </div>
 
+          <div class="col-md-12">
+            <label class="form-label">Description</label>
+            <input
+                v-model="localFormData.description"
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Enter campaign description"
+                @input="updateFormData"/>
+            <span class="form-text"></span>
+          </div>
           <div class="col-md-6" v-if="campaignType === 'email'">
             <label class="form-label">Content Type</label>
             <div class="d-flex gap-4">

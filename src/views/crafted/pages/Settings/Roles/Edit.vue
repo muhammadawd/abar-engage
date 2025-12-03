@@ -77,7 +77,7 @@
                         role="tabpanel"
                     >
                       <div class="row">
-                        <div class="col-md-3 mb-2"
+                        <div class="col-md-3 border p-3 border-dashed border-primary m-1 mb-2"
                              v-for="(permission, pKey) in groupPermission"
                              :key="permission.id">
                           <label

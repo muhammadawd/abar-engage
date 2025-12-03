@@ -19,6 +19,8 @@ import { initKtIcon } from "@/core/plugins/keenthemes";
 import { Vue3BsPaginate } from "vue3-bootstrap-paginate";
 import store from "@/stores/index";
 
+
+
 import "@/core/plugins/prismjs";
 
 const app = createApp(App);
@@ -35,6 +37,11 @@ initKtIcon(app);
 initVeeValidate();
 
 app.component("Vue3BsPaginate", Vue3BsPaginate);
+
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+app.component('QuillEditor', QuillEditor)
+
 
 app.use(i18n);
 

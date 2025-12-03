@@ -49,5 +49,17 @@ export default {
                 reject(response);
             });
         });
-    }
+    },
+    getAllWhatsappTemplates({commit, dispatch}, payload) {
+        return new Promise((resolve, reject) => {
+            ApiService.setHeader();
+            ApiService.setBaseUrl(requests.URL_BASE);
+            ApiService.query(requests.LIST_WHATSAPP_TEMPLATES, {params: payload})
+                .then((data) => {
+                    resolve(data);
+                }).catch((response) => {
+                reject(response);
+            });
+        });
+    },
 };

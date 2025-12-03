@@ -22,6 +22,10 @@
             v-model="modelValue.whatsapp.templateId"
             placeholder="Select Whatsapp Template"
             @input="emit('update')">
+          <el-option v-for="(template,templateKey) in (whatsappTemplates || [])"
+                     :key="templateKey"
+                     :label="template.template_label"
+                     :value="template.template_name"/>
         </el-select>
       </div>
 
@@ -40,6 +44,11 @@
 
 <script setup lang="ts">
 import KeyValueEditor from './KeyValueEditor.vue';
+import {actionLoader, handleResponseErr} from "@/core/helpers/mainHelpers";
+import {onMounted, ref} from "vue";
+import {useStore} from "vuex";
+
+const store = useStore();
 
 defineProps<{
   modelValue: any;
@@ -47,4 +56,19 @@ defineProps<{
 
 const emit = defineEmits(['update']);
 
+let whatsappTemplates = ref([]);
+const fetchCampaignRequestApi = () => {
+  actionLoader("show");
+  let payload = {};
+  store.dispatch("moduleCampaign/getAllWhatsappTemplates", payload)
+      .then(({data}) => {
+        actionLoader("hide");
+        whatsappTemplates.value = data.data || [];
+      })
+      .catch((response) => actionLoader("hide"));
+};
+
+onMounted(() => {
+  fetchCampaignRequestApi()
+})
 </script>
