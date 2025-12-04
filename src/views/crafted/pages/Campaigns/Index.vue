@@ -585,12 +585,12 @@ export default defineComponent({
           image: 'media/patterns/onetime.svg',
           description: 'Send once immediately'
         },
-        // {
-        //   period: 'periodic',
-        //   label: 'Periodic',
-        //   image: 'media/patterns/periodic.svg',
-        //   description: 'Recurring schedule'
-        // }
+        {
+          period: 'periodic',
+          label: 'Periodic',
+          image: 'media/patterns/periodic.svg',
+          description: 'Recurring schedule'
+        }
       ],
       advancedCampaignTypes: [
         {

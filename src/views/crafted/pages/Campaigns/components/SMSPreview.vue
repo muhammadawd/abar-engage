@@ -6,12 +6,30 @@
 <template>
   <div class="sms-preview">
     <div class="phone-mockup">
-      <div class="phone-screen">
-        <div class="sms-bubble">
-          <p>{{ content.content.message || 'Your SMS message will appear here...' }}</p>
-          <span class="sms-time">{{ currentTime }}</span>
+
+      <div class="preview-phone">
+        <div class="webBasicNotification ignore-lang">
+          <div class="mobileBackground"
+               :style="{backgroundImage: `url('${getAssetPath('/media/patterns/SMS_mockup.svg')}')`}">
+            <div style="" class="notificationWrapper">
+              <div class="messageWrapper" style="max-height: 348px;background: #eee">
+                <div class="messageWrapper__contentWrapper">
+                  <div class="messageWrapper__contentWrapper__message"
+                       style="max-height: 152px;min-height: 20px;padding-bottom: 20px; overflow: hidden; text-overflow: ellipsis;">
+                    {{ content.content.message || 'Your SMS message will appear here...' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+<!--      <div class="phone-screen">-->
+<!--        <div class="sms-bubble">-->
+<!--          <p>{{ content.content.message || 'Your SMS message will appear here...' }}</p>-->
+<!--          <span class="sms-time">{{ currentTime }}</span>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <p class="text-center text-muted mt-3">SMS Preview</p>
   </div>
@@ -19,6 +37,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import {getAssetPath} from "@/core/helpers/assets";
 
 defineProps<{
   content: any;
@@ -37,12 +56,13 @@ const currentTime = computed(() => {
 
 .phone-mockup {
   width: 100%;
-  max-width: 300px;
+  //max-width: 300px;
   margin: 0 auto;
-  padding: 40px 20px;
-  background: #f5f5f5;
-  border-radius: 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  left: 0;
+  //padding: 40px 20px;
+  //background: #f5f5f5;
+  //border-radius: 40px;
+  //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .phone-screen {

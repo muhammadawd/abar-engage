@@ -121,3 +121,122 @@ html[lang="ar"] .el-select__placeholder {
     height: 48px !important;
     line-height: 48px !important;
 }
+
+
+.messageWrapper__image {
+    text-align: center;
+    margin-bottom: 5px
+}
+
+.messageWrapper__image__div {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    max-height: 537px
+}
+
+.webBasicNotification .mobileBackground {
+    min-height: 620px;
+    background-repeat: no-repeat;
+    position: relative
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper {
+    position: absolute;
+    top: 272px;
+    left: 43px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper {
+    width: 346px;
+    background-color: #fff;
+    border-radius: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    border-bottom: 10px solid #fff;
+    overflow: hidden
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__iconWrapper {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    vertical-align: top
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__iconWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 7px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper {
+    vertical-align: top;
+    display: inline-block;
+    width: 88%;
+    padding-left: 10px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper__title {
+    font-weight: bold;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper__message {
+    margin-top: 2px;
+    text-overflow: ellipsis;
+    word-break: break-all
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper__image {
+    margin-top: 10px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper__image img {
+    max-height: 123px;
+    width: 100%;
+    object-fit: cover
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper .buttons {
+    margin-top: 15px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper .buttons__button {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper .buttons__button img {
+    vertical-align: middle;
+    height: 14px;
+    width: 14px;
+    object-fit: cover;
+    margin-right: 5px
+}
+
+.webBasicNotification .mobileBackground .notificationWrapper .messageWrapper__contentWrapper .buttons__button span {
+    white-space: pre;
+    vertical-align: middle
+}
+
+.webBasicNotification .mobileBackground .messageInfo {
+    margin-top: 20px;
+    width: 346px;
+    font-size: 13px;
+    padding: 9px;
+    background: #fadd90;
+    box-shadow: 0px 0px 16px rgba(201, 200, 200, .4);
+    border-radius: 4px;
+    text-align: center
+}

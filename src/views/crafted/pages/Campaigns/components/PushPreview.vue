@@ -3,40 +3,74 @@
 <!-- ============================================ -->
 <template>
   <div class="preview-phone">
+<!--    <div class="phone-frame">-->
+<!--      <div class="phone-screen">-->
+<!--        <div class="notification-wrapper">-->
+<!--          <div class="notification-content">-->
+<!--            <div class="notification-icon">-->
+<!--              <img class="bg-primary"-->
+<!--                   :src="getAssetPath('media/logos/default-small.svg')"-->
+<!--                   alt="icon"/>-->
+<!--            </div>-->
+<!--            <div class="notification-body">-->
+<!--              <div class="notification-title">-->
+<!--                {{ content.content.messageTitle || 'Notification Title' }}-->
+<!--              </div>-->
+<!--              <div class="notification-message">-->
+<!--                {{ content.content.message || 'Your message will appear here...' }}-->
+<!--              </div>-->
+<!--              <div class="notification-buttons" v-if="content.content.buttons.length > 0">-->
+<!--                <div-->
+<!--                    v-for="(button, index) in content.content.buttons.slice(0, 2)"-->
+<!--                    :key="index"-->
+<!--                    class="notification-button">-->
+<!--                  {{ button.title || 'Button' }}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="notification-image" v-if="content.content.image">-->
+<!--            <img class="bg-primary"-->
+<!--                 :src="getAssetPath('media/logos/default-small.svg')" alt="notification image"/>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <p class="text-center text-muted mt-3">Android Preview</p>-->
+
+
+    <div class="preview-phone">
     <div class="phone-frame">
-      <div class="phone-screen">
-        <div class="notification-wrapper">
-          <div class="notification-content">
-            <div class="notification-icon">
-              <img class="bg-primary"
-                   :src="getAssetPath('media/logos/default-small.svg')"
-                   alt="icon"/>
-            </div>
-            <div class="notification-body">
-              <div class="notification-title">
-                {{ content.content.messageTitle || 'Notification Title' }}
-              </div>
-              <div class="notification-message">
-                {{ content.content.message || 'Your message will appear here...' }}
-              </div>
-              <div class="notification-buttons" v-if="content.content.buttons.length > 0">
-                <div
-                    v-for="(button, index) in content.content.buttons.slice(0, 2)"
-                    :key="index"
-                    class="notification-button">
-                  {{ button.title || 'Button' }}
+      <div class="webBasicNotification ignore-lang">
+        <div class="mobileBackground w-100"
+             :style="{backgroundImage: `url('${getAssetPath('/media/patterns/android_frame.jpg')}')`}">
+          <div style="" class="notificationWrapper">
+            <div class="messageWrapper" style="max-height: 348px;">
+              <div class="messageWrapper__iconWrapper">
+                <img class="bg-primary p-1"
+                    :src="getAssetPath('media/logos/default-small.svg')"
+                  alt="logo"></div>
+              <div class="messageWrapper__contentWrapper">
+                <div class="messageWrapper__contentWrapper__title">
+                  {{ content.content.messageTitle || 'Notification Title' }}
+                </div>
+                <div class="messageWrapper__contentWrapper__message"
+                     style="max-height: 152px; overflow: hidden; text-overflow: ellipsis;">
+                  {{ content.content.message || 'Your SMS message will appear here...' }}
+                </div>
+                <div class="buttons">
+                  <div class="buttons__button" style="width: 24%;"
+                       v-for="(button, index) in content.content.buttons.slice(0, 2)">
+                    <span>{{ button.title || 'Button' }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="notification-image" v-if="content.content.image">
-            <img class="bg-primary"
-                 :src="getAssetPath('media/logos/default-small.svg')" alt="notification image"/>
-          </div>
         </div>
       </div>
     </div>
-    <p class="text-center text-muted mt-3">Android Preview</p>
+    </div>
   </div>
 </template>
 
@@ -56,11 +90,11 @@ defineProps<{
 
 .phone-frame {
   width: 100%;
-  max-width: 350px;
+  //max-width: 350px;
   margin: 0 auto;
   background: url('data:image/svg+xml,...') no-repeat center;
   background-size: contain;
-  padding: 60px 20px;
+  //padding: 60px 20px;
   position: relative;
 }
 

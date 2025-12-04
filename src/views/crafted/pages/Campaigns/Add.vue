@@ -277,28 +277,28 @@ const previousStep = () => {
 
 const validateCurrentStep = (): boolean => {
   switch (currentStep.value) {
-    case 1:
-      if (!formData.value.campaignName) {
-        alert('Please enter a campaign name');
-        return false;
-      }
-      if (formData.value.platforms.length === 0) {
-        alert('Please select at least one platform');
-        return false;
-      }
-      return true;
-    case 2:
-      if (campaignType.value === 'push' && !formData.value.content.message) {
-        alert('Please enter a message');
-        return false;
-      }
-      if (campaignType.value === 'email' && !formData.value.email.subject) {
-        alert('Please enter an email subject');
-        return false;
-      }
-      return true;
-    case 3:
-      return true;
+      case 1:
+        if (!formData.value.campaignName) {
+          alert('Please enter a campaign name');
+          return false;
+        }
+        if (formData.value.platforms.length === 0) {
+          alert('Please select at least one platform');
+          return false;
+        }
+        return true;
+      case 2:
+        if (campaignType.value === 'push' && !formData.value.content.message) {
+          alert('Please enter a message');
+          return false;
+        }
+        if (campaignType.value === 'email' && !formData.value.email.subject) {
+          alert('Please enter an email subject');
+          return false;
+        }
+        return true;
+      case 3:
+        return true;
     default:
       return true;
   }
@@ -308,6 +308,53 @@ const saveDraft = () => {
   console.log('Saving draft...', formData.value);
   alert('Campaign saved as draft!');
 };
+
+const getRecurringSwitcher = (dto) => {
+  if (dto.schedule.periodicValue == 'daily') {
+    return getRecurringDay(dto);
+  }
+  if (dto.schedule.periodicValue == 'weekly') {
+    return getRecurringWeek(dto);
+  }
+  if (dto.schedule.periodicValue == 'monthly') {
+    return getRecurringMonth(dto);
+  }
+};
+
+const getRecurringDay = (dto) => {
+  return {
+    "recurring_type": "daily",
+    "start_date": dto.schedule.sendDate,
+    "send_time": dto.schedule.sendTime,
+    "repeat_every": dto.schedule.periodicRepeatEvery,
+    "ends": dto.schedule.periodicEnds,
+    "end_date": dto.schedule.periodicEndsOn,
+    "occurrences": dto.schedule.periodicOccurrences,
+  }
+};
+const getRecurringWeek = (dto) => {
+  return {
+    "recurring_type": "weekly",
+    "start_date": dto.schedule.sendDate,
+    "send_time": dto.schedule.sendTime,
+    "repeat_every": dto.schedule.periodicRepeatEvery,
+    "repeat_on": dto.schedule.periodicWeeks || [],
+    "ends": dto.schedule.periodicEnds,
+    "end_date": dto.schedule.periodicEndsOn,
+    "occurrences": dto.schedule.periodicOccurrences,
+  }
+}
+const getRecurringMonth = (dto) => {
+  return {
+    "recurring_type": "monthly",
+    "start_date": dto.schedule.sendDate,
+    "send_time": dto.schedule.sendTime,
+    "repeat_every": dto.schedule.periodicRepeatEvery,
+    "ends": dto.schedule.periodicEnds,
+    "end_date": dto.schedule.periodicEndsOn,
+    "occurrences": dto.schedule.periodicOccurrences,
+  }
+}
 
 const submitCampaign = () => {
   if (validateCurrentStep()) {
@@ -425,6 +472,105 @@ const submitCampaign = () => {
       };
     }
 
+
+    if (campaignType.value == 'sms' && campaignPeriod.value == 'periodic') {
+      RqPayload = {
+        name: DTO.campaignName || "",
+        description: DTO.description || "",
+        channel: "sms",
+        campaign_type: "periodic",
+        recurring_schedule: getRecurringSwitcher(DTO),
+        content: {
+          message: DTO.content.message,
+          sms_sender: DTO.sms.sender
+        },
+        tags: DTO.campaignTags || [],
+        target_platform: DTO.platforms || [],
+        segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
+      };
+    }
+
+    if (campaignType.value == 'email' && campaignPeriod.value == 'periodic') {
+      RqPayload = {
+        name: DTO.campaignName || "",
+        description: DTO.description || "",
+        channel: "email",
+        campaign_type: "periodic",
+        recurring_schedule: getRecurringSwitcher(DTO),
+        content: {
+          subject: DTO.email.subject || '',
+          sender_name: DTO.email.senderName || '',
+          from_email_address: DTO.email.senderEmail || '',
+          reply_to_email_address: DTO.email.replyTo || '',
+          content: DTO.email.htmlContent || ''
+        },
+        tags: DTO.campaignTags || [],
+        target_platform: DTO.platforms || [],
+        segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
+      };
+    }
+
+    if (campaignType.value == 'push' && campaignPeriod.value == 'periodic') {
+      RqPayload = {
+        name: DTO.campaignName || "",
+        description: DTO.description || "",
+        channel: "push",
+        campaign_type: "periodic",
+        recurring_schedule: getRecurringSwitcher(DTO),
+        content: {
+          title: DTO.content.messageTitle,
+          message: DTO.content.message,
+          auto_dismiss: DTO.content.autoDismiss,
+          use_default_icon: true,
+          action_url: DTO.content.redirectUrl,
+          buttons: DTO.content.buttons || []
+        },
+        tags: DTO.campaignTags || [],
+        target_platform: DTO.platforms || [],
+        segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
+      };
+    }
+
+    if (campaignType.value == 'whatsapp' && campaignPeriod.value == 'periodic') {
+      RqPayload = {
+        name: DTO.campaignName || "",
+        description: DTO.description || "",
+        channel: "whatsapp",
+        campaign_type: "periodic",
+        recurring_schedule: getRecurringSwitcher(DTO),
+        content: {
+          template_name: DTO.whatsapp.templateId,
+          // params: DTO.whatsapp.body || [],
+        },
+        tags: DTO.campaignTags || [],
+        target_platform: DTO.platforms || [],
+        segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
+      };
+    }
+
+    if (campaignType.value == 'custom' && campaignPeriod.value == 'periodic') {
+      RqPayload = {
+        name: DTO.campaignName || "",
+        description: DTO.description || "",
+        channel: "custom",
+        campaign_type: "periodic",
+        recurring_schedule: getRecurringSwitcher(DTO),
+        content: {
+          method: DTO.custom.method,
+          webhookUrl: DTO.custom.webhookUrl,
+          bodyType: DTO.custom.bodyType,
+          params: DTO.custom.params || [],
+          headers: DTO.custom.headers || [],
+          body: DTO.custom.body || [],
+        },
+        tags: DTO.campaignTags || [],
+        target_platform: DTO.platforms || [],
+        segment_type: DTO.userOptions.type == "custom_segment" ? DTO.userOptions.segment : "all"
+      };
+    }
+
+    // periodic
+
     actionLoader("show");
     store.dispatch("moduleCampaign/createCampaign", RqPayload)
         .then(({data}) => {
@@ -435,6 +581,7 @@ const submitCampaign = () => {
           actionLoader("hide");
           handleResponseErr(response, i18n.t, router, store, {});
         });
+
     // console.log('Submitting campaign...', formData.value);
     // alert('Campaign launched successfully!');
   }
