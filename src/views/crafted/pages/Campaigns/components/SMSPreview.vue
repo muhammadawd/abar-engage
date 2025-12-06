@@ -36,12 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {getAssetPath} from "@/core/helpers/assets";
+import store from "@/stores";
 
 defineProps<{
   content: any;
 }>();
+
 
 const currentTime = computed(() => {
   return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });

@@ -15,7 +15,7 @@ export default {
     ADMIN_VERIFY: "/api/admin/profile",
     ADMIN_UPDATE_PROFILE: "/api/admin/update-profile",
 
-    // tags api routes
+    // campaigns api routes
     LIST_CAMPAIGNS: "/api/admin/campaigns",
     CREATE_CAMPAIGN: "/api/admin/campaigns",
     FIND_CAMPAIGN: "/api/admin/campaigns/:id",
@@ -28,6 +28,14 @@ export default {
     FIND_TAG: "/api/admin/tags/:id",
     UPDATE_TAG: "/api/admin/tags/:id",
     DELETE_TAG: "/api/admin/tags/:id",
+
+    // sms-templates api routes
+    LIST_SMS_PROVIDERS: "/api/admin/sms-providers/active",
+    LIST_SMS_TEMPLATES: "/api/admin/sms-templates",
+    CREATE_SMS_TEMPLATE: "/api/admin/sms-templates",
+    FIND_SMS_TEMPLATE: "/api/admin/sms-templates/:id",
+    UPDATE_SMS_TEMPLATE: "/api/admin/sms-templates/:id",
+    DELETE_SMS_TEMPLATE: "/api/admin/sms-templates/:id",
 
     // roles api routes
     LIST_ROLE: "/api/admin/admin-roles",

@@ -116,8 +116,36 @@ const routes: Array<RouteRecordRaw> = [
                 name: "edit_tag",
                 component: () => import("@/views/crafted/pages/Settings/Tags/Edit.vue"),
                 meta: {
-                    pageTitle: "Admins Edit",
+                    pageTitle: "Tags Edit",
                     breadcrumbs: ["Dashboard", "Tags Management", "Tags Edit"]
+                }
+            },
+
+            {
+                path: "/dashboard/engage/sms-templates",
+                name: "list_sms_templates",
+                component: () => import("@/views/crafted/pages/Settings/SMSTemplates/Index.vue"),
+                meta: {
+                    pageTitle: "SMS Template List",
+                    breadcrumbs: ["Dashboard", "SMS Template Management", "SMS Template List"]
+                }
+            },
+            {
+                path: "/dashboard/engage/sms-templates/create",
+                name: "create_sms_template",
+                component: () => import("@/views/crafted/pages/Settings/SMSTemplates/Create.vue"),
+                meta: {
+                    pageTitle: "SMS Template Create",
+                    breadcrumbs: ["Dashboard", "SMS Template Management", "SMS Template Create"]
+                }
+            },
+            {
+                path: "/dashboard/engage/sms-templates/edit/:id",
+                name: "edit_sms_template",
+                component: () => import("@/views/crafted/pages/Settings/SMSTemplates/Edit.vue"),
+                meta: {
+                    pageTitle: "SMS Template Edit",
+                    breadcrumbs: ["Dashboard", "SMS Template Management", "SMS Template Edit"]
                 }
             },
 

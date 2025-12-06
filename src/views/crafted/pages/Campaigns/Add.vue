@@ -213,8 +213,8 @@ const formData = ref({
 
   // SMS specific
   sms: {
-    sender: '',
-    templateId: ''
+    sms_provider_id:'',
+    template: ''
   },
 
   // Whatsapp specific
@@ -373,7 +373,8 @@ const submitCampaign = () => {
         time_of_day: DTO.schedule.sendOption == "at_specific_date_time" ? DTO.schedule.sendTime : null,
         content: {
           message: DTO.content.message,
-          sms_sender: DTO.sms.sender
+          sms: DTO.sms.templateId,
+          sms_provider_id: DTO.sms.sms_provider_id
         },
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],
@@ -482,7 +483,8 @@ const submitCampaign = () => {
         recurring_schedule: getRecurringSwitcher(DTO),
         content: {
           message: DTO.content.message,
-          sms_sender: DTO.sms.sender
+          sms: DTO.sms.templateId,
+          sms_provider_id: DTO.sms.sms_provider_id
         },
         tags: DTO.campaignTags || [],
         target_platform: DTO.platforms || [],

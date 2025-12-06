@@ -1,4 +1,3 @@
-
 <!-- ============================================ -->
 <!-- COMPONENT: SMSContentEditor.vue -->
 <!-- ============================================ -->
@@ -18,11 +17,11 @@
     <div class="card-body p-5">
       <div class="mb-4">
         <label class="form-label required">SMS Sender</label>
-        <select class="form-select" v-model="modelValue.sms.sender" @change="emit('update')">
-          <option value="">Select Sender Provider</option>
-          <option value="twilio">Twilio</option>
-          <option value="aws">AWS SNS</option>
-          <option value="plivo">Plivo</option>
+        <select class="form-select" v-model="modelValue.sms.sms_provider_id" @change="emit('update')">
+          <option v-for="(smsProvider,smsProviderKey) in smsProviders" :value="smsProvider.id">{{
+              smsProvider.name
+            }}
+          </option>
         </select>
       </div>
 
@@ -33,12 +32,13 @@
 
       <div class="mb-4">
         <label class="form-label">Template ID</label>
-        <input
-            type="text"
-            v-model="modelValue.sms.templateId"
-            class="form-control"
-            placeholder="Enter template ID (if required)"
-            @input="emit('update')" />
+        <select class="form-select" v-model="modelValue.sms.template"
+                @change="emit('update');modelValue.content.message = modelValue.sms.template.message">
+          <option v-for="(smsTemplate,smsTemplateKey) in smsTemplates" :value="smsTemplate">
+            {{ smsTemplate.name }}
+          </option>
+        </select>
+
       </div>
 
       <div>
@@ -60,9 +60,22 @@
 </template>
 
 <script setup lang="ts">
+import {onMounted, ref} from "vue";
+import store from "@/stores";
+
 defineProps<{
   modelValue: any;
 }>();
 
+const smsProviders = ref([]);
+const smsTemplates = ref([]);
+onMounted(() => {
+  store.dispatch("moduleSmsTemplate/getAllSmsProviders", {}).then(({data}) => {
+    smsProviders.value = data.data;
+  })
+  store.dispatch("moduleSmsTemplate/getAllSmsTemplates", {}).then(({data}) => {
+    smsTemplates.value = data.data;
+  })
+});
 const emit = defineEmits(['update']);
 </script>

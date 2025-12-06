@@ -102,6 +102,10 @@ const MainMenuConfig: Array<MenuItem> = [
                         route: "/dashboard/engage/tags",
                     },
                     {
+                        heading: "SMS Templates",
+                        route: "/dashboard/engage/sms-templates",
+                    },
+                    {
                         heading: "Campaigns",
                         route: "/dashboard/engage/campaigns",
                     },
