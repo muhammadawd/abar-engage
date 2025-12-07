@@ -125,10 +125,11 @@
       <div v-if="modelValue.type === 'custom_segment'" class="filter-content">
         <select v-model="modelValue.segment" class="form-select" @change="emit('update')">
           <option value="all">List Segment</option>
-          <option value="segment1">High Value Users</option>
-          <option value="segment2">Recent Signups</option>
-          <option value="segment3">Inactive Users</option>
-          <option value="segment4">VIP Customers</option>
+          <option value="new_user">New Users</option>
+          <option value="idle_user">Idle Users</option>
+          <option value="new_customer">New Customer</option>
+          <option value="active_customer">Active Customers</option>
+          <option value="churned_customer">Churned Customers</option>
         </select>
       </div>
     </transition>

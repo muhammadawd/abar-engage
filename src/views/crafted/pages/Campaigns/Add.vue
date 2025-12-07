@@ -183,7 +183,7 @@ const formData = ref({
     periodTimesOperator: 'days',
     attributes: []
   },
-  platforms: [],
+  platforms: ['ios', 'android', 'web'],
   controlGroup: {
     global: false,
     campaign: false
@@ -213,14 +213,14 @@ const formData = ref({
 
   // SMS specific
   sms: {
-    sms_provider_id:'',
+    sms_provider_id: '',
     template: ''
   },
 
   // Whatsapp specific
   whatsapp: {
     templateId: '',
-    content:'',
+    content: '',
     body: [],
   },
 
@@ -278,28 +278,28 @@ const previousStep = () => {
 
 const validateCurrentStep = (): boolean => {
   switch (currentStep.value) {
-      case 1:
-        if (!formData.value.campaignName) {
-          alert('Please enter a campaign name');
-          return false;
-        }
-        if (formData.value.platforms.length === 0) {
-          alert('Please select at least one platform');
-          return false;
-        }
-        return true;
-      case 2:
-        if (campaignType.value === 'push' && !formData.value.content.message) {
-          alert('Please enter a message');
-          return false;
-        }
-        if (campaignType.value === 'email' && !formData.value.email.subject) {
-          alert('Please enter an email subject');
-          return false;
-        }
-        return true;
-      case 3:
-        return true;
+    case 1:
+      if (!formData.value.campaignName) {
+        alert('Please enter a campaign name');
+        return false;
+      }
+      if (formData.value.platforms.length === 0) {
+        alert('Please select at least one platform');
+        return false;
+      }
+      return true;
+    case 2:
+      if (campaignType.value === 'push' && !formData.value.content.message) {
+        alert('Please enter a message');
+        return false;
+      }
+      if (campaignType.value === 'email' && !formData.value.email.subject) {
+        alert('Please enter an email subject');
+        return false;
+      }
+      return true;
+    case 3:
+      return true;
     default:
       return true;
   }

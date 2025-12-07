@@ -62,4 +62,16 @@ export default {
             });
         });
     },
+    getCountUsersForTemplates({commit, dispatch}, payload) {
+        return new Promise((resolve, reject) => {
+            ApiService.setHeader();
+            ApiService.setBaseUrl(requests.URL_BASE);
+            ApiService.post(requests.LIST_COUNT_USER_TEMPLATES, payload)
+                .then((data) => {
+                    resolve(data);
+                }).catch((response) => {
+                reject(response);
+            });
+        });
+    },
 };

@@ -176,13 +176,13 @@ import CampaignCreator from './CampaignCreator.vue';
         <div class="mt-5">
           <button
               class="btn btn-light-primary"
-              @click="showUserCount = !showUserCount">
+              @click="fetchUserCountTemplate()">
             <i class="ki-outline ki-chart-simple me-2"></i>
-            {{ showUserCount ? 'Hide' : 'Show' }} Estimated Reach
+            {{ showUserCount ? '' : '' }} Estimated Reach
           </button>
 
           <transition name="expand">
-            <UserCountPreview v-if="showUserCount" class="mt-4"/>
+            <UserCountPreview v-if="showUserCount" :previewData="previewData" class="mt-4"/>
           </transition>
         </div>
       </div>
@@ -262,12 +262,21 @@ import CampaignCreator from './CampaignCreator.vue';
 import {reactive, watch, ref} from 'vue';
 import UserFilterOptions from '../components/UserFilterOptions.vue';
 import UserCountPreview from '../components/UserCountPreview.vue';
+import {actionLoader, handleResponseErr} from "@/core/helpers/mainHelpers";
+import {useI18n} from "vue-i18n";
+import {useRouter,useRoute} from "vue-router";
+import {useStore} from "vuex";
 
 interface Props {
   formData: any;
   fetchedDataState: any;
   campaignType: string;
 }
+
+const i18n = useI18n();
+const router = useRouter();
+const route = useRoute();
+const store = useStore();
 
 const props = defineProps<Props>();
 const emit = defineEmits(['update:formData']);
@@ -280,6 +289,7 @@ const localFormData = reactive({
 });
 
 const showUserCount = ref(false);
+const previewData = ref(null);
 
 const platforms = [
   {
@@ -318,6 +328,23 @@ const togglePlatform = (platform: string) => {
   }
   updateFormData();
 };
+
+const fetchUserCountTemplate = () => {
+  actionLoader("show");
+  previewData.value = null;
+  store.dispatch("moduleCampaign/getCountUsersForTemplates", {
+    channel: route.params.type,
+    segment_type: props.formData.userOptions.segment,
+    platforms: props.formData.platforms
+  }).then(({data}) => {
+    showUserCount.value = true
+    previewData.value = data.data
+    actionLoader("hide");
+  }).catch((response) => {
+    actionLoader("hide");
+    handleResponseErr(response, i18n.t, router, store, {});
+  });
+}
 
 watch(() => props.formData, (newVal) => {
   Object.assign(localFormData, newVal);

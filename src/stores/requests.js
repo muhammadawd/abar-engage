@@ -21,6 +21,7 @@ export default {
     FIND_CAMPAIGN: "/api/admin/campaigns/:id",
     DELETE_CAMPAIGN: "/api/admin/campaigns/:id",
     LIST_WHATSAPP_TEMPLATES: "/api/admin/campaigns/whatsapp-templates",
+    LIST_COUNT_USER_TEMPLATES: "/api/admin/campaigns/calculate-audience-reach",
 
     // tags api routes
     LIST_TAG: "/api/admin/tags",
