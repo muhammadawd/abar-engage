@@ -220,6 +220,7 @@ const formData = ref({
   // Whatsapp specific
   whatsapp: {
     templateId: '',
+    content:'',
     body: [],
   },
 

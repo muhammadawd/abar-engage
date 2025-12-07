@@ -19,7 +19,7 @@
         <label class="form-label required">SMS Sender</label>
         <select class="form-select" v-model="modelValue.sms.sms_provider_id" @change="emit('update')">
           <option v-for="(smsProvider,smsProviderKey) in smsProviders" :value="smsProvider.id">{{
-              smsProvider.name
+              smsProvider.display_name
             }}
           </option>
         </select>

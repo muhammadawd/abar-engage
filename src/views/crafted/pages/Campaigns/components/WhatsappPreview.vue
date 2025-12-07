@@ -2,14 +2,11 @@
   <div class="whatsapp-preview">
     <div class="phone-mockup">
       <div class="phone-screen whatsapp-bg">
-        <div class="whatsapp-bubble">
-          <p>{{ content.content.message || "Your WhatsApp message will appear here..." }}</p>
+        <div class="whatsapp-bubble" style="text-align: right">
+          <p v-html="content.whatsapp.content || 'Your WhatsApp message will appear here...'"></p>
 
-          <div class="bubble-footer">
+          <div class="bubble-footer" style="text-align: left">
             <span class="time">{{ currentTime }}</span>
-            <span class="check">
-              ✓✓
-            </span>
           </div>
         </div>
       </div>
@@ -20,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import {computed} from "vue";
 
 defineProps<{
   content: any;
@@ -105,7 +102,7 @@ const currentTime = computed(() => {
 .bubble-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 4px;
 }
 
