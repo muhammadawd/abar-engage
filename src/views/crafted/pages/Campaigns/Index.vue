@@ -26,7 +26,7 @@
           <KTIcon icon-name="graph" icon-type="outline"/>
           {{ $t('campaign_stats') }}
         </a>
-        <a href="#"
+        <a href="javascript:void(0)"
            class="btn btn-sm fw-bold btn-primary" @click="drawer = true">
           <KTIcon icon-name="plus" icon-type="outline"/>
           {{ $t('create_campaign') }}

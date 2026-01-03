@@ -7,6 +7,7 @@ import moduleSmsTemplate from "@/stores/modules/sms_templates/moduleSmsTemplate"
 import moduleSetting from "@/stores/modules/settings/moduleSetting";
 import moduleRole from "@/stores/modules/roles/moduleRole";
 import moduleCampaign from "@/stores/modules/campaigns/moduleCampaign";
+import moduleFlow from "@/stores/modules/flows/moduleFlow";
 
 config.rawError = true;
 
@@ -18,6 +19,7 @@ const store = createStore({
         moduleSmsTemplate,
         moduleSetting,
         moduleCampaign,
+        moduleFlow,
         moduleRole
     }
 });

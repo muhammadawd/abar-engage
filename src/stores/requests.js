@@ -23,6 +23,11 @@ export default {
     LIST_WHATSAPP_TEMPLATES: "/api/admin/campaigns/whatsapp-templates",
     LIST_COUNT_USER_TEMPLATES: "/api/admin/campaigns/calculate-audience-reach",
 
+    // flows api routes
+    LIST_FLOWS: "/api/admin/journeys",
+    CREATE_FLOW_STEP_1: "/api/admin/journeys/start",
+    FIND_FLOW: "/api/admin/journeys/:id",
+
     // tags api routes
     LIST_TAG: "/api/admin/tags",
     CREATE_TAG: "/api/admin/tags",

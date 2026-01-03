@@ -1,6 +1,7 @@
 import {
     createRouter,
     createWebHistory,
+    createWebHashHistory,
     type RouteRecordRaw,
 } from "vue-router";
 import {useAuthStore} from "@/stores/auth";
@@ -33,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/crafted/pages/Settings/Profile.vue"),
                 meta: {
                     pageTitle: "Profile",
-                    breadcrumbs: ["Dashboard","Settings","Profile"],
+                    breadcrumbs: ["Dashboard", "Settings", "Profile"],
                 },
             },
 
@@ -149,6 +150,16 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
 
+            {
+                path: "/analyze/users",
+                name: "segments",
+                component: () => import("@/views/crafted/pages/Analyze/Users/Index.vue"),
+                meta: {
+                    pageTitle: "Analyze Users",
+                    breadcrumbs: ["Analyze Users"],
+                },
+            },
+
             // {
             //     path: "/segment/all",
             //     name: "segments",
@@ -199,7 +210,10 @@ const routes: Array<RouteRecordRaw> = [
                 path: "/dashboard/engage/campaigns/create/:type/:period",
                 name: "create_campaigns",
                 component: () => import("@/views/crafted/pages/Campaigns/Add.vue"),
-                props: (route) => ({ campaignType: route.params.type as string, campaignPeriod: route.params.period as string }),
+                props: (route) => ({
+                    campaignType: route.params.type as string,
+                    campaignPeriod: route.params.period as string
+                }),
                 meta: {
                     pageTitle: "Create Campaigns",
                     breadcrumbs: ["Dashboard", "Campaigns", "Create Campaign"],
@@ -214,15 +228,34 @@ const routes: Array<RouteRecordRaw> = [
                     breadcrumbs: ["Dashboard", "Campaigns"],
                 },
             },
-            // {
-            //     path: "/engage/flows",
-            //     name: "flows",
-            //     component: () => import("@/views/crafted/pages/flows/Index.vue"),
-            //     meta: {
-            //         pageTitle: "Flows",
-            //         breadcrumbs: ["Flows", "Template Flow"],
-            //     },
-            // },
+
+            {
+                path: "/dashboard/engage/flows",
+                name: "flows",
+                component: () => import("@/views/crafted/pages/Flows/Index.vue"),
+                meta: {
+                    pageTitle: "Flows",
+                    breadcrumbs: ["Flows", "ALL Flow"],
+                },
+            },
+            {
+                path: "/dashboard/engage/flows/create",
+                name: "create_flows",
+                component: () => import("@/views/crafted/pages/Flows/Add.vue"),
+                meta: {
+                    pageTitle: "Create Flows",
+                    breadcrumbs: ["Flows", "Create Flow"],
+                },
+            },
+            {
+                path: "/dashboard/engage/flows/create/:id/step2",
+                name: "create_flow_step2",
+                component: () => import("@/views/crafted/pages/Flows/AddStep2.vue"),
+                meta: {
+                    pageTitle: "Create Flows",
+                    breadcrumbs: ["Flows", "Create Step 2 Flow"],
+                },
+            },
         ],
     },
     {
@@ -297,7 +330,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(import.meta.env.BASE_URL),
     routes,
     scrollBehavior(to) {
         // If the route has a hash, scroll to the section with the specified ID; otherwise, scroll to the top of the page.

@@ -13,52 +13,52 @@ const MainMenuConfig: Array<MenuItem> = [
     },
     {
         heading: "App",
-        route: "/app",
+        route: "/analyze",
         pages: [
-            // {
-            //     sectionTitle: "Analyze",
-            //     route: "/app/analyze/404",
-            //     keenthemesIcon: "graph",
-            //     bootstrapIcon: "bi-printer",
-            //     sub: [
-            //         {
-            //             heading: "MY Studio",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Users",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Behavior",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Funnels",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Retention",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Session And Source",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "User Path",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Acquisition",
-            //             route: "/404",
-            //         },
-            //         {
-            //             heading: "Uninstalls",
-            //             route: "/404",
-            //         },
-            //     ],
-            // },
+            {
+                sectionTitle: "Analyze",
+                route: "/analyze",
+                keenthemesIcon: "graph",
+                bootstrapIcon: "bi-printer",
+                sub: [
+                    // {
+                    //     heading: "MY Studio",
+                    //     route: "/404",
+                    // },
+                    {
+                        heading: "Users",
+                        route: "/analyze/users",
+                    },
+                    // {
+                    //     heading: "Behavior",
+                    //     route: "/404",
+                    // },
+                    // {
+                    //     heading: "Funnels",
+                    //     route: "/404",
+                    // },
+                    // {
+                    //     heading: "Retention",
+                    //     route: "/404",
+                    // },
+                    // {
+                    //     heading: "Session And Source",
+                    //     route: "/404",
+                    // },
+                    // {
+                    //     heading: "User Path",
+                    //     route: "/404",
+                    // },
+                    // {
+                    //     heading: "Acquisition",
+                    //     route: "/404",
+                    // },
+                    // {
+                    //     heading: "Uninstalls",
+                    //     route: "/404",
+                    // },
+                ],
+            },
             // {
             //     sectionTitle: "Segment",
             //     route: "/app/segment",
@@ -109,10 +109,10 @@ const MainMenuConfig: Array<MenuItem> = [
                         heading: "Campaigns",
                         route: "/dashboard/engage/campaigns",
                     },
-                    // {
-                    //     heading: "Flows",
-                    //     route: "/engage/flows",
-                    // },
+                    {
+                        heading: "Flows",
+                        route: "/dashboard/engage/flows",
+                    },
                     // {
                     //     heading: "Drafts",
                     //     route: "/404",

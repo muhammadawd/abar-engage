@@ -1,45 +1,4 @@
 <!-- ============================================ -->
-<!-- USAGE EXAMPLE -->
-<!-- ============================================ -->
-<!--
-// In your main component or router view:
-
-<template>
-  <CampaignCreator
-    :campaignType="$route.params.type"
-    :campaignPeriod="$route.params.period" />
-</template>
-
-<script setup>
-import CampaignCreator from './CampaignCreator.vue';
-</script>
-
-// Component file structure:
-// src/
-//   components/
-//     campaigns/
-//       CampaignCreator.vue
-//       steps/
-//         StepTargetUsers.vue
-//         StepContent.vue
-//         StepSchedule.vue
-//       components/
-//         UserFilterOptions.vue
-//         UserCountPreview.vue
-//         PushContentEditor.vue
-//         PushPreview.vue
-//         EmailContentEditor.vue
-//         EmailPreview.vue
-//         SMSContentEditor.vue
-//         SMSPreview.vue
-//         CustomContentEditor.vue
-//         KeyValueEditor.vue
-//         OneTimeScheduler.vue
-//         PeriodicScheduler.vue
-//         EventTriggeredScheduler.vue
--->
-
-<!-- ============================================ -->
 <!-- STEP 1: StepTargetUsers.vue -->
 <!-- ============================================ -->
 <template>
