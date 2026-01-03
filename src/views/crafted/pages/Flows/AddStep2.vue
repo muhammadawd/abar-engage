@@ -151,6 +151,20 @@ const formData = ref({
       endOption: 'never',
       endDate: '',
       occurrences: 1
+    },
+    // Flow schedule used for event-trigger / flow-exit entry modes
+    flowSchedule: {
+      whenOption: 'immediately', // 'immediately' | 'with_delay'
+      delaySeconds: 0,
+
+      // Start options
+      startOption: 'as_soon_as_possible', // 'as_soon_as_possible' | 'at_specific_date_time'
+      startDate: '',
+      startTime: '',
+
+      // Ends for flow schedule
+      endOption: 'never', // 'never' | 'on'
+      endDate: ''
     }
   },
 
