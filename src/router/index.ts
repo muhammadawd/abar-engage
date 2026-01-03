@@ -256,6 +256,15 @@ const routes: Array<RouteRecordRaw> = [
                     breadcrumbs: ["Flows", "Create Step 2 Flow"],
                 },
             },
+            {
+                path: "/dashboard/engage/flows/create/:id/step3",
+                name: "create_flow_step3",
+                component: () => import("@/views/crafted/pages/Flows/AddStep3.vue"),
+                meta: {
+                    pageTitle: "Create Flows",
+                    breadcrumbs: ["Flows", "Create Step 3 Flow"],
+                },
+            },
         ],
     },
     {

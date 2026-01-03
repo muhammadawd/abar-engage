@@ -193,8 +193,8 @@ const validateCurrentStep = (): boolean => {
 
 const submitCampaign = () => {
   if (validateCurrentStep()) {
-    router.push({name: 'create_flow_step2', params: {id: 'TOKEN_FOR_CREATED_ID'}})
-    return;
+    // router.push({name: 'create_flow_step2', params: {id: 'TOKEN_FOR_CREATED_ID'}})
+    // return;
     let DTO = JSON.parse(JSON.stringify(formData.value))
     let RqPayload = {
       name: DTO.name || "",

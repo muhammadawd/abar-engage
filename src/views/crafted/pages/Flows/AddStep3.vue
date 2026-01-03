@@ -78,6 +78,7 @@ import {actionLoader, handleResponseErr} from "@/core/helpers/mainHelpers";
 import {useStore} from "vuex";
 import {useI18n} from "vue-i18n";
 import {useRoute, useRouter} from "vue-router";
+import TargetUserAudience from "@/views/crafted/pages/Flows/steps/TargetUserAudience.vue";
 
 const i18n = useI18n();
 const router = useRouter();
@@ -98,7 +99,7 @@ const props = withDefaults(defineProps<Props>(), {});
 
 const {campaignType, campaignPeriod} = toRefs(props);
 
-const currentStep = ref(2);
+const currentStep = ref(3);
 const transitionName = ref('slide-right');
 
 type StepItem = { title: string; description: string; component: any };
@@ -112,12 +113,12 @@ const steps: StepItem[] = [
   {
     title: 'Timing',
     description: 'When will users enter the flow',
-    component: WhenUserEnter
+    // component: WhenUserEnter
   },
   {
     title: 'Targeting',
     description: 'Who will enter the flow',
-    // component: StepSchedule
+    component: TargetUserAudience
   }
 ];
 
@@ -179,7 +180,21 @@ const formData = ref({
   },
 
   // Step 3: Filter
-  schedule: {}
+  step3: {
+    filterUserOption: 'all_users',
+    userOptions: {
+      type: 'custom_segment',
+      exOption: 'has_executed',
+      event: '',
+      segment: 'all',
+      eventCount: 'at_least',
+      times: 1,
+      eventPeriod: 'in_the_last',
+      periodTimes: 1,
+      periodTimesOperator: 'days',
+      attributes: []
+    },
+  }
 });
 
 const currentStepComponent = computed(() => steps[currentStep.value - 1].component);

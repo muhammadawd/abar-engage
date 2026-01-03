@@ -12,9 +12,12 @@
       <div class="col-12">
 
         <div v-if="localFormData.step2.entry_mode == 0">
+          <HasOccurredEvent
+            v-model="localFormData.step2.eventFilters"
+            @update="updateFormData"/>
           <FlowSchedule
-              v-model="localFormData.step2.flowSchedule"
-              @update="updateFormData"/>
+            v-model="localFormData.step2.flowSchedule"
+            @update="updateFormData"/>
         </div>
         <div v-else-if="localFormData.step2.entry_mode == 1">
           <AtFixedTime
@@ -22,9 +25,12 @@
               @update="updateFormData"/>
         </div>
         <div v-if="localFormData.step2.entry_mode == 2">
+          <HasOccurredEvent
+            v-model="localFormData.step2.eventFilters"
+            @update="updateFormData"/>
           <FlowSchedule
-              v-model="localFormData.step2.flowSchedule"
-              @update="updateFormData"/>
+            v-model="localFormData.step2.flowSchedule"
+            @update="updateFormData"/>
         </div>
       </div>
 
@@ -37,6 +43,7 @@ import {reactive, computed, watch} from 'vue';
 import WhenSelector from '../components/WhenSelector.vue';
 import AtFixedTime from "@/views/crafted/pages/Flows/components/AtFixedTime.vue";
 import FlowSchedule from "@/views/crafted/pages/Flows/components/FlowSchedule.vue";
+import HasOccurredEvent from "@/views/crafted/pages/Flows/components/HasOccurredEvent.vue";
 
 interface Props {
   formData: any;
@@ -78,6 +85,13 @@ if (!localFormData.step2.flowSchedule) {
     endOption: 'never',
     endDate: ''
   } as any;
+}
+
+// Ensure eventFilters defaults
+if (!localFormData.step2.eventFilters) {
+  localFormData.step2.eventFilters = [
+    { event: '', property: '', operator: 'equals', value: '' }
+  ] as any;
 }
 
 const updateFormData = () => {
