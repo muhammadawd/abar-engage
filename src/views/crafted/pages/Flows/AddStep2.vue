@@ -132,16 +132,26 @@ const formData = ref({
   step2: {
     entry_mode: 0,
 
-    scheduleType: 'one_time', // or 'periodic'
+    // At-fixed-time config grouped under `atFixedTime`
+    atFixedTime: {
+      scheduleType: 'one_time', // or 'periodic'
 
-    sendOption: 'as_soon_as_possible',
-    sendDate: '',
-    sendTime: '',
+      // One time options
+      sendOption: 'as_soon_as_possible',
+      sendDate: '',
+      sendTime: '',
 
-    periodicValue: 'daily',
-    periodicRepeatEvery: 1,
-    periodicWeeks: [],
-    periodicMonth: 1
+      // Periodic options
+      periodicValue: 'daily',
+      periodicRepeatEvery: 1,
+      periodicWeeks: [],
+      periodicMonth: 1,
+
+      // Period end options: 'never' | 'on' | 'after'
+      endOption: 'never',
+      endDate: '',
+      occurrences: 1
+    }
   },
 
   // Step 3: Filter
